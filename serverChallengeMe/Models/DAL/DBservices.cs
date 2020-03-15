@@ -8,7 +8,7 @@ using System.Data;
 using System.Text;
 using serverChallengeMe.Models;
 
-// test sync to github
+// test sync to github2
 
 namespace serverChallengeMe.Models.DAL
 {
