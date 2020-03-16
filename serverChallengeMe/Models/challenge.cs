@@ -22,22 +22,22 @@ namespace serverChallengeMe.Models
             CategoryID = categoryID;
         }
 
-        public Challenge getChallenge()
-        {
-            DBservices dBservices = new DBservices();
-            return dBservices.getChallenge();
-        }
+        //public Challenge getChallenge()
+        //{
+        //    DBservices dBservices = new DBservices();
+        //    return dBservices.getChallenge();
+        //}
 
-        public int postChallenge(Challenge Challenge)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.postChallenge(Challenge);
-        }
+        //public int postChallenge(Challenge Challenge)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.postChallenge(Challenge);
+        //}
 
-        public int deleteChallenge(int id)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.deleteChallenge(id);
-        }
+        //public int deleteChallenge(int id)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.deleteChallenge(id);
+        //}
     }
 }

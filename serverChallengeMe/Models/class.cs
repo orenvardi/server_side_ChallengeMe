@@ -22,22 +22,22 @@ namespace serverChallengeMe.Models
             TeacherID = teacherID;
         }
 
-        public DataTable getClass()
-        {
-            DBservices dBservices = new DBservices();
-            return dBservices.getClass();
-        }
+        //public DataTable getClass()
+        //{
+        //    DBservices dBservices = new DBservices();
+        //    return dBservices.getClass();
+        //}
 
-        public int postClass(Class c)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.postClass(c);
-        }
+        //public int postClass(Class c)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.postClass(c);
+        //}
 
-        public int deleteClass(int id)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.deleteClass(id);
-        }
+        //public int deleteClass(int id)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.deleteClass(id);
+        //}
     }
 }

@@ -35,22 +35,22 @@ namespace serverChallengeMe.Models
             AvatarID = avatarID;
         }
 
-        public DataTable getStudents()
-        {
-            DBservices dBservices = new DBservices();
-            return dBservices.getStudents();
-        }
+        //public DataTable getStudents()
+        //{
+        //    DBservices dBservices = new DBservices();
+        //    return dBservices.getStudents();
+        //}
 
-        public int postStudent(Student student)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.postStudent(student);
-        }
+        //public int postStudent(Student student)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.postStudent(student);
+        //}
 
-        public int deleteStudent(int id)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.deleteStudent(id);
-        }
+        //public int deleteStudent(int id)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.deleteStudent(id);
+        //}
     }
 }

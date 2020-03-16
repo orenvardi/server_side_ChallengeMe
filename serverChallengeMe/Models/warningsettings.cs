@@ -32,22 +32,22 @@ namespace serverChallengeMe.Models
             WarningIdle = warningIdle;
         }
 
-        public DataTable getWarningSettings()
-        {
-            DBservices dBservices = new DBservices();
-            return dBservices.getWarningSettings();
-        }
+        //public DataTable getWarningSettings()
+        //{
+        //    DBservices dBservices = new DBservices();
+        //    return dBservices.getWarningSettings();
+        //}
 
-        public int postWarningSettings(WarningSettings warningSettings)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.postWarningSettings(warningSettings);
-        }
+        //public int postWarningSettings(WarningSettings warningSettings)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.postWarningSettings(warningSettings);
+        //}
 
-        public int deleteWarningSettings(int id)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.deleteWarningSettings(id);
-        }
+        //public int deleteWarningSettings(int id)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.deleteWarningSettings(id);
+        //}
     }
 }

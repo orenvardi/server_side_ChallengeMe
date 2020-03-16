@@ -5,27 +5,32 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Data;
-using serverChallengeMe.Models.DAL;
+using serverChallengeMe.Models;
 
 namespace serverChallengeMe.Controllers
 {
     public class TeacherController : ApiController
     {
-        // GET api/<controller>
-        public IEnumerable<string> Get()
+        //GET api/Teacher
+        public DataTable Get()
         {
-            return new string[] { "value1", "value2" };
+            Teacher teacher = new Teacher();
+            return teacher.getTeacher();
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
+        [Route("Teacher/{username}/{password}")]
+        // GET api/Teacher/username/password
+        public int Get(string username, string password)
         {
-            return "value";
+            Teacher teacher = new Teacher();
+            return teacher.isTeacherExists(username, password);
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public int Post(Teacher teacher)
         {
+            Teacher t = new Teacher();
+            return t.postTeacher(teacher);
         }
 
         // PUT api/<controller>/5

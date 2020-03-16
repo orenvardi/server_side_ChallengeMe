@@ -43,25 +43,28 @@ namespace serverChallengeMe.Models.DAL
             return cmd;
         }
         //---------------------------------------------------------------------------------
-        // 2.  GET Teacher By ID
+        // 3.  GET Teacher By ID
         //---------------------------------------------------------------------------------       
         public int getTeacherByID(string username, string password)
         {
-            var id = 0;
             SqlConnection con = null;
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "select teacherID from Teacher where userName = '" + username + "' AND password = '" + password + "';";
-                SqlCommand cmd = new SqlCommand(selectSTR, con);
-                cmd.
-
+                da = new SqlDataAdapter("select teacherID from Teacher where userName = '" + username + "' AND password = '" + password + "';", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
             }
+
             catch (Exception ex)
             {
-                // write to log
-                throw (ex);
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
             }
+
             finally
             {
                 if (con != null)
@@ -69,14 +72,91 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
                 }
             }
-            return id;
+            return Convert.ToInt32(dt.Rows[0][0]);
         }
         //---------------------------------------------------------------------------------
-        // 2.  Create the SqlCommand
+        // 4.  GET Teacher
         //---------------------------------------------------------------------------------
+        public DataTable getTeacher()
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                da = new SqlDataAdapter("select * from Teacher;", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
         //---------------------------------------------------------------------------------
-        // 2.  Create the SqlCommand
+        // 5.  POST Teacher
         //---------------------------------------------------------------------------------
+        public int postTeacher(Teacher teacher)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            String cStr = BuildInsertCommandTeacher(teacher);      // helper method to build the insert string
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
+        //--------------------------------------------------------------------
+        // 6.  Build INSERT Favorite Command
+        //--------------------------------------------------------------------
+        private String BuildInsertCommandTeacher(Teacher teacher)
+        {
+            String command;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", teacher.UserName, teacher.Password, teacher.FirstName, teacher.LastName, teacher.Mail, teacher.Phone, teacher.School);
+            String prefix = "INSERT INTO Teacher(userName, password, firstName, lastName, mail, phone, school)";
+            command = prefix + sb.ToString();
+            return command;
+        }
         //---------------------------------------------------------------------------------
         // 2.  Create the SqlCommand
         //---------------------------------------------------------------------------------

@@ -30,22 +30,22 @@ namespace serverChallengeMe.Models
             WarningTime = warningTime;
         }
 
-        public DataTable getWarning()
-        {
-            DBservices dBservices = new DBservices();
-            return dBservices.getWarning();
-        }
+        //public DataTable getWarning()
+        //{
+        //    DBservices dBservices = new DBservices();
+        //    return dBservices.getWarning();
+        //}
 
-        public int postWarning(Warning warning)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.postWarning(warning);
-        }
+        //public int postWarning(Warning warning)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.postWarning(warning);
+        //}
 
-        public int deleteWarning(int id)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.deleteWarning(id);
-        }
+        //public int deleteWarning(int id)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.deleteWarning(id);
+        //}
     }
 }

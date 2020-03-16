@@ -32,22 +32,22 @@ namespace serverChallengeMe.Models
             MessageByTeacher = messageByTeacher;
         }
 
-        public DataTable getMessage()
-        {
-            DBservices dBservices = new DBservices();
-            return dBservices.getMessage();
-        }
+        //public DataTable getMessage()
+        //{
+        //    DBservices dBservices = new DBservices();
+        //    return dBservices.getMessage();
+        //}
 
-        public int postMessage(Message message)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.postMessage(message);
-        }
+        //public int postMessage(Message message)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.postMessage(message);
+        //}
 
-        public int deleteMessage(int id)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.deleteMessage(id);
-        }
+        //public int deleteMessage(int id)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.deleteMessage(id);
+        //}
     }
 }

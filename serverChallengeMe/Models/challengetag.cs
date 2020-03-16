@@ -19,22 +19,22 @@ namespace serverChallengeMe.Models
             TagID = tagID;
         }
 
-        public DataTable getChallengeTag()
-        {
-            DBservices dBservices = new DBservices();
-            return dBservices.getChallengeTag();
-        }
+        //public DataTable getChallengeTag()
+        //{
+        //    DBservices dBservices = new DBservices();
+        //    return dBservices.getChallengeTag();
+        //}
 
-        public int postStudent(ChallengeTag challengeTag)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.postChallengeTag(challengeTag);
-        }
+        //public int postStudent(ChallengeTag challengeTag)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.postChallengeTag(challengeTag);
+        //}
 
-        public int deleteChallengeTag(int id)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.deleteChallengeTag(id);
-        }
+        //public int deleteChallengeTag(int id)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.deleteChallengeTag(id);
+        //}
     }
 }
