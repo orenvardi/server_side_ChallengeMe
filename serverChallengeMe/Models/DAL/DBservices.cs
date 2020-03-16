@@ -8,8 +8,6 @@ using System.Data;
 using System.Text;
 using serverChallengeMe.Models;
 
-// test sync from github
-
 namespace serverChallengeMe.Models.DAL
 {
     public class DBservices
