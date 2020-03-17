@@ -43,39 +43,7 @@ namespace serverChallengeMe.Models.DAL
             return cmd;
         }
         //---------------------------------------------------------------------------------
-        // 3.  GET Teacher By ID
-        //---------------------------------------------------------------------------------       
-        public int getTeacherByID(string username, string password)
-        {
-            SqlConnection con = null;
-            try
-            {
-                con = connect("DBConnectionString");
-                da = new SqlDataAdapter("select teacherID from Teacher where userName = '" + username + "' AND password = '" + password + "';", con);
-                SqlCommandBuilder builder = new SqlCommandBuilder(da);
-                DataSet ds = new DataSet();
-                da.Fill(ds);
-                dt = ds.Tables[0];
-            }
-
-            catch (Exception ex)
-            {
-                Console.WriteLine("No rows found.");
-                // try to handle the error
-                throw ex;
-            }
-
-            finally
-            {
-                if (con != null)
-                {
-                    con.Close();
-                }
-            }
-            return Convert.ToInt32(dt.Rows[0][0]);
-        }
-        //---------------------------------------------------------------------------------
-        // 4.  GET Teacher
+        // 3.  GET Teachers
         //---------------------------------------------------------------------------------
         public DataTable getTeacher()
         {
@@ -107,7 +75,71 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 5.  POST Teacher
+        // 4.  GET Teacher By ID
+        //---------------------------------------------------------------------------------       
+        public int getTeacherByID(string username, string password)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                da = new SqlDataAdapter("select teacherID from Teacher where userName = '" + username + "' AND password = '" + password + "';", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return Convert.ToInt32(dt.Rows[0][0]);
+        }
+        //---------------------------------------------------------------------------------
+        // 5.  GET Teacher By mail
+        //---------------------------------------------------------------------------------       
+        public int getTeacherByMail(string mail)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                da = new SqlDataAdapter("select teacherID from Teacher where mail = '" + mail + "';", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return Convert.ToInt32(dt.Rows[0][0]);
+        }
+        //---------------------------------------------------------------------------------
+        // 6.  POST Teacher
         //---------------------------------------------------------------------------------
         public int postTeacher(Teacher teacher)
         {
@@ -146,7 +178,7 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //--------------------------------------------------------------------
-        // 6.  Build INSERT Favorite Command
+        // 7.  Build INSERT Teacher Command
         //--------------------------------------------------------------------
         private String BuildInsertCommandTeacher(Teacher teacher)
         {

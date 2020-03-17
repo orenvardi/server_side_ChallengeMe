@@ -26,6 +26,14 @@ namespace serverChallengeMe.Controllers
             return teacher.isTeacherExists(username, password);
         }
 
+        [Route("Teacher?mail={mail}")]
+        // GET api/Teacher?mail={mail}
+        public int Get(string mail)
+        {
+            Teacher teacher = new Teacher();
+            return teacher.getTeacherByMail(mail);
+        }
+
         // POST api/<controller>
         public int Post(Teacher teacher)
         {

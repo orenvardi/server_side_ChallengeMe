@@ -44,6 +44,12 @@ namespace serverChallengeMe.Models
             return dBservices.getTeacher();
         }
 
+        public int getTeacherByMail(string mail)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getTeacherByMail(mail);
+        }
+
         public int postTeacher(Teacher teacher)
         {
             DBservices dbs = new DBservices();
