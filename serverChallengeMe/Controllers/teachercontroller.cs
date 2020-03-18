@@ -18,17 +18,15 @@ namespace serverChallengeMe.Controllers
             return teacher.getTeacher();
         }
 
-        [Route("Teacher/{username}/{password}")]
-        // GET api/Teacher/username/password
+        // GET api/Teacher?username={username}&password={password}
         public int Get(string username, string password)
         {
             Teacher teacher = new Teacher();
             return teacher.isTeacherExists(username, password);
         }
 
-        [Route("Teacher?mail={mail}")]
         // GET api/Teacher?mail={mail}
-        public int Get(string mail)
+        public string Get(string mail)
         {
             Teacher teacher = new Teacher();
             return teacher.getTeacherByMail(mail);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data;
 using serverChallengeMe.Models.DAL;
+using System.Web.Security;
 
 namespace serverChallengeMe.Models
 {
@@ -44,10 +45,18 @@ namespace serverChallengeMe.Models
             return dBservices.getTeacher();
         }
 
-        public int getTeacherByMail(string mail)
+        public string getTeacherByMail(string mail)
         {
             DBservices dBservices = new DBservices();
-            return dBservices.getTeacherByMail(mail);
+            //return
+            var teacherID = dBservices.getTeacherByMail(mail);
+            var randomPassword = "";
+            if (teacherID != 0)
+            {
+                randomPassword = Membership.GeneratePassword(8, 1);
+                dBservices.updateTeacherPassword(teacherID, randomPassword);
+            }
+            return randomPassword;
         }
 
         public int postTeacher(Teacher teacher)
