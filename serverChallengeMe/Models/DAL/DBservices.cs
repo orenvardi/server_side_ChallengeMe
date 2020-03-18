@@ -75,28 +75,30 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 4.  GET Teacher By ID
+        // 4.  GET Teacher By Username and Password
         //---------------------------------------------------------------------------------       
-        public int getTeacherByID(string username, string password)
+        public int isTeacherExists(string username, string password)
         {
+            int id = 0;
             SqlConnection con = null;
             try
             {
                 con = connect("DBConnectionString");
-                da = new SqlDataAdapter("select teacherID from Teacher where userName = '" + username + "' AND password = '" + password + "';", con);
-                SqlCommandBuilder builder = new SqlCommandBuilder(da);
-                DataSet ds = new DataSet();
-                da.Fill(ds);
-                dt = ds.Tables[0];
+                String selectSTR = "select teacherID from Teacher where userName = '" + username + "' AND password = '" + password + "';";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                if (dr2.HasRows)
+                {
+                    while (dr2.Read())
+                    {
+                        id = Convert.ToInt32(dr2["teacherID"]);
+                    }
+                }
             }
-
             catch (Exception ex)
             {
-                Console.WriteLine("No rows found.");
-                // try to handle the error
-                throw ex;
+                throw (ex);
             }
-
             finally
             {
                 if (con != null)
@@ -104,31 +106,33 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
                 }
             }
-            return Convert.ToInt32(dt.Rows[0][0]);
+            return id;
         }
         //---------------------------------------------------------------------------------
         // 5.  GET Teacher By mail
         //---------------------------------------------------------------------------------       
         public int getTeacherByMail(string mail)
         {
+            int id = 0;
             SqlConnection con = null;
             try
             {
                 con = connect("DBConnectionString");
-                da = new SqlDataAdapter("select teacherID from Teacher where mail = '" + mail + "';", con);
-                SqlCommandBuilder builder = new SqlCommandBuilder(da);
-                DataSet ds = new DataSet();
-                da.Fill(ds);
-                dt = ds.Tables[0];
+                String selectSTR = "select teacherID from Teacher where mail = '" + mail + "';";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                if (dr2.HasRows)
+                {
+                    while (dr2.Read())
+                    {
+                        id = Convert.ToInt32(dr2["teacherID"]);
+                    }
+                }
             }
-
             catch (Exception ex)
             {
-                Console.WriteLine("No rows found.");
-                // try to handle the error
-                throw ex;
+                throw (ex);
             }
-
             finally
             {
                 if (con != null)
@@ -136,7 +140,7 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
                 }
             }
-            return Convert.ToInt32(dt.Rows[0][0]);
+            return id;
         }
         //---------------------------------------------------------------------------------
         // 6.  POST Teacher
@@ -196,14 +200,12 @@ namespace serverChallengeMe.Models.DAL
         {
             SqlConnection con;
             SqlCommand cmd;
-
             try
             {
                 con = connect("DBConnectionString"); // create the connection
             }
             catch (Exception ex)
             {
-                // write to log
                 throw (ex);
             }
             String cStr = "UPDATE Teacher SET password = '"+randomPassword+"', tempPassword = 1 WHERE TeacherID = "+teacherID+";";  
@@ -216,16 +218,12 @@ namespace serverChallengeMe.Models.DAL
             catch (Exception ex)
             {
                 return 0;
-                // write to log
                 throw (ex);
             }
             finally
             {
                 if (con != null)
-                {
-                    // close the db connection
                     con.Close();
-                }
             }
         }
         //---------------------------------------------------------------------------------

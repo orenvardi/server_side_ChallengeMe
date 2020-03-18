@@ -36,27 +36,29 @@ namespace serverChallengeMe.Models
         public int isTeacherExists(string username, string password)
         {
             DBservices dBservices = new DBservices();
-            return dBservices.getTeacherByID(username, password);
+            return dBservices.isTeacherExists(username, password);
+            //אם קיים מחזיר מספר מזהה של מחנך, אם לא קיים מחזיר אפס
         }
 
         public DataTable getTeacher()
         {
             DBservices dBservices = new DBservices();
             return dBservices.getTeacher();
+            //מחזיר רשימה של כל המחנכים
         }
 
         public string getTeacherByMail(string mail)
         {
             DBservices dBservices = new DBservices();
-            //return
-            var teacherID = dBservices.getTeacherByMail(mail);
+            var teacherID = dBservices.getTeacherByMail(mail); //אם קיים מחנך עם המייל הזה מחזיר את המספר המזהה של המחנך, אם לא קיים מחזיר אפס
             var randomPassword = "";
-            if (teacherID != 0) //אם קיים מחנך עם המייל הזה
+            if (teacherID != 0) //במידה שקיים מחנך עם המייל הזה
             {
-                randomPassword = Membership.GeneratePassword(8, 1);
-                dBservices.updateTeacherPassword(teacherID, randomPassword);
+                randomPassword = Membership.GeneratePassword(8, 1); //פונקציה שיוצרת סיסמא רנדומלית של 8 תווים עם לפחות תו אחד מיוחד
+                dBservices.updateTeacherPassword(teacherID, randomPassword); //פונקציה שמעדכנת את הסיסמא הרנדומלית בטבלת מחנכים ומכניסה ערך 1 לעמודת 'סיסמא זמנית'
             }
-            return randomPassword; //אם המייל לא קיים מחזיר מחרוזת ריקה
+            return randomPassword;
+            //אם המייל קיים מחזיר את הסיסמא הרנדומלית, אם המייל לא קיים מחזיר מחרוזת ריקה
         }
 
         public int postTeacher(Teacher teacher)
