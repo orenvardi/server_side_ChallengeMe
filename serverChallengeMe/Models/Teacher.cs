@@ -51,12 +51,12 @@ namespace serverChallengeMe.Models
             //return
             var teacherID = dBservices.getTeacherByMail(mail);
             var randomPassword = "";
-            if (teacherID != 0)
+            if (teacherID != 0) //אם קיים מחנך עם המייל הזה
             {
                 randomPassword = Membership.GeneratePassword(8, 1);
                 dBservices.updateTeacherPassword(teacherID, randomPassword);
             }
-            return randomPassword;
+            return randomPassword; //אם המייל לא קיים מחזיר מחרוזת ריקה
         }
 
         public int postTeacher(Teacher teacher)
