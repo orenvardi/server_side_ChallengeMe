@@ -8,6 +8,9 @@ namespace serverChallengeMe.Models
 {
     public class Category
     {
+
+        //1212121
+
         public int CategoryID { get; set; }
         public string CategoryName { get; set; }
 

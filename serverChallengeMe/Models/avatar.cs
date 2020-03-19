@@ -18,6 +18,9 @@ namespace serverChallengeMe.Models
         public string AvatarLev5 { get; set; }
         public string AvatarLev6 { get; set; }
 
+        //123456
+
+
         public Avatar() { }
 
         public Avatar(int avatarID, string avatarName, string avatarLev1, string avatarLev2, string avatarLev3, string avatarLev4, string avatarLev5, string avatarLev6)
