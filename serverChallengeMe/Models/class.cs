@@ -22,11 +22,12 @@ namespace serverChallengeMe.Models
             TeacherID = teacherID;
         }
 
-        //public DataTable getClass()
-        //{
-        //    DBservices dBservices = new DBservices();
-        //    return dBservices.getClass();
-        //}
+        public DataTable getClass(int teacherID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getClass(teacherID);
+            //מחזיר רשימה של כל הכיתות של מחנך
+        }
 
         //public int postClass(Class c)
         //{

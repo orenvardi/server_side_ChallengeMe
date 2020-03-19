@@ -35,11 +35,12 @@ namespace serverChallengeMe.Models
             AvatarID = avatarID;
         }
 
-        //public DataTable getStudents()
-        //{
-        //    DBservices dBservices = new DBservices();
-        //    return dBservices.getStudents();
-        //}
+        public DataTable getStudents(int classID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getStudents(classID);
+            //מחזיר רשימה של כל התלמידים של כיתה
+        }
 
         //public int postStudent(Student student)
         //{
