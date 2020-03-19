@@ -19,6 +19,7 @@ namespace serverChallengeMe.Models
         public string AvatarLev6 { get; set; }
 
         //123456
+        //oren
 
 
         public Avatar() { }
