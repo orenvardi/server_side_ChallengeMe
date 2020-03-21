@@ -181,6 +181,46 @@ namespace serverChallengeMe.Models.DAL
                 }
             }
         }
+
+        //---------------------------------------------------------------------------------
+        // 6.  POST Class
+        //---------------------------------------------------------------------------------
+        public int postClass(int teacherID, string className)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            String cStr = BuildInsertCommandClass(teacherID, className);      // helper method to build the insert string
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
         //--------------------------------------------------------------------
         // 7.  Build INSERT Teacher Command
         //--------------------------------------------------------------------
@@ -190,6 +230,18 @@ namespace serverChallengeMe.Models.DAL
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", teacher.UserName, teacher.Password, teacher.FirstName, teacher.LastName, teacher.Mail, teacher.Phone, teacher.School);
             String prefix = "INSERT INTO Teacher(userName, password, firstName, lastName, mail, phone, school)";
+            command = prefix + sb.ToString();
+            return command;
+        }
+        //--------------------------------------------------------------------
+        // 7.  Build INSERT Class Command
+        //--------------------------------------------------------------------
+        private String BuildInsertCommandClass(int teacherID, string className)
+        {
+            String command;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("VALUES('{0}', '{1}');", teacherID, className);
+            String prefix = "INSERT INTO Class(className, teacherID)";
             command = prefix + sb.ToString();
             return command;
         }

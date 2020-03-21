@@ -29,6 +29,12 @@ namespace serverChallengeMe.Models
             //מחזיר רשימה של כל הכיתות של מחנך
         }
 
+        public int postClass(int teacherID, string className)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.postClass(teacherID, className);
+        }
+
         //public int postClass(Class c)
         //{
         //    DBservices dbs = new DBservices();
