@@ -19,10 +19,10 @@ namespace serverChallengeMe.Controllers
         }
 
         // POST api/<controller>
-        public int Post(int teacherID, string className)
+        public int Post(Class c)
         {
-            Class c = new Class();
-            return c.postClass(teacherID, className);
+            Class cl = new Class();
+            return c.postClass(c);
         }
 
         // PUT api/<controller>/5

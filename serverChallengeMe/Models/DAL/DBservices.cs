@@ -181,11 +181,22 @@ namespace serverChallengeMe.Models.DAL
                 }
             }
         }
-
+        //--------------------------------------------------------------------
+        // 7.  Build INSERT Teacher Command
+        //--------------------------------------------------------------------
+        private String BuildInsertCommandTeacher(Teacher teacher)
+        {
+            String command;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", teacher.UserName, teacher.Password, teacher.FirstName, teacher.LastName, teacher.Mail, teacher.Phone, teacher.School);
+            String prefix = "INSERT INTO Teacher(userName, password, firstName, lastName, mail, phone, school)";
+            command = prefix + sb.ToString();
+            return command;
+        }
         //---------------------------------------------------------------------------------
-        // 6.  POST Class
+        // 8.  POST Class
         //---------------------------------------------------------------------------------
-        public int postClass(int teacherID, string className)
+        public int postClass(Class c)
         {
             SqlConnection con;
             SqlCommand cmd;
@@ -199,8 +210,15 @@ namespace serverChallengeMe.Models.DAL
                 // write to log
                 throw (ex);
             }
-            String cStr = BuildInsertCommandClass(teacherID, className);      // helper method to build the insert string
-            cmd = CreateCommand(cStr, con);             // create the command
+
+            //שימוש בפרמטרים כשיש סיכוי שיהיה מחרוזת עם גרש שיכולה להוות בעיה 
+            String cStr = "INSERT INTO Class(className, teacherID) VALUES(@ClassName, " + c.TeacherID + ");";
+            cmd = CreateCommand(cStr, con);             
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "@ClassName";
+            param.Value = c.ClassName;
+            cmd.Parameters.Add(param);
+
             try
             {
                 int numEffected = cmd.ExecuteNonQuery(); // execute the command
@@ -222,31 +240,25 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //--------------------------------------------------------------------
-        // 7.  Build INSERT Teacher Command
+        // 9.  Build INSERT Class Command
         //--------------------------------------------------------------------
-        private String BuildInsertCommandTeacher(Teacher teacher)
-        {
-            String command;
-            StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", teacher.UserName, teacher.Password, teacher.FirstName, teacher.LastName, teacher.Mail, teacher.Phone, teacher.School);
-            String prefix = "INSERT INTO Teacher(userName, password, firstName, lastName, mail, phone, school)";
-            command = prefix + sb.ToString();
-            return command;
-        }
-        //--------------------------------------------------------------------
-        // 7.  Build INSERT Class Command
-        //--------------------------------------------------------------------
-        private String BuildInsertCommandClass(int teacherID, string className)
-        {
-            String command;
-            StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES('{0}', '{1}');", teacherID, className);
-            String prefix = "INSERT INTO Class(className, teacherID)";
-            command = prefix + sb.ToString();
-            return command;
-        }
+        //private String BuildInsertCommandClass(Class c)
+        //{
+        //    String command;
+        //    StringBuilder sb = new StringBuilder();
+        //    //sb.AppendFormat("VALUES('{0}', {1});", c.ClassName, c.TeacherID);
+        //    String prefix = "INSERT INTO Class(className, teacherID) VALUES(@ClassName, " + c.TeacherID + ";";
+        //    command.Parameters.Add("@ClassName").Value = c.ClassName;
+        //    command = prefix + sb.ToString();
+        //    return command;
+
+
+        //    string SQL = "SELECT * FROM table WHERE Name = @Name";
+        //    command.Parameters.Add("@Name").Value = strName;
+
+        //}
         //---------------------------------------------------------------------------------
-        // 8.  UPDATE Teacher Password
+        // 10.  UPDATE Teacher Password
         //---------------------------------------------------------------------------------
         public int updateTeacherPassword(int teacherID, string randomPassword)
         {
@@ -279,7 +291,7 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //---------------------------------------------------------------------------------
-        // 9.  GET Classes
+        // 11.  GET Classes
         //---------------------------------------------------------------------------------
         public DataTable getClass(int teacherID)
         {
@@ -311,7 +323,7 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 10.  GET Students
+        // 12.  GET Students
         //---------------------------------------------------------------------------------
         public DataTable getStudents(int classID)
         {
@@ -342,17 +354,5 @@ namespace serverChallengeMe.Models.DAL
             }
             return dt;
         }
-        //---------------------------------------------------------------------------------
-        // 2.  Create the SqlCommand
-        //---------------------------------------------------------------------------------
-        //---------------------------------------------------------------------------------
-        // 2.  Create the SqlCommand
-        //---------------------------------------------------------------------------------
-        //---------------------------------------------------------------------------------
-        // 2.  Create the SqlCommand
-        //---------------------------------------------------------------------------------
-        //---------------------------------------------------------------------------------
-        // 2.  Create the SqlCommand
-        //---------------------------------------------------------------------------------
     }
 }
