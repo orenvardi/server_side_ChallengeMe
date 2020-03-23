@@ -18,8 +18,6 @@ namespace serverChallengeMe.Controllers
             return student.getStudents(classID);
         }
 
-    }
-
     //// GET api/Student?studentID={studentID}
     //public DataTable Get(int studentID)
     //{
