@@ -356,7 +356,7 @@ namespace serverChallengeMe.Models.DAL
             {
                 throw (ex);
             }
-            String cStr = "UPDATE Teacher SET userName  = '" + t.UserName + "' password= '" + t.Password + "' firstName = '" + t.FirstName + "' lastName  = '" + t.LastName + "' mail   = '" + t.Mail + "' phone   = '" + t.Phone + "' scholl   = '" + t.School + "' WHERE teacherID  = " + t.TeacherID + ";";
+            String cStr = "UPDATE Teacher SET userName  = '" + t.UserName + "', password= '" + t.Password + "', firstName = '" + t.FirstName + "', lastName  = '" + t.LastName + "', mail = '" + t.Mail + "', phone = '" + t.Phone + "', school = '" + t.School + "' WHERE teacherID  = " + t.TeacherID + ";";
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
