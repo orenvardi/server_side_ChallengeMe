@@ -29,8 +29,10 @@ namespace serverChallengeMe.Controllers
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public int Delete(int studentID)
         {
+            Student stu = new Student();
+            return stu.deleteStudent(studentID);
         }
     }
 }

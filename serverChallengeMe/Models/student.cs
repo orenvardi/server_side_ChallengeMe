@@ -48,10 +48,10 @@ namespace serverChallengeMe.Models
         //    return dbs.postStudent(student);
         //}
 
-        //public int deleteStudent(int id)
-        //{
-        //    DBservices dbs = new DBservices();
-        //    return dbs.deleteStudent(id);
-        //}
+        public int deleteStudent(int studentID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.deleteStudent(studentID);
+        }
     }
 }

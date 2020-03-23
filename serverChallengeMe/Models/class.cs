@@ -35,16 +35,16 @@ namespace serverChallengeMe.Models
             return dbs.postClass(c);
         }
 
-        //public int postClass(Class c)
-        //{
-        //    DBservices dbs = new DBservices();
-        //    return dbs.postClass(c);
-        //}
+        public int putClass(Class c)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.updateClass(c);
+        }
 
-        //public int deleteClass(int id)
-        //{
-        //    DBservices dbs = new DBservices();
-        //    return dbs.deleteClass(id);
-        //}
+        public int deleteClass(int classID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.deleteClass(classID);
+        }
     }
 }

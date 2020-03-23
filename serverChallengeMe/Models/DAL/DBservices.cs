@@ -239,24 +239,7 @@ namespace serverChallengeMe.Models.DAL
                 }
             }
         }
-        //--------------------------------------------------------------------
-        // 9.  Build INSERT Class Command
-        //--------------------------------------------------------------------
-        //private String BuildInsertCommandClass(Class c)
-        //{
-        //    String command;
-        //    StringBuilder sb = new StringBuilder();
-        //    //sb.AppendFormat("VALUES('{0}', {1});", c.ClassName, c.TeacherID);
-        //    String prefix = "INSERT INTO Class(className, teacherID) VALUES(@ClassName, " + c.TeacherID + ";";
-        //    command.Parameters.Add("@ClassName").Value = c.ClassName;
-        //    command = prefix + sb.ToString();
-        //    return command;
 
-
-        //    string SQL = "SELECT * FROM table WHERE Name = @Name";
-        //    command.Parameters.Add("@Name").Value = strName;
-
-        //}
         //---------------------------------------------------------------------------------
         // 10.  UPDATE Teacher Password
         //---------------------------------------------------------------------------------
@@ -290,8 +273,42 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
             }
         }
+
         //---------------------------------------------------------------------------------
-        // 11.  GET Classes
+        // 11.  UPDATE Class Name
+        //---------------------------------------------------------------------------------
+        public int updateClass(Class c)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            String cStr = "UPDATE Class SET className = '" + c.ClassName + "' WHERE classID = " + c.ClassID + ";";
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+        //---------------------------------------------------------------------------------
+        // 12.  GET Classes
         //---------------------------------------------------------------------------------
         public DataTable getClass(int teacherID)
         {
@@ -323,7 +340,7 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 12.  GET Students
+        // 13.  GET Students
         //---------------------------------------------------------------------------------
         public DataTable getStudents(int classID)
         {
@@ -353,6 +370,77 @@ namespace serverChallengeMe.Models.DAL
                 }
             }
             return dt;
+        }
+
+        //---------------------------------------------------------------------------------
+        // 14.  DELETE Students
+        //---------------------------------------------------------------------------------
+        public int deleteStudent(int studentID)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            } //DELETE FROM Publishers
+            // WHERE City = 'New York'
+            String cStr = "DELETE FROM Student WHERE studentID  = '" + studentID + "' ";
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
+
+        //---------------------------------------------------------------------------------
+        // 15.  DELETE Class
+        //---------------------------------------------------------------------------------
+        public int deleteClass(int classID)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            } //DELETE FROM Publishers
+            // WHERE City = 'New York'
+            String cStr = "DELETE FROM Class WHERE classID  = '" + classID + "' ";
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
         }
     }
 }

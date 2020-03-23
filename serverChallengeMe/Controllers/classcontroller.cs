@@ -22,17 +22,21 @@ namespace serverChallengeMe.Controllers
         public int Post(Class c)
         {
             Class cl = new Class();
-            return c.postClass(c);
+            return cl.postClass(c);
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public int Put(Class c)
         {
+            Class cl = new Class();
+            return cl.putClass(c);
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public int Delete(int classID)
         {
+            Class stu = new Class();
+            return stu.deleteClass(classID);
         }
     }
 }
