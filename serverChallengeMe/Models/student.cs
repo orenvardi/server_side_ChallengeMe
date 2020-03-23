@@ -42,6 +42,12 @@ namespace serverChallengeMe.Models
             //מחזיר רשימה של כל התלמידים של כיתה
         }
 
+        //public DataTable getStudentById(int studentID)
+        //{
+        //    DBservices dBservices = new DBservices();
+        //    return dBservices.getTeacherById(teacherID);
+        //}
+
         //public int postStudent(Student student)
         //{
         //    DBservices dbs = new DBservices();

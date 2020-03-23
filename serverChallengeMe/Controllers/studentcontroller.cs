@@ -18,8 +18,17 @@ namespace serverChallengeMe.Controllers
             return student.getStudents(classID);
         }
 
-        // POST api/<controller>
-        public void Post([FromBody]string value)
+    }
+
+    //// GET api/Student?studentID={studentID}
+    //public DataTable Get(int studentID)
+    //{
+    //    Student student = new Student();
+    //    return student.getStudentById(studentID);
+    //}
+
+    // POST api/<controller>
+    public void Post([FromBody]string value)
         {
         }
 
