@@ -61,16 +61,28 @@ namespace serverChallengeMe.Models
             //אם המייל קיים מחזיר את הסיסמא הרנדומלית, אם המייל לא קיים מחזיר מחרוזת ריקה
         }
 
+        public DataTable getTeacherById(int teacherID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getTeacherById(teacherID); 
+        }
+
         public int postTeacher(Teacher teacher)
         {
             DBservices dbs = new DBservices();
             return dbs.postTeacher(teacher);
         }
 
-        //public int deleteTeacher(int id)
-        //{
-        //    DBservices dbs = new DBservices();
-        //    return dbs.deleteTeacher(id);
-        //}
-    }
+        public int putTeacher(Teacher t)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.updateTeacherDetails(t);
+        }
+
+    //public int deleteTeacher(int id)
+    //{
+    //    DBservices dbs = new DBservices();
+    //    return dbs.deleteTeacher(id);
+    //}
+}
 }

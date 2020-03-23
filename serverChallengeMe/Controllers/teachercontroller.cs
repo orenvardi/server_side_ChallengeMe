@@ -32,6 +32,13 @@ namespace serverChallengeMe.Controllers
             return teacher.getTeacherByMail(mail);
         }
 
+        // GET api/Teacher?teacherID={teacherID}
+        public DataTable Get(int teacherID)
+        {
+            Teacher teacher = new Teacher();
+            return teacher.getTeacherById(teacherID);
+        }
+
         // POST api/<controller>
         public int Post(Teacher teacher)
         {
@@ -40,8 +47,10 @@ namespace serverChallengeMe.Controllers
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public int Put(Teacher t)
         {
+            Teacher teacher = new Teacher();
+            return teacher.putTeacher(t);
         }
 
         // DELETE api/<controller>/5

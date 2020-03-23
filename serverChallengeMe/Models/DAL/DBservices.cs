@@ -142,8 +142,41 @@ namespace serverChallengeMe.Models.DAL
             }
             return id;
         }
+
         //---------------------------------------------------------------------------------
-        // 6.  POST Teacher
+        // 6.  GET Teacher By ID
+        //---------------------------------------------------------------------------------       
+        public DataTable getTeacherById(int teacherID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                da = new SqlDataAdapter("select * from Teacher where teacherID = '" + teacherID + "';", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 7.  POST Teacher
         //---------------------------------------------------------------------------------
         public int postTeacher(Teacher teacher)
         {
@@ -182,7 +215,7 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //--------------------------------------------------------------------
-        // 7.  Build INSERT Teacher Command
+        // 8.  Build INSERT Teacher Command
         //--------------------------------------------------------------------
         private String BuildInsertCommandTeacher(Teacher teacher)
         {
@@ -194,7 +227,7 @@ namespace serverChallengeMe.Models.DAL
             return command;
         }
         //---------------------------------------------------------------------------------
-        // 8.  POST Class
+        // 9.  POST Class
         //---------------------------------------------------------------------------------
         public int postClass(Class c)
         {
@@ -307,8 +340,42 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
             }
         }
+
         //---------------------------------------------------------------------------------
-        // 12.  GET Classes
+        // 12.  UPDATE Teacher details
+        //---------------------------------------------------------------------------------
+        public int updateTeacherDetails(Teacher t)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            String cStr = "UPDATE Teacher SET userName  = '" + t.UserName + "' password= '" + t.Password + "' firstName = '" + t.FirstName + "' lastName  = '" + t.LastName + "' mail   = '" + t.Mail + "' phone   = '" + t.Phone + "' scholl   = '" + t.School + "' WHERE teacherID  = " + t.TeacherID + ";";
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+        //---------------------------------------------------------------------------------
+        // 13.  GET Classes
         //---------------------------------------------------------------------------------
         public DataTable getClass(int teacherID)
         {
@@ -340,7 +407,7 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 13.  GET Students
+        // 14  GET Students
         //---------------------------------------------------------------------------------
         public DataTable getStudents(int classID)
         {
@@ -373,7 +440,7 @@ namespace serverChallengeMe.Models.DAL
         }
 
         //---------------------------------------------------------------------------------
-        // 14.  DELETE Students
+        // 15.  DELETE Students
         //---------------------------------------------------------------------------------
         public int deleteStudent(int studentID)
         {
@@ -409,7 +476,7 @@ namespace serverChallengeMe.Models.DAL
 
 
         //---------------------------------------------------------------------------------
-        // 15.  DELETE Class
+        // 16.  DELETE Class
         //---------------------------------------------------------------------------------
         public int deleteClass(int classID)
         {
