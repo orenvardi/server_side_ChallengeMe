@@ -6,6 +6,9 @@ using System.Data;
 using serverChallengeMe.Models.DAL;
 using System.Web.Security;
 
+using System.Net;
+using System.Net.Mail;
+
 namespace serverChallengeMe.Models
 {
     public class Teacher
@@ -18,10 +21,11 @@ namespace serverChallengeMe.Models
         public string Phone { get; set; }
         public string Mail { get; set; }
         public string School { get; set; }
+        public bool TempPassword { get; set; }
 
         public Teacher() { }
 
-        public Teacher(int teacherID, string userName, string password, string firstName, string lastName, string phone, string mail, string school)
+        public Teacher(int teacherID, string userName, string password, string firstName, string lastName, string phone, string mail, string school,bool tempPassword)
         {
             TeacherID = teacherID;
             UserName = userName;
@@ -31,9 +35,10 @@ namespace serverChallengeMe.Models
             Phone = phone;
             Mail = mail;
             School = school;
+            TempPassword = tempPassword;
         }
 
-        public int isTeacherExists(string username, string password)
+        public Teacher isTeacherExists(string username, string password)
         {
             DBservices dBservices = new DBservices();
             return dBservices.isTeacherExists(username, password);
@@ -56,7 +61,24 @@ namespace serverChallengeMe.Models
             {
                 randomPassword = Membership.GeneratePassword(8, 1); //פונקציה שיוצרת סיסמא רנדומלית של 8 תווים עם לפחות תו אחד מיוחד
                 dBservices.updateTeacherPassword(teacherID, randomPassword); //פונקציה שמעדכנת את הסיסמא הרנדומלית בטבלת מחנכים ומכניסה ערך 1 לעמודת 'סיסמא זמנית'
-            }
+                try { 
+                MailMessage message = new MailMessage();
+                SmtpClient smtp = new SmtpClient();
+                message.From = new MailAddress("challenge.me555555@gmail.com");
+                message.To.Add(new MailAddress(mail));
+                message.Subject = "challenge me new temporary password";
+                message.IsBodyHtml = true; //to make message body as html  
+                message.Body = "<div><div>הססמה הזמנית החדשה שלך היא: "+ randomPassword + "</div><div>כאשר אתה נכנס אתה תצטרך לשנות את הססמה</div><div>challenge me</div><div>";
+                smtp.Port = 587;
+                smtp.Host = "smtp.gmail.com"; //for gmail host  
+                smtp.EnableSsl = true;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new NetworkCredential("challenge.me555555@gmail.com", "oren5555");
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.Send(message);
+            } catch (Exception e) { throw e; }
+        }
+    
             return randomPassword;
             //אם המייל קיים מחזיר את הסיסמא הרנדומלית, אם המייל לא קיים מחזיר מחרוזת ריקה
         }

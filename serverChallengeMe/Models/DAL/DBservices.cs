@@ -77,21 +77,23 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 4.  GET Teacher By Username and Password
         //---------------------------------------------------------------------------------       
-        public int isTeacherExists(string username, string password)
+        public Teacher isTeacherExists(string username, string password)
         {
-            int id = 0;
+            Teacher t = new Teacher();
+            
             SqlConnection con = null;
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "select teacherID from Teacher where userName = '" + username + "' AND password = '" + password + "';";
+                String selectSTR = "select teacherID,tempPassword from Teacher where userName = '" + username + "' AND password = '" + password + "';";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
                 if (dr2.HasRows)
                 {
                     while (dr2.Read())
                     {
-                        id = Convert.ToInt32(dr2["teacherID"]);
+                        t.TeacherID = Convert.ToInt32(dr2["teacherID"]);
+                        t.TempPassword = Convert.ToBoolean(dr2["tempPassword"]);
                     }
                 }
             }
@@ -106,8 +108,9 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
                 }
             }
-            return id;
+            return t;
         }
+
         //---------------------------------------------------------------------------------
         // 5.  GET Teacher By mail
         //---------------------------------------------------------------------------------       

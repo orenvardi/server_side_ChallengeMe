@@ -19,7 +19,7 @@ namespace serverChallengeMe.Controllers
         }
 
         // GET api/Teacher?username={username}&password={password}
-        public int Get(string username, string password)
+        public Teacher Get(string username, string password)
         {
             Teacher teacher = new Teacher();
             return teacher.isTeacherExists(username, password);
