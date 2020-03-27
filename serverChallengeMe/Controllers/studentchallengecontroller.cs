@@ -11,10 +11,11 @@ namespace serverChallengeMe.Controllers
 {
     public class StudentChallengeController : ApiController
     {
-        // GET api/<controller>
-        public IEnumerable<string> Get()
+        //GET api/StudentChallenge?studentID ={studentID}
+        public DataTable Get(int studentID)
         {
-            return new string[] { "value1", "value2" };
+            StudentChallenge stuC = new StudentChallenge();
+            return stuC.getStudentChallenge(studentID);
         }
 
         // GET api/<controller>/5
@@ -23,19 +24,25 @@ namespace serverChallengeMe.Controllers
             return "value";
         }
 
-        // POST api/<controller>
-        public void Post([FromBody]string value)
-        {
-        }
+        //// POST api/<controller>
+        //public int Post(Challenge challenge)
+        //{
+        //    StudentChallenge stuC = new StudentChallenge();
+        //    return stuC.postStudentChallenge(challenge);
+        //}
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public int Put(StudentChallenge sc)
         {
+            StudentChallenge stuC = new StudentChallenge();
+            return stuC.putStudentChallenge(sc);
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public int Delete(int studentID, int challengeID)
         {
+            StudentChallenge stu = new StudentChallenge();
+            return stu.deleteStudentChallenge(studentID, challengeID);
         }
     }
 }

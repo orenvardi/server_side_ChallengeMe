@@ -11,28 +11,31 @@ namespace serverChallengeMe.Controllers
 {
     public class StudentController : ApiController
     {
-        //GET api/Student
-        public DataTable Get(int classID)
+        //GET api/Student?classID={classID}
+        public DataTable GetByClassID(int classID)
         {
             Student student = new Student();
             return student.getStudents(classID);
         }
 
-    //// GET api/Student?studentID={studentID}
-    //public DataTable Get(int studentID)
-    //{
-    //    Student student = new Student();
-    //    return student.getStudentById(studentID);
-    //}
-
-    // POST api/<controller>
-    public void Post([FromBody]string value)
+        // GET api/Student?studentID={studentID}
+        public DataTable GetByStudentByStudentID(int studentID)
         {
+            Student student = new Student();
+            return student.getStudentById(studentID);
         }
 
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        // POST api/<controller>
+        public int Post(Student student)
         {
+            Student s = new Student();
+            return s.postStudent(student);
+        }
+
+        public int Put(Student student)
+        {
+            Student s = new Student();
+            return s.putStudent(student);
         }
 
         // DELETE api/<controller>/5

@@ -25,6 +25,25 @@ namespace serverChallengeMe.Models
             Status = status;
         }
 
+        public DataTable getStudentChallenge(int studentID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getStudentChallenge(studentID);
+        }
+
+        public int putStudentChallenge(StudentChallenge sc)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.updateStudentChallenge(sc);
+        }
+
+
+        public int deleteStudentChallenge(int studentID, int challengeID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.deleteStudentChallenge(studentID, challengeID);
+        }
+
         //public DataTable getStudentChallenge()
         //{
         //    DBservices dBservices = new DBservices();
@@ -37,10 +56,5 @@ namespace serverChallengeMe.Models
         //    return dbs.postStudentChallenge(studentChallenge);
         //}
 
-        //public int deleteStudentChallenge(int id)
-        //{
-        //    DBservices dbs = new DBservices();
-        //    return dbs.deleteStudentChallenge(id);
-        //}
     }
 }

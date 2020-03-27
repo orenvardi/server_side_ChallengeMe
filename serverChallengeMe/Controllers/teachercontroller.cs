@@ -26,14 +26,14 @@ namespace serverChallengeMe.Controllers
         }
 
         // GET api/Teacher?mail={mail}
-        public string Get(string mail)
+        public string GetByMail(string mail)
         {
             Teacher teacher = new Teacher();
             return teacher.getTeacherByMail(mail);
         }
 
         // GET api/Teacher?teacherID={teacherID}
-        public DataTable Get(int teacherID)
+        public DataTable GetByTeacherID(int teacherID)
         {
             Teacher teacher = new Teacher();
             return teacher.getTeacherById(teacherID);
