@@ -204,8 +204,7 @@ namespace serverChallengeMe.Models.DAL
             }
             catch (Exception ex)
             {
-                return 0;
-                // write to log
+              
                 throw (ex);
             }
             finally
@@ -262,8 +261,7 @@ namespace serverChallengeMe.Models.DAL
             }
             catch (Exception ex)
             {
-                return 0;
-                // write to log
+                
                 throw (ex);
             }
             finally
@@ -300,7 +298,6 @@ namespace serverChallengeMe.Models.DAL
             }
             catch (Exception ex)
             {
-                return 0;
                 throw (ex);
             }
             finally
@@ -334,7 +331,7 @@ namespace serverChallengeMe.Models.DAL
             }
             catch (Exception ex)
             {
-                return 0;
+                
                 throw (ex);
             }
             finally
@@ -368,7 +365,7 @@ namespace serverChallengeMe.Models.DAL
             }
             catch (Exception ex)
             {
-                return 0;
+               
                 throw (ex);
             }
             finally
@@ -467,7 +464,6 @@ namespace serverChallengeMe.Models.DAL
             }
             catch (Exception ex)
             {
-                return 0;
                 throw (ex);
             }
             finally
@@ -503,7 +499,6 @@ namespace serverChallengeMe.Models.DAL
             }
             catch (Exception ex)
             {
-                return 0;
                 throw (ex);
             }
             finally
