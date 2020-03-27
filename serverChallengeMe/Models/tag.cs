@@ -19,11 +19,11 @@ namespace serverChallengeMe.Models
             TagName = tagName;
         }
 
-        //public DataTable getTag()
-        //{
-        //    DBservices dBservices = new DBservices();
-        //    return dBservices.getTag();
-        //}
+        public DataTable getTag()
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getTag();
+        }
 
         //public int postTag(Tag tag)
         //{
