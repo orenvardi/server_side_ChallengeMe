@@ -48,6 +48,12 @@ namespace serverChallengeMe.Models
             return dBservices.getStudentById(studentID);
         }
 
+        public int getStudentByUserNameAndPassword(string userName, int password)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getStudentByUserNameAndPassword(userName, password);
+        }
+
         public int postStudent(Student student)
         {
             DBservices dbs = new DBservices();

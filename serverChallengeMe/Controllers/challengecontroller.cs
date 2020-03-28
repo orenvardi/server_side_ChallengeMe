@@ -11,10 +11,11 @@ namespace serverChallengeMe.Controllers
 {
     public class ChallengeController : ApiController
     {
-        // GET api/<controller>
-        public IEnumerable<string> Get()
+        // GET api/Challenge
+        public DataTable Get()
         {
-            return new string[] { "value1", "value2" };
+            Challenge c = new Challenge();
+            return c.getChallenge();
         }
 
         // GET api/<controller>/5
@@ -24,8 +25,10 @@ namespace serverChallengeMe.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public int Post(Challenge challenge)
         {
+            Challenge c = new Challenge();
+            return c.postChallenge(challenge);
         }
 
         // PUT api/<controller>/5

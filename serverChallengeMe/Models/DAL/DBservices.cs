@@ -211,7 +211,71 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 8.  POST Teacher
+        // 8.  GET Challenge
+        //---------------------------------------------------------------------------------
+        public DataTable getChallenge()
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                da = new SqlDataAdapter("select * from Challenge;", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 9.  GET Student By User Name And Password
+        //---------------------------------------------------------------------------------
+        public int getStudentByUserNameAndPassword(string userName, int password)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                da = new SqlDataAdapter("select studentID from Student where userName = '" + userName + "' AND password='"+password + "';", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 10.  POST Teacher
         //---------------------------------------------------------------------------------
         public int postTeacher(Teacher teacher)
         {
@@ -248,8 +312,20 @@ namespace serverChallengeMe.Models.DAL
                 }
             }
         }
+        //--------------------------------------------------------------------
+        // 11.  Build INSERT Teacher Command
+        //--------------------------------------------------------------------
+        private String BuildInsertCommandTeacher(Teacher teacher)
+        {
+            String command;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", teacher.UserName, teacher.Password, teacher.FirstName, teacher.LastName, teacher.Mail, teacher.Phone, teacher.School);
+            String prefix = "INSERT INTO Teacher(userName, password, firstName, lastName, mail, phone, school)";
+            command = prefix + sb.ToString();
+            return command;
+        }
         //---------------------------------------------------------------------------------
-        // 9.  POST Student
+        // 11.  POST Student
         //---------------------------------------------------------------------------------
         public int postStudent(Student student)
         {
@@ -265,7 +341,7 @@ namespace serverChallengeMe.Models.DAL
                 // write to log
                 throw (ex);
             }
-            String cStr = BuildInsertCommandTeacher(teacher);      // helper method to build the insert string
+            String cStr = BuildInsertCommandStudent(teacher);      // helper method to build the insert string
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
@@ -287,26 +363,64 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //--------------------------------------------------------------------
-        // 10.  Build INSERT Teacher Command
+        // 12.  Build INSERT Student Command
         //--------------------------------------------------------------------
-        private String BuildInsertCommandTeacher(Teacher teacher)
-        {
-            String command;
-            StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", teacher.UserName, teacher.Password, teacher.FirstName, teacher.LastName, teacher.Mail, teacher.Phone, teacher.School);
-            String prefix = "INSERT INTO Teacher(userName, password, firstName, lastName, mail, phone, school)";
-            command = prefix + sb.ToString();
-            return command;
-        }
-        //--------------------------------------------------------------------
-        // 11.  Build INSERT Student Command
-        //--------------------------------------------------------------------
-        private String BuildInsertCommandTeacher(Student student)
+        private String BuildInsertCommandStudent(Student student)
         {
             String command;
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}','{7}','{8}');", student.UserName, student.Password, student.FirstName, student.LastName, student.Mail, student.Phone, student.ClassID, student.teacherID, student.avatarID);
             String prefix = "INSERT INTO Student(userName, password, firstName, lastName, mail, phone, classID, teacherID, avatarID)";
+            command = prefix + sb.ToString();
+            return command;
+        }
+        //---------------------------------------------------------------------------------
+        // 13.  POST Challenge
+        //---------------------------------------------------------------------------------
+        public int postChallenge(Challenge challenge)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            String cStr = BuildInsertCommandChallenge(challenge);      // helper method to build the insert string
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
+        //--------------------------------------------------------------------
+        // 14.  Build INSERT Challenge Command
+        //--------------------------------------------------------------------
+        private String BuildInsertCommandChallenge(Challenge challenge)
+        {
+            String command;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}');", challenge.ChallemgeName, challenge.Description, challenge.CategoryID);
+            String prefix = "INSERT INTO Challenge(challemgeName, description, categoryID)";
             command = prefix + sb.ToString();
             return command;
         }
@@ -357,7 +471,7 @@ namespace serverChallengeMe.Models.DAL
         }
 
         //---------------------------------------------------------------------------------
-        // 13.  UPDATE Teacher Password
+        // 15.  UPDATE Teacher Password
         //---------------------------------------------------------------------------------
         public int updateTeacherPassword(int teacherID, string randomPassword)
         {
@@ -390,7 +504,7 @@ namespace serverChallengeMe.Models.DAL
         }
 
         //---------------------------------------------------------------------------------
-        // 14.  UPDATE Class Name
+        // 16.  UPDATE Class Name
         //---------------------------------------------------------------------------------
         public int updateClass(Class c)
         {
@@ -430,7 +544,7 @@ namespace serverChallengeMe.Models.DAL
         }
 
         //---------------------------------------------------------------------------------
-        // 15.  UPDATE Teacher details
+        // 17.  UPDATE Teacher details
         //---------------------------------------------------------------------------------
         public int updateTeacherDetails(Teacher t)
         {
@@ -464,7 +578,7 @@ namespace serverChallengeMe.Models.DAL
         }
 
         //---------------------------------------------------------------------------------
-        // 16.  UPDATE StudentChallenge details
+        // 18.  UPDATE StudentChallenge details
         //---------------------------------------------------------------------------------
         public int updateTeacherDetails(StudentChallenge sc)
         {
@@ -497,7 +611,7 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //---------------------------------------------------------------------------------
-        // 17.  UPDATE Student details
+        // 19.  UPDATE Student details
         //---------------------------------------------------------------------------------
         public int updateStudentDetails(Student s)
         {
@@ -531,7 +645,7 @@ namespace serverChallengeMe.Models.DAL
         }
 
         //---------------------------------------------------------------------------------
-        // 18.  GET Classes
+        // 20.  GET Classes
         //---------------------------------------------------------------------------------
         public DataTable getClass(int teacherID)
         {
@@ -563,7 +677,7 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 19.  GET Students by class Id
+        // 21.  GET Students by class Id
         //---------------------------------------------------------------------------------
         public DataTable getStudents(int classID)
         {
@@ -595,7 +709,7 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 20.  GET Student by student Id
+        // 22.  GET Student by student Id
         //---------------------------------------------------------------------------------
         public DataTable getStudentById(int studentID)
         {
@@ -627,7 +741,7 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 21.  DELETE Students
+        // 23.  DELETE Students
         //---------------------------------------------------------------------------------
         public int deleteStudent(int studentID)
         {
@@ -662,7 +776,7 @@ namespace serverChallengeMe.Models.DAL
 
 
         //---------------------------------------------------------------------------------
-        // 21.  DELETE Class
+        // 24.  DELETE Class
         //---------------------------------------------------------------------------------
         public int deleteClass(int classID)
         {
@@ -696,7 +810,7 @@ namespace serverChallengeMe.Models.DAL
         }
 
         //---------------------------------------------------------------------------------
-        // 23.  DELETE Student Challenge
+        // 25.  DELETE Student Challenge
         //---------------------------------------------------------------------------------
         public int deleteStudentChallenge(int studentID, int challengeID)
         {
