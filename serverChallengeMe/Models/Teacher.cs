@@ -83,7 +83,7 @@ namespace serverChallengeMe.Models
             //אם המייל קיים מחזיר את הסיסמא הרנדומלית, אם המייל לא קיים מחזיר מחרוזת ריקה
         }
 
-        public DataTable getTeacherById(int teacherID)
+        public int getTeacherById(int teacherID)
         {
             DBservices dBservices = new DBservices();
             return dBservices.getTeacherById(teacherID); 
