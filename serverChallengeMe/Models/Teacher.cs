@@ -84,7 +84,7 @@ namespace serverChallengeMe.Models
             //אם המייל קיים מחזיר 1 שמסמל על זה ששונתה הססמה, אם המייל לא קיים מחזיר 0
         }
 
-        public Teacher getTeacherById(int teacherID)
+        public DataTable getTeacherById(int teacherID)
         {
             DBservices dBservices = new DBservices();
             return dBservices.getTeacherById(teacherID); 

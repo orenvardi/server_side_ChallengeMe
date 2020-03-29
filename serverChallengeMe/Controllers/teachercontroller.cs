@@ -33,7 +33,7 @@ namespace serverChallengeMe.Controllers
         }
 
         // GET api/Teacher?teacherID={teacherID}
-        public Teacher GetByTeacherID(int teacherID)
+        public DataTable GetByTeacherID(int teacherID)
         {
             Teacher teacher = new Teacher();
             return teacher.getTeacherById(teacherID);

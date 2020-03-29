@@ -149,23 +149,26 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 6.  GET Teacher By ID
         //---------------------------------------------------------------------------------       
-        public Teacher getTeacherById(int teacherID)
+        public DataTable getTeacherById(int teacherID)
         {
-            Teacher t = new Teacher();
-
             SqlConnection con = null;
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "select * from Teacher where teacherID = '" + teacherID + "';";
-                SqlCommand cmd = new SqlCommand(selectSTR, con);
-                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-               
+                da = new SqlDataAdapter("select * from Teacher where teacherID = '" + teacherID + "';", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
             }
+
             catch (Exception ex)
             {
-                throw (ex);
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
             }
+
             finally
             {
                 if (con != null)
@@ -173,8 +176,9 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
                 }
             }
-            return t;
+            return dt;
         }
+
         //---------------------------------------------------------------------------------
         // 7.  GET Student Challenge By student ID
         //---------------------------------------------------------------------------------       
