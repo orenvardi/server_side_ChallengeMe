@@ -52,7 +52,7 @@ namespace serverChallengeMe.Models
             //מחזיר רשימה של כל המחנכים
         }
 
-        public string getTeacherByMail(string mail)
+        public int getTeacherByMail(string mail)
         {
             DBservices dBservices = new DBservices();
             var teacherID = dBservices.getTeacherByMail(mail); //אם קיים מחנך עם המייל הזה מחזיר את המספר המזהה של המחנך, אם לא קיים מחזיר אפס
@@ -76,11 +76,12 @@ namespace serverChallengeMe.Models
                 smtp.Credentials = new NetworkCredential("challenge.me555555@gmail.com", "oren5555");
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtp.Send(message);
+                    return 1;
             } catch (Exception e) { throw e; }
         }
     
-            return randomPassword;
-            //אם המייל קיים מחזיר את הסיסמא הרנדומלית, אם המייל לא קיים מחזיר מחרוזת ריקה
+            return 0;
+            //אם המייל קיים מחזיר 1 שמסמל על זה ששונתה הססמה, אם המייל לא קיים מחזיר 0
         }
 
         public DataTable getTeacherById(int teacherID)
