@@ -191,8 +191,9 @@ namespace serverChallengeMe.Models.DAL
             SqlConnection con = null;
             try
             {
+
                 con = connect("DBConnectionString");
-                String selectSTR = "select * from StudentChallenge where studentID = '" + studentID + "';";
+                String selectSTR = "SELECT Challenge.challengeID,Challenge.challengeName,Challenge.description ,Category.categoryID,Category.categoryName, StudentChallenge.deadline, StudentChallenge.difficulty, StudentChallenge.status, StudentChallenge.studentID FROM Challenge INNER JOIN StudentChallenge ON Challenge.ChallengeID = StudentChallenge.ChallengeID INNER JOIN Category ON Category.CategoryID = Challenge.CategoryID where StudentChallenge.StudentID = '" + studentID + "';";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
                 if (dr2.HasRows)
