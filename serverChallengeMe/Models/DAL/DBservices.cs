@@ -149,23 +149,18 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 6.  GET Teacher By ID
         //---------------------------------------------------------------------------------       
-        public int getTeacherById(int teacherID)
+        public Teacher getTeacherById(int teacherID)
         {
-            int id = 0;
+            Teacher t = new Teacher();
+
             SqlConnection con = null;
             try
             {
                 con = connect("DBConnectionString");
                 String selectSTR = "select * from Teacher where teacherID = '" + teacherID + "';";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
-                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-                if (dr2.HasRows)
-                {
-                    while (dr2.Read())
-                    {
-                        id = Convert.ToInt32(dr2["teacherID"]);
-                    }
-                }
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+               
             }
             catch (Exception ex)
             {
@@ -178,10 +173,8 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
                 }
             }
-            return id;
+            return t;
         }
-
-
         //---------------------------------------------------------------------------------
         // 7.  GET Student Challenge By student ID
         //---------------------------------------------------------------------------------       

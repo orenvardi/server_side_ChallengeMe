@@ -33,7 +33,7 @@ namespace serverChallengeMe.Controllers
         }
 
         // GET api/Teacher?teacherID={teacherID}
-        public int GetByTeacherID(int teacherID)
+        public Teacher GetByTeacherID(int teacherID)
         {
             Teacher teacher = new Teacher();
             return teacher.getTeacherById(teacherID);
