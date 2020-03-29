@@ -181,33 +181,30 @@ namespace serverChallengeMe.Models.DAL
             return id;
         }
 
-       
+
         //---------------------------------------------------------------------------------
         // 7.  GET Student Challenge By student ID
         //---------------------------------------------------------------------------------       
-        public int getStudentChallenge(int studentID)
+        public DataTable getStudentChallenge(int studentID)
         {
-            int id = 0;
             SqlConnection con = null;
             try
             {
-
                 con = connect("DBConnectionString");
-                String selectSTR = "SELECT Challenge.challengeID,Challenge.challengeName,Challenge.description ,Category.categoryID,Category.categoryName, StudentChallenge.deadline, StudentChallenge.difficulty, StudentChallenge.status, StudentChallenge.studentID FROM Challenge INNER JOIN StudentChallenge ON Challenge.ChallengeID = StudentChallenge.ChallengeID INNER JOIN Category ON Category.CategoryID = Challenge.CategoryID where StudentChallenge.StudentID = '" + studentID + "';";
-                SqlCommand cmd = new SqlCommand(selectSTR, con);
-                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-                if (dr2.HasRows)
-                {
-                    while (dr2.Read())
-                    {
-                        id = Convert.ToInt32(dr2["studentID"]);
-                    }
-                }
+                da = new SqlDataAdapter("SELECT Challenge.challengeID,Challenge.challengeName,Challenge.description ,Category.categoryID,Category.categoryName, StudentChallenge.deadline, StudentChallenge.difficulty, StudentChallenge.status, StudentChallenge.studentID FROM Challenge INNER JOIN StudentChallenge ON Challenge.ChallengeID = StudentChallenge.ChallengeID INNER JOIN Category ON Category.CategoryID = Challenge.CategoryID where StudentChallenge.StudentID = '" + studentID + "';", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
             }
+
             catch (Exception ex)
             {
-                throw (ex);
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
             }
+
             finally
             {
                 if (con != null)
@@ -215,7 +212,7 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
                 }
             }
-            return id;
+            return dt;
         }
         //---------------------------------------------------------------------------------
         // 8.  GET Challenge
@@ -283,9 +280,40 @@ namespace serverChallengeMe.Models.DAL
             }
             return id;
         }
-
         //---------------------------------------------------------------------------------
-        // 10.  POST Teacher
+        // 10.  GET Avatar
+        //---------------------------------------------------------------------------------
+        public DataTable getAvatar()
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                da = new SqlDataAdapter("select * from Avatar;", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 11.  POST Teacher
         //---------------------------------------------------------------------------------
         public int postTeacher(Teacher teacher)
         {

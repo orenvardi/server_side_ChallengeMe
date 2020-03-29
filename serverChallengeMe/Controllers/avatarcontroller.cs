@@ -12,9 +12,10 @@ namespace serverChallengeMe.Controllers
     public class AvatarController : ApiController
     {
         // GET api/<controller>
-        public IEnumerable<string> Get()
+        public DataTable GetByAvatar()
         {
-            return new string[] { "value1", "value2" };
+            Avatar av = new Avatar();
+            return av.getAvatar();
         }
 
         // GET api/<controller>/5

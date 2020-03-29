@@ -34,11 +34,11 @@ namespace serverChallengeMe.Models
             AvatarLev6 = avatarLev6;
         }
 
-        //public DataTable getAvatar()
-        //{
-        //    DBservices dBservices = new DBservices();
-        //    return dBservices.getAvatar();
-        //}
+        public DataTable getAvatar()
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getAvatar();
+        }
 
         //public int postAvatar(Avatar avatar)
         //{

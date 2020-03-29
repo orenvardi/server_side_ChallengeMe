@@ -12,7 +12,7 @@ namespace serverChallengeMe.Controllers
     public class StudentChallengeController : ApiController
     {
         //GET api/StudentChallenge?studentID ={studentID}
-        public int Get(int studentID)
+        public DataTable Get(int studentID)
         {
             StudentChallenge stuC = new StudentChallenge();
             return stuC.getStudentChallenge(studentID);
