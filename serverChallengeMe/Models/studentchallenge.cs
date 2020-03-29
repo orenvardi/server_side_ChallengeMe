@@ -25,7 +25,7 @@ namespace serverChallengeMe.Models
             Status = status;
         }
 
-        public DataTable getStudentChallenge(int studentID)
+        public int getStudentChallenge(int studentID)
         {
             DBservices dBservices = new DBservices();
             return dBservices.getStudentChallenge(studentID);

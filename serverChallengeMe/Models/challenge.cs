@@ -23,7 +23,7 @@ namespace serverChallengeMe.Models
             CategoryID = categoryID;
         }
 
-        public Challenge getChallenge()
+        public DataTable getChallenge()
         {
             DBservices dBservices = new DBservices();
             return dBservices.getChallenge();
