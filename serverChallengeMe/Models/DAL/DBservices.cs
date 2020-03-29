@@ -344,7 +344,7 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //--------------------------------------------------------------------
-        // 11.  Build INSERT Teacher Command
+        // 12.  Build INSERT Teacher Command
         //--------------------------------------------------------------------
         private String BuildInsertCommandTeacher(Teacher teacher)
         {
@@ -394,7 +394,7 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //--------------------------------------------------------------------
-        // 12.  Build INSERT Student Command
+        // 13.  Build INSERT Student Command
         //--------------------------------------------------------------------
         private String BuildInsertCommandStudent(Student student)
         {
@@ -406,7 +406,7 @@ namespace serverChallengeMe.Models.DAL
             return command;
         }
         //---------------------------------------------------------------------------------
-        // 13.  POST Challenge
+        // 14.  POST Challenge
         //---------------------------------------------------------------------------------
         public int postChallenge(Challenge challenge)
         {
@@ -444,7 +444,7 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //--------------------------------------------------------------------
-        // 14.  Build INSERT Challenge Command
+        // 15.  Build INSERT Challenge Command
         //--------------------------------------------------------------------
         private String BuildInsertCommandChallenge(Challenge challenge)
         {
@@ -456,7 +456,7 @@ namespace serverChallengeMe.Models.DAL
             return command;
         }
         //---------------------------------------------------------------------------------
-        // 15.  POST Student Challenge
+        // 16.  POST Student Challenge
         //---------------------------------------------------------------------------------
         public int postStudentChallenge(StudentChallenge sc)
         {
@@ -494,7 +494,7 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //--------------------------------------------------------------------
-        // 16.  Build INSERT Student Challenge Command
+        // 17.  Build INSERT Student Challenge Command
         //--------------------------------------------------------------------
         private String BuildInsertCommandStudentChallenge(StudentChallenge sc)
         {
@@ -506,7 +506,7 @@ namespace serverChallengeMe.Models.DAL
             return command;
         }
         //---------------------------------------------------------------------------------
-        // 12.  POST Class
+        // 18.  POST Class
         //---------------------------------------------------------------------------------
         public int postClass(Class c)
         {
@@ -552,7 +552,7 @@ namespace serverChallengeMe.Models.DAL
         }
 
         //---------------------------------------------------------------------------------
-        // 15.  UPDATE Teacher Password
+        // 19.  UPDATE Teacher Password
         //---------------------------------------------------------------------------------
         public int updateTeacherPassword(int teacherID, string randomPassword)
         {
@@ -585,7 +585,7 @@ namespace serverChallengeMe.Models.DAL
         }
 
         //---------------------------------------------------------------------------------
-        // 16.  UPDATE Class Name
+        // 20.  UPDATE Class Name
         //---------------------------------------------------------------------------------
         public int updateClass(Class c)
         {
@@ -625,7 +625,7 @@ namespace serverChallengeMe.Models.DAL
         }
 
         //---------------------------------------------------------------------------------
-        // 17.  UPDATE Teacher details
+        // 21.  UPDATE Teacher details
         //---------------------------------------------------------------------------------
         public int updateTeacherDetails(Teacher t)
         {
@@ -659,7 +659,7 @@ namespace serverChallengeMe.Models.DAL
         }
 
         //---------------------------------------------------------------------------------
-        // 18.  UPDATE StudentChallenge details
+        // 22.  UPDATE StudentChallenge details
         //---------------------------------------------------------------------------------
         public int updateStudentChallenge(StudentChallenge sc)
         {
@@ -692,7 +692,7 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //---------------------------------------------------------------------------------
-        // 19.  UPDATE Student details
+        // 23.  UPDATE Student details
         //---------------------------------------------------------------------------------
         public int updateStudentDetails(Student s)
         {
@@ -726,7 +726,7 @@ namespace serverChallengeMe.Models.DAL
         }
 
         //---------------------------------------------------------------------------------
-        // 20.  GET Classes
+        // 24.  GET Classes
         //---------------------------------------------------------------------------------
         public DataTable getClass(int teacherID)
         {
@@ -758,7 +758,7 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 21.  GET Students by class Id
+        // 25.  GET Students by class Id
         //---------------------------------------------------------------------------------
         public DataTable getStudents(int classID)
         {
@@ -790,7 +790,7 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 22.  GET Student by student Id
+        // 26.  GET Student by student Id
         //---------------------------------------------------------------------------------
         public DataTable getStudentById(int studentID)
         {
@@ -822,7 +822,7 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 23.  DELETE Students
+        // 27.  DELETE Students
         //---------------------------------------------------------------------------------
         public int deleteStudent(int studentID)
         {
@@ -857,7 +857,7 @@ namespace serverChallengeMe.Models.DAL
 
 
         //---------------------------------------------------------------------------------
-        // 24.  DELETE Class
+        // 28.  DELETE Class
         //---------------------------------------------------------------------------------
         public int deleteClass(int classID)
         {
@@ -891,7 +891,7 @@ namespace serverChallengeMe.Models.DAL
         }
 
         //---------------------------------------------------------------------------------
-        // 25.  DELETE Student Challenge
+        // 29.  DELETE Student Challenge
         //---------------------------------------------------------------------------------
         public int deleteStudentChallenge(int studentID, int challengeID)
         {
