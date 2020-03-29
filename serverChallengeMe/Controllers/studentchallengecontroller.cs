@@ -18,18 +18,12 @@ namespace serverChallengeMe.Controllers
             return stuC.getStudentChallenge(studentID);
         }
 
-        // GET api/<controller>/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //// POST api/<controller>
-        //public int Post(Challenge challenge)
-        //{
-        //    StudentChallenge stuC = new StudentChallenge();
-        //    return stuC.postStudentChallenge(challenge);
-        //}
+        // POST api/<controller>
+        public int Post(StudentChallenge sc)
+        {
+            StudentChallenge stuC = new StudentChallenge();
+            return stuC.postStudentChallenge(sc);
+        }
 
         // PUT api/<controller>/5
         public int Put(StudentChallenge sc)

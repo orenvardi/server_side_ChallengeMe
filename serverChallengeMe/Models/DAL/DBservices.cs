@@ -434,6 +434,56 @@ namespace serverChallengeMe.Models.DAL
             return command;
         }
         //---------------------------------------------------------------------------------
+        // 15.  POST Student Challenge
+        //---------------------------------------------------------------------------------
+        public int postStudentChallenge(StudentChallenge sc)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            String cStr = BuildInsertCommandStudentChallenge(sc);      // helper method to build the insert string
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
+        //--------------------------------------------------------------------
+        // 16.  Build INSERT Student Challenge Command
+        //--------------------------------------------------------------------
+        private String BuildInsertCommandStudentChallenge(StudentChallenge sc)
+        {
+            String command;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}');", sc.ChallengeID, sc.StudentID, sc.Difficulty, sc.Deadline, sc.Status);
+            String prefix = "INSERT INTO StudentChallenge(challengeID, studentID, difficulty, deadline, status)";
+            command = prefix + sb.ToString();
+            return command;
+        }
+        //---------------------------------------------------------------------------------
         // 12.  POST Class
         //---------------------------------------------------------------------------------
         public int postClass(Class c)
@@ -601,7 +651,7 @@ namespace serverChallengeMe.Models.DAL
             {
                 throw (ex);
             }
-            String cStr = "UPDATE StudentChallenge SET userName = '" + sc.Difficulty + "', password = '" + sc.Deadline + "', firstName = '" + sc.Status + "' WHERE challengeID  = " + sc.ChallengeID  + " AND studentID = "+ sc.StudentID + ";";
+            String cStr = "UPDATE StudentChallenge SET difficulty = '" + sc.Difficulty + "', deadline = '" + sc.Deadline + "', status = '" + sc.Status + "' WHERE challengeID  = " + sc.ChallengeID  + " AND studentID = "+ sc.StudentID + ";";
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
