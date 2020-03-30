@@ -405,7 +405,7 @@ namespace serverChallengeMe.Models.DAL
             String command;
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}','{7}');", student.UserName, student.Password, student.FirstName, student.LastName, student.Phone, student.ClassID, student.TeacherID, student.AvatarID);
-            String prefix = "INSERT INTO Student(userName, password, firstName, lastName, mail, phone, classID, teacherID, avatarID)";
+            String prefix = "INSERT INTO Student(userName, password, firstName, lastName, phone, classID, teacherID, avatarID)";
             command = prefix + sb.ToString();
             return command;
         }
@@ -710,7 +710,7 @@ namespace serverChallengeMe.Models.DAL
             {
                 throw (ex);
             }
-            String cStr = "UPDATE Student SET userName = '" + s.UserName + "', password= '" + s.Password + "', firstName = '" + s.FirstName + "', lastName  = '" + s.LastName + "', phone = '" + s.Phone + "', classID = '" + s.ClassID + "', teacherID = '" + s.TeacherID + "', avatarID = '" + s.AvatarID + "' WHERE teacherID  = " + s.TeacherID + "' WHERE studentID  = " + s.StudentID + ";";
+            String cStr = "UPDATE Student SET userName = '" + s.UserName + "', password= '" + s.Password + "', firstName = '" + s.FirstName + "', lastName  = '" + s.LastName + "', phone = '" + s.Phone + "', classID = '" + s.ClassID + "', avatarID = '" + s.AvatarID + "' WHERE teacherID  = " + s.TeacherID + " AND studentID = " + s.StudentID + ";";
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
