@@ -354,8 +354,8 @@ namespace serverChallengeMe.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", teacher.UserName, teacher.Password, teacher.FirstName, teacher.LastName, teacher.Mail, teacher.Phone, teacher.School);
-            String prefix = "INSERT INTO Teacher(userName, password, firstName, lastName, mail, phone, school)";
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}','{7}');", teacher.UserName, teacher.Password, teacher.FirstName, teacher.LastName, teacher.Mail, teacher.Phone, teacher.School,'0');
+            String prefix = "INSERT INTO Teacher(userName, password, firstName, lastName, mail, phone, school,tempPassword)";
             command = prefix + sb.ToString();
             return command;
         }

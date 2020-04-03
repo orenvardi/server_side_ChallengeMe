@@ -8,6 +8,7 @@ using System.Web.Security;
 
 using System.Net;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 
 namespace serverChallengeMe.Models
 {
@@ -59,7 +60,10 @@ namespace serverChallengeMe.Models
             var randomPassword = "";
             if (teacherID != 0) //במידה שקיים מחנך עם המייל הזה
             {
-                randomPassword = Membership.GeneratePassword(8, 1); //פונקציה שיוצרת סיסמא רנדומלית של 8 תווים עם לפחות תו אחד מיוחד
+                Random rnd = new Random();
+                //string newPwd = Guid.NewGuid().ToString().Substring(0, 8) + rnd.Next(1, 10);
+                randomPassword = Membership.GeneratePassword(8, 0) + rnd.Next(1, 10); //פונקציה שיוצרת סיסמא רנדומלית של 8 תווים עם לפחות תו אחד מיוחד וספרה אחת
+                randomPassword = Regex.Replace(randomPassword, @"[^a-zA-Z0-9]", m => rnd.Next(0, 10).ToString());
                 dBservices.updateTeacherPassword(teacherID, randomPassword); //פונקציה שמעדכנת את הסיסמא הרנדומלית בטבלת מחנכים ומכניסה ערך 1 לעמודת 'סיסמא זמנית'
                 try { 
                 MailMessage message = new MailMessage();
