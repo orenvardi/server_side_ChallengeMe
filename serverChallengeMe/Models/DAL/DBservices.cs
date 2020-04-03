@@ -278,6 +278,40 @@ namespace serverChallengeMe.Models.DAL
             return id;
         }
         //---------------------------------------------------------------------------------
+        // .  GET Student By Phone
+        //---------------------------------------------------------------------------------
+        public int getStudentByPhone(string phone)
+        {
+            int id = 0;
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "select studentID from Student where phone = '" + phone  + "'; ";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                if (dr2.HasRows)
+                {
+                    while (dr2.Read())
+                    {
+                        id = Convert.ToInt32(dr2["studentID"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return id;
+        }
+        //---------------------------------------------------------------------------------
         // 10.  GET Avatar
         //---------------------------------------------------------------------------------
         public DataTable getAvatar()

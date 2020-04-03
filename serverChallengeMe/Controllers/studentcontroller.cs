@@ -25,6 +25,13 @@ namespace serverChallengeMe.Controllers
             return student.getStudentById(studentID);
         }
 
+        // GET api/Student?studentPhone={Phone}
+        public int GetByStudentPhone(string phone)
+        {
+            Student student = new Student();
+            return student.getStudentByPhone(phone);
+        }
+
         // GET api/
         public int GetByUserNameAndPassword(string userName, int password)
         {
