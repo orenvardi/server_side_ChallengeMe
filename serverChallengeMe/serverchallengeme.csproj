@@ -193,8 +193,8 @@
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
-    <Compile Include="Controllers\WarningController.cs" />
-    <Compile Include="Controllers\WarningSettingsController.cs" />
+    <Compile Include="Controllers\AlertController.cs" />
+    <Compile Include="Controllers\AlertSettingsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -209,8 +209,8 @@
     <Compile Include="Models\StudentChallenge.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\Teacher.cs" />
-    <Compile Include="Models\Warning.cs" />
-    <Compile Include="Models\WarningSettings.cs" />
+    <Compile Include="Models\Alert.cs" />
+    <Compile Include="Models\AlertSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
