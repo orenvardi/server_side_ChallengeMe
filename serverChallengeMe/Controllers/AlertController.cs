@@ -9,7 +9,7 @@ using serverChallengeMe.Models;
 
 namespace serverChallengeMe.Controllers
 {
-    public class WarningSettingsController : ApiController
+    public class AlertController : ApiController
     {
         // GET api/<controller>
         public IEnumerable<string> Get()
