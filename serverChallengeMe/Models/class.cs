@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data;
 using serverChallengeMe.Models.DAL;
-//123456
+
 namespace serverChallengeMe.Models
 {
     public class Class
