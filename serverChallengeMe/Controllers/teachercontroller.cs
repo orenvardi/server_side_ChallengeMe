@@ -39,6 +39,13 @@ namespace serverChallengeMe.Controllers
             return teacher.getTeacherById(teacherID);
         }
 
+        // GET api/Teacher?usernameNewTeacher={username}
+        public int GetByTeacherID2(string usernameNewTeacher)
+        {
+            Teacher teacher = new Teacher();
+            return teacher.checkIfTeacherExistByUsername(usernameNewTeacher);
+        }
+
         // POST api/<controller>
         public int Post(Teacher teacher)
         {

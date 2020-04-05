@@ -93,7 +93,12 @@ namespace serverChallengeMe.Models
             DBservices dBservices = new DBservices();
             return dBservices.getTeacherById(teacherID); 
         }
-
+        
+        public int checkIfTeacherExistByUsername(string username)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.checkIfTeacherExistByUsername(username);
+        }
         public int postTeacher(Teacher teacher)
         {
             DBservices dbs = new DBservices();

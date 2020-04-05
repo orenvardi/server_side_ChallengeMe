@@ -961,5 +961,40 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
             }
         }
+        //---------------------------------------------------------------------------------
+        // 30.  get checkIfTeacherExistByUsername
+        //---------------------------------------------------------------------------------
+        public int checkIfTeacherExistByUsername(string userName)
+        {
+            
+            Teacher t = new Teacher();
+
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "select teacherID from Teacher where userName = '" + userName+ "'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                if (dr2.HasRows)
+                {
+                  
+                        return 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return 0;
+        }
+        
     }
 }
