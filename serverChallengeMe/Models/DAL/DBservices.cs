@@ -592,7 +592,7 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 19.  UPDATE Teacher Password
         //---------------------------------------------------------------------------------
-        public int updateTeacherPassword(int teacherID, string randomPassword)
+        public int updateTeacherPassword(int teacherID, string password, int tempPassword)
         {
             SqlConnection con;
             SqlCommand cmd;
@@ -604,7 +604,7 @@ namespace serverChallengeMe.Models.DAL
             {
                 throw (ex);
             }
-            String cStr = "UPDATE Teacher SET password = '"+randomPassword+"', tempPassword = 1 WHERE TeacherID = "+teacherID+";";  
+            String cStr = "UPDATE Teacher SET password = '"+password+"', tempPassword = "+ tempPassword + " WHERE TeacherID = "+teacherID+";";  
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {

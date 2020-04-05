@@ -46,6 +46,13 @@ namespace serverChallengeMe.Controllers
             return t.postTeacher(teacher);
         }
 
+        // PUT api/Teacher?teacherID={teacherID}&password={password}
+        public int PutTeacherPassword(int teacherID, string password)
+        {
+            Teacher teacher = new Teacher();
+            return teacher.putNewTeacherPassword(teacherID, password);
+        }
+
         // PUT api/<controller>/5
         public int Put(Teacher t)
         {

@@ -64,7 +64,7 @@ namespace serverChallengeMe.Models
                 //string newPwd = Guid.NewGuid().ToString().Substring(0, 8) + rnd.Next(1, 10);
                 randomPassword = Membership.GeneratePassword(8, 0) + rnd.Next(1, 10); //פונקציה שיוצרת סיסמא רנדומלית של 8 תווים עם לפחות תו אחד מיוחד וספרה אחת
                 randomPassword = Regex.Replace(randomPassword, @"[^a-zA-Z0-9]", m => rnd.Next(0, 10).ToString());
-                dBservices.updateTeacherPassword(teacherID, randomPassword); //פונקציה שמעדכנת את הסיסמא הרנדומלית בטבלת מחנכים ומכניסה ערך 1 לעמודת 'סיסמא זמנית'
+                dBservices.updateTeacherPassword(teacherID, randomPassword, 1); //פונקציה שמעדכנת את הסיסמא הרנדומלית בטבלת מחנכים ומכניסה ערך 1 לעמודת 'סיסמא זמנית'
                 try { 
                 MailMessage message = new MailMessage();
                 SmtpClient smtp = new SmtpClient();
@@ -98,6 +98,12 @@ namespace serverChallengeMe.Models
         {
             DBservices dbs = new DBservices();
             return dbs.postTeacher(teacher);
+        }
+
+        public int putNewTeacherPassword(int teacherID, string password)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.updateTeacherPassword(teacherID, password, 0);
         }
 
         public int putTeacher(Teacher t)
