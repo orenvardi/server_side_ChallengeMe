@@ -19,10 +19,11 @@ namespace serverChallengeMe.Models
         public int ClassID { get; set; }
         public int TeacherID { get; set; }
         public int AvatarID { get; set; }
+        public string BirthDate { get; set; }
 
         public Student() { }
 
-        public Student(int studentID, string userName, string password, string firstName, string lastName, string phone, int classID, int teacherID, int avatarID)
+        public Student(int studentID, string userName, string password, string firstName, string lastName, string phone, int classID, int teacherID, int avatarID, string birthDate)
         {
             StudentID = studentID;
             UserName = userName;
@@ -33,6 +34,7 @@ namespace serverChallengeMe.Models
             ClassID = classID;
             TeacherID = teacherID;
             AvatarID = avatarID;
+            BirthDate = birthDate;
         }
 
         public DataTable getStudents(int classID)

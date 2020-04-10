@@ -29,6 +29,12 @@ namespace serverChallengeMe.Models
             return dBservices.getChallenge();
         }
 
+        public DataTable getChallengeByName(string challengeName)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getChallengeByName(challengeName);
+        }
+
         public int postChallenge(Challenge Challenge)
         {
             DBservices dbs = new DBservices();

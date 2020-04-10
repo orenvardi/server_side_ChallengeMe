@@ -438,8 +438,8 @@ namespace serverChallengeMe.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}','{7}');", student.UserName, student.Password, student.FirstName, student.LastName, student.Phone, student.ClassID, student.TeacherID, student.AvatarID);
-            String prefix = "INSERT INTO Student(userName, password, firstName, lastName, phone, classID, teacherID, avatarID)";
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", student.Password, student.FirstName, student.LastName, student.Phone, student.ClassID, student.TeacherID, student.BirthDate);
+            String prefix = "INSERT INTO Student(password, firstName, lastName, phone, classID, teacherID, birthDate)";
             command = prefix + sb.ToString();
             return command;
         }
@@ -995,6 +995,37 @@ namespace serverChallengeMe.Models.DAL
             }
             return 0;
         }
-        
+        //---------------------------------------------------------------------------------
+        // 31.  get Challenge By Name
+        //---------------------------------------------------------------------------------
+        public DataTable getChallengeByName(string challengeName)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                da = new SqlDataAdapter("select * from Challenge where challengeName = '" + challengeName + "';", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
     }
 }

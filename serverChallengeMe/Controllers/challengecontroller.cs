@@ -18,6 +18,13 @@ namespace serverChallengeMe.Controllers
             return c.getChallenge();
         }
 
+        // GET api/Challenge?challengeName={challengeName}
+        public DataTable getChallengeByName(string challengeName)
+        {
+            Challenge c = new Challenge();
+            return c.getChallengeByName(challengeName);
+        }
+
         // GET api/<controller>/5
         public string Get(int id)
         {
