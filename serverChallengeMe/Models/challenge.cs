@@ -9,18 +9,16 @@ namespace serverChallengeMe.Models
     public class Challenge
     {
         public int ChallengeID { get; set; }
-        public string ChallemgeName { get; set; }
+        public string ChallengeName { get; set; }
         public string Description { get; set; }
-        public int CategoryID { get; set; }
 
         public Challenge() { }
 
-        public Challenge(int challengeID, string challemgeName, string description, int categoryID)
+        public Challenge(int challengeID, string challengeName, string description)
         {
             ChallengeID = challengeID;
-            ChallemgeName = challemgeName;
+            ChallengeName = challengeName;
             Description = description;
-            CategoryID = categoryID;
         }
 
         public DataTable getChallenge()

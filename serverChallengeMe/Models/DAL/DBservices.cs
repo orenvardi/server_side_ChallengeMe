@@ -488,8 +488,8 @@ namespace serverChallengeMe.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES('{0}', '{1}', '{2}');", challenge.ChallemgeName, challenge.Description, challenge.CategoryID);
-            String prefix = "INSERT INTO Challenge(challemgeName, description, categoryID)";
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}');", challenge.ChallengeName, challenge.Description);
+            String prefix = "INSERT INTO Challenge(challengeName, description)";
             command = prefix + sb.ToString();
             return command;
         }
