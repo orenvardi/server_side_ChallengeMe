@@ -11,10 +11,11 @@ namespace serverChallengeMe.Controllers
 {
     public class TagController : ApiController
     {
-        // GET api/<controller>
-        public IEnumerable<string> Get()
+        // GET api/Tag
+        public DataTable Get()
         {
-            return new string[] { "value1", "value2" };
+            Tag tag = new Tag();
+            return tag.getTag();
         }
 
         // GET api/<controller>/5

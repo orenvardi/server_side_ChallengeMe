@@ -1027,5 +1027,37 @@ namespace serverChallengeMe.Models.DAL
             }
             return dt;
         }
+        //---------------------------------------------------------------------------------
+        // 32.  GET Tag
+        //---------------------------------------------------------------------------------
+        public DataTable getTag()
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                da = new SqlDataAdapter("select * from Tag;", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
     }
 }
