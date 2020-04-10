@@ -188,7 +188,7 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                da = new SqlDataAdapter("SELECT Challenge.challengeID,Challenge.challengeName,Challenge.description ,Category.categoryID,Category.categoryName, StudentChallenge.deadline, StudentChallenge.difficulty, StudentChallenge.status, StudentChallenge.studentID FROM Challenge INNER JOIN StudentChallenge ON Challenge.ChallengeID = StudentChallenge.ChallengeID INNER JOIN Category ON Category.CategoryID = Challenge.CategoryID where StudentChallenge.StudentID = '" + studentID + "';", con);
+                da = new SqlDataAdapter("SELECT Challenge.challengeID,Challenge.challengeName,Challenge.description ,StudentChallenge.deadline, StudentChallenge.difficulty, StudentChallenge.status, StudentChallenge.studentID FROM Challenge INNER JOIN StudentChallenge ON Challenge.ChallengeID = StudentChallenge.ChallengeID where StudentChallenge.StudentID = " + studentID + ";", con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
                 da.Fill(ds);
