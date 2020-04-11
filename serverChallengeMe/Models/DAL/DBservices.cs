@@ -465,7 +465,8 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
+                int newID = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                return newID;
             }
             catch (Exception ex)
             {
@@ -488,8 +489,8 @@ namespace serverChallengeMe.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES('{0}', '{1}', '{2}');", challenge.ChallengeName, challenge.Description);
-            String prefix = "INSERT INTO Challenge(challengeName, description)";
+            sb.AppendFormat("VALUES('{0}', '{1}');", challenge.ChallengeName, challenge.Description);
+            String prefix = "INSERT INTO Challenge(challengeName, description) output INSERTED.challengeID ";
             command = prefix + sb.ToString();
             return command;
         }
@@ -1037,6 +1038,38 @@ namespace serverChallengeMe.Models.DAL
             {
                 con = connect("DBConnectionString");
                 da = new SqlDataAdapter("select * from Tag;", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 33.  GET Challenge by student Id
+        //---------------------------------------------------------------------------------
+        public DataTable getChallengeByID(int challengeID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                da = new SqlDataAdapter("select * from Challenge where challengeID = '" + challengeID + "';", con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
                 da.Fill(ds);

@@ -32,7 +32,7 @@ namespace serverChallengeMe.Controllers
         }
 
         // POST api/<controller>
-        public int Post(Challenge challenge)
+        public DataTable Post(Challenge challenge)
         {
             Challenge c = new Challenge();
             return c.postChallenge(challenge);

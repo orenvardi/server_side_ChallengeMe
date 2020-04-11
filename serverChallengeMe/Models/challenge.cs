@@ -33,10 +33,11 @@ namespace serverChallengeMe.Models
             return dBservices.getChallengeByName(challengeName);
         }
 
-        public int postChallenge(Challenge Challenge)
+        public DataTable postChallenge(Challenge Challenge)
         {
             DBservices dbs = new DBservices();
-            return dbs.postChallenge(Challenge);
+            int newChallengeID = dbs.postChallenge(Challenge);
+            return dbs.getChallengeByID(newChallengeID);
         }
 
         //public int deleteChallenge(int id)
