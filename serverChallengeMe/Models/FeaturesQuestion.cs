@@ -13,11 +13,17 @@ namespace serverChallengeMe.Models
         public string Question { get; set; }
         public int CategoryID { get; set; }
         public FeaturesQuestion() { }
-        public FeaturesQuestion(int QuestionID, string question, int categoryID)
+        public FeaturesQuestion(int questionID, string question, int categoryID)
         {
             QuestionID = questionID;
             Question = question;
             CategoryID = categoryID;
+        }
+
+        public DataTable getFeaturesQuestion()
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getFeaturesQuestion();
         }
 
     }

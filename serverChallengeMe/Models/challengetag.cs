@@ -19,11 +19,11 @@ namespace serverChallengeMe.Models
             TagID = tagID;
         }
 
-        //public DataTable getChallengeTag()
-        //{
-        //    DBservices dBservices = new DBservices();
-        //    return dBservices.getChallengeTag();
-        //}
+        public DataTable getCT(int tagID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getCT(tagID);
+        }
 
         //public int postStudent(ChallengeTag challengeTag)
         //{

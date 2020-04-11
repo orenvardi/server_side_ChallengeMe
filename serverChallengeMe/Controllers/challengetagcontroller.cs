@@ -12,16 +12,12 @@ namespace serverChallengeMe.Controllers
     public class ChallengeTagController : ApiController
     {
         // GET api/<controller>
-        public IEnumerable<string> Get()
+        public DataTable Get(int tagID)
         {
-            return new string[] { "value1", "value2" };
+            ChallengeTag ct = new ChallengeTag();
+            return ct.getCT(tagID);
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
 
         // POST api/<controller>
         public void Post([FromBody]string value)

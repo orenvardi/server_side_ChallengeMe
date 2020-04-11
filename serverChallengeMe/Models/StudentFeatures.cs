@@ -19,5 +19,11 @@ namespace serverChallengeMe.Models
             StudentID = studentID;
             QuestionID = questionID;
         }
+
+        public DataTable getFQBystudentID(int studentID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getFQBystudentID(studentID);
+        }
     }
 }

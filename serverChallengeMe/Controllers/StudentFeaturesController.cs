@@ -12,16 +12,12 @@ namespace serverChallengeMe.Controllers
     public class StudentFeaturesController : ApiController
     {
         // GET api/<controller>
-        public IEnumerable<string> Get()
+        public DataTable Get(int studentID)
         {
-            return new string[] { "value1", "value2" };
+            StudentFeatures fq = new StudentFeatures();
+            return fq.getFQBystudentID(studentID);
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
 
         // POST api/<controller>
         public void Post([FromBody]string value)
