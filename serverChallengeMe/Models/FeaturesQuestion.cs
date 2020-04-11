@@ -9,11 +9,13 @@ namespace serverChallengeMe.Models
 {
     public class FeaturesQuestion
     {
+        public int QuestionID { get; set; }
         public string Question { get; set; }
         public int CategoryID { get; set; }
         public FeaturesQuestion() { }
-        public FeaturesQuestion(string question, int categoryID)
+        public FeaturesQuestion(int QuestionID, string question, int categoryID)
         {
+            QuestionID = questionID;
             Question = question;
             CategoryID = categoryID;
         }
