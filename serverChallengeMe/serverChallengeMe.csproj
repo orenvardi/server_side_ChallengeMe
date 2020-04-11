@@ -188,9 +188,12 @@
     <Compile Include="Controllers\ChallengeController.cs" />
     <Compile Include="Controllers\ChallengeTagController.cs" />
     <Compile Include="Controllers\ClassController.cs" />
+    <Compile Include="Controllers\FeaturesQuestionController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\StudentChallengeController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
+    <Compile Include="Controllers\StudentFeaturesController.cs" />
+    <Compile Include="Controllers\StudentScoreController.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Controllers\AlertController.cs" />
@@ -204,9 +207,12 @@
     <Compile Include="Models\ChallengeTag.cs" />
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\DAL\DBservices.cs" />
+    <Compile Include="Models\FeaturesQuestion.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\StudentChallenge.cs" />
+    <Compile Include="Models\StudentFeatures.cs" />
+    <Compile Include="Models\StudentScore.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\Teacher.cs" />
     <Compile Include="Models\Alert.cs" />
