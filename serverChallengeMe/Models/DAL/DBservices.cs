@@ -1165,7 +1165,7 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                string cStr = "select FQ.*, SF.studentID, SF.answer, C.categoryName from featuresQuestion FQ left join(select* from studentFeatures" +
+                string cStr = "select FQ.*, SF.studentID, SF.answer, C.categoryName from featuresQuestion FQ left join(select* from studentFeatures " +
                     "where studentID = " + studentID + ") as sf on sf.questionID = FQ.questionID join category C on FQ.categoryID = C.categoryID";
                 da = new SqlDataAdapter(cStr, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
