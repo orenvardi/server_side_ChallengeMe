@@ -1199,7 +1199,7 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                da = new SqlDataAdapter("SELECT Challenge.challengeID, Challenge.challengeName, Challenge.description, Challenge.isPrivate , Challenge.social, Challenge.school, Challenge.emotional FROM Challenge INNER JOIN ChallengeTag ON Challenge.ChallengeID = ChallengeTag.ChallengeID INNER JOIN Tag ON Tag.TagID =ChallengeTag.TagID where ChallengeTag.TagID = " + tagID + "; ", con);
+                da = new SqlDataAdapter("SELECT Challenge.* FROM Challenge INNER JOIN ChallengeTag ON Challenge.ChallengeID = ChallengeTag.ChallengeID INNER JOIN Tag ON Tag.TagID =ChallengeTag.TagID where ChallengeTag.TagID = " + tagID + "; ", con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
                 da.Fill(ds);
