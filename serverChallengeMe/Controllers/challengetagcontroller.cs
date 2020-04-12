@@ -11,13 +11,13 @@ namespace serverChallengeMe.Controllers
 {
     public class ChallengeTagController : ApiController
     {
-        // GET api/<controller>
+
+        // GET api/ChallengeTag?tagID={tagID}
         public DataTable Get(int tagID)
         {
             ChallengeTag ct = new ChallengeTag();
             return ct.getCT(tagID);
         }
-
 
         // POST api/ChallengeTag
         public int Post(List<ChallengeTag> challengeTagArr)

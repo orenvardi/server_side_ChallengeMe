@@ -1166,7 +1166,7 @@ namespace serverChallengeMe.Models.DAL
             {
                 con = connect("DBConnectionString");
                 string cStr = "select FQ.*, SF.studentID, SF.answer, C.categoryName from featuresQuestion FQ left join(select* from studentFeatures " +
-                    "where studentID = " + studentID + ") as sf on sf.questionID = FQ.questionID join category C on FQ.categoryID = C.categoryID";
+                    "where studentID = " + studentID + ") as sf on sf.questionID = FQ.questionID join category C on FQ.categoryID = C.categoryID ORDER BY FQ.categoryID";
                 da = new SqlDataAdapter(cStr, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
@@ -1198,6 +1198,7 @@ namespace serverChallengeMe.Models.DAL
             SqlConnection con = null;
             try
             {
+                
                 con = connect("DBConnectionString");
                 da = new SqlDataAdapter("SELECT Challenge.* FROM Challenge INNER JOIN ChallengeTag ON Challenge.ChallengeID = ChallengeTag.ChallengeID INNER JOIN Tag ON Tag.TagID =ChallengeTag.TagID where ChallengeTag.TagID = " + tagID + "; ", con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
