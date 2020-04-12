@@ -1193,14 +1193,20 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 37.  GET Challenge Tag
         //---------------------------------------------------------------------------------
-        public DataTable getCT(int tagID)
+        public DataTable getCT(int[] tagIDArr)
         {
             SqlConnection con = null;
             try
             {
-                
+                string str = "ChallengeTag.TagID = " + tagIDArr[0];
+                if (tagIDArr.Length > 1)
+                {
+                    for (int i = 1; i < tagIDArr.Length; i++)
+                        str += " OR ChallengeTag.TagID = " + tagIDArr[i];
+                }
+
                 con = connect("DBConnectionString");
-                da = new SqlDataAdapter("SELECT Challenge.* FROM Challenge INNER JOIN ChallengeTag ON Challenge.ChallengeID = ChallengeTag.ChallengeID INNER JOIN Tag ON Tag.TagID =ChallengeTag.TagID where ChallengeTag.TagID = " + tagID + "; ", con);
+                da = new SqlDataAdapter("SELECT DISTINCT Challenge.* FROM Challenge INNER JOIN ChallengeTag ON Challenge.ChallengeID = ChallengeTag.ChallengeID INNER JOIN Tag ON Tag.TagID =ChallengeTag.TagID where " + str , con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
                 da.Fill(ds);

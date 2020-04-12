@@ -13,10 +13,11 @@ namespace serverChallengeMe.Controllers
     {
 
         // GET api/ChallengeTag?tagID={tagID}
-        public DataTable Get(int tagID)
+        public DataTable Get(string SrtTagsID)
         {
+            int[] IntTagIDArr = SrtTagsID.Split(',').Select(str => Int32.Parse(str)).ToArray();
             ChallengeTag ct = new ChallengeTag();
-            return ct.getCT(tagID);
+            return ct.getCT(IntTagIDArr);
         }
 
         // POST api/ChallengeTag

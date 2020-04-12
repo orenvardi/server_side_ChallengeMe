@@ -19,10 +19,10 @@ namespace serverChallengeMe.Models
             TagID = tagID;
         }
 
-        public DataTable getCT(int tagID)
+        public DataTable getCT(int[] tagIDArr)
         {
             DBservices dBservices = new DBservices();
-            return dBservices.getCT(tagID);
+            return dBservices.getCT(tagIDArr);
         }
 
         public int postChallengeTag(List<ChallengeTag> challengeTagArr)
