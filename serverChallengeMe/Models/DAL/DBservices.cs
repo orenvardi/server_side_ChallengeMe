@@ -1268,5 +1268,44 @@ namespace serverChallengeMe.Models.DAL
                 }
             }
         }
+        //---------------------------------------------------------------------------------
+        // 39.  POST ChallengeTag
+        //---------------------------------------------------------------------------------
+        public int postStudentFeatures(StudentFeatures studentFeatures)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            StringBuilder cStr = new StringBuilder();
+            cStr.AppendFormat("INSERT INTO StudentFeatures(studentID, questionID, answer) VALUES({0},{1},{2});", studentFeatures.StudentID, studentFeatures.QuestionID, studentFeatures.Answer);
+            cmd = CreateCommand(cStr.ToString(), con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
     }
 }

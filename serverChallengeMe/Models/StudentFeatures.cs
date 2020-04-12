@@ -31,5 +31,16 @@ namespace serverChallengeMe.Models
             DBservices dBservices = new DBservices();
             return dBservices.getQuestionsAndAnswers(studentID);
         }
+
+        public int postStudentFeatures(List<StudentFeatures> StudentFeaturesArr)
+        {
+            var x = 0;
+            DBservices dbs = new DBservices();
+            for (int i = 0; i < StudentFeaturesArr.Count; i++)
+            {
+                x = dbs.postStudentFeatures(StudentFeaturesArr[i]);
+            }
+            return x;
+        }
     }
 }
