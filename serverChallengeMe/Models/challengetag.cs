@@ -25,11 +25,16 @@ namespace serverChallengeMe.Models
             return dBservices.getCT(tagID);
         }
 
-        //public int postStudent(ChallengeTag challengeTag)
-        //{
-        //    DBservices dbs = new DBservices();
-        //    return dbs.postChallengeTag(challengeTag);
-        //}
+        public int postChallengeTag(List<ChallengeTag> challengeTagArr)
+        {
+            var x = 0;
+            DBservices dbs = new DBservices();
+            for (int i = 0; i < challengeTagArr.Count; i++)
+            {
+                x = dbs.postChallengeTag(challengeTagArr[i]);
+            }
+            return x;
+        }
 
         //public int deleteChallengeTag(int id)
         //{

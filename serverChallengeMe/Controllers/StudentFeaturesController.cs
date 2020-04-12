@@ -11,11 +11,18 @@ namespace serverChallengeMe.Controllers
 {
     public class StudentFeaturesController : ApiController
     {
-        // GET api/<controller>
+        // GET api/StudentFeatures
         public DataTable Get(int studentID)
         {
             StudentFeatures fq = new StudentFeatures();
             return fq.getFQBystudentID(studentID);
+        }
+
+        // GET api/StudentFeatures answers&questions
+        public DataTable GetQuestionsAndAnswers(int studentID2)
+        {
+            StudentFeatures fq = new StudentFeatures();
+            return fq.getQuestionsAndAnswers(studentID2);
         }
 
 

@@ -19,9 +19,11 @@ namespace serverChallengeMe.Controllers
         }
 
 
-        // POST api/<controller>
-        public void Post([FromBody]string value)
+        // POST api/ChallengeTag
+        public int Post(List<ChallengeTag> challengeTagArr)
         {
+            ChallengeTag challengeTag = new ChallengeTag();
+            return challengeTag.postChallengeTag(challengeTagArr);
         }
 
         // PUT api/<controller>/5

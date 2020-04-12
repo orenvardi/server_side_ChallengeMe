@@ -13,6 +13,7 @@ namespace serverChallengeMe.Models
         public string Question { get; set; }
         public int CategoryID { get; set; }
         public FeaturesQuestion() { }
+
         public FeaturesQuestion(int questionID, string question, int categoryID)
         {
             QuestionID = questionID;

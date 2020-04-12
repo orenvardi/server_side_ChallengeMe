@@ -25,5 +25,11 @@ namespace serverChallengeMe.Models
             DBservices dBservices = new DBservices();
             return dBservices.getFQBystudentID(studentID);
         }
+
+        public DataTable getQuestionsAndAnswers(int studentID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getQuestionsAndAnswers(studentID);
+        }
     }
 }

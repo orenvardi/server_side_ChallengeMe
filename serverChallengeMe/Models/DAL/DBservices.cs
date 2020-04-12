@@ -1157,7 +1157,41 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 36.  GET Challenge Tag
+        // 35.  GET Features Question AND Answers By studentID
+        //---------------------------------------------------------------------------------
+        public DataTable getQuestionsAndAnswers(int studentID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string cStr = "select FQ.*, SF.studentID, SF.answer, C.categoryName from featuresQuestion FQ left join(select* from studentFeatures" +
+                    "where studentID = " + studentID + ") as sf on sf.questionID = FQ.questionID join category C on FQ.categoryID = C.categoryID";
+                da = new SqlDataAdapter(cStr, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 37.  GET Challenge Tag
         //---------------------------------------------------------------------------------
         public DataTable getCT(int tagID)
         {
@@ -1187,6 +1221,45 @@ namespace serverChallengeMe.Models.DAL
                 }
             }
             return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 38.  POST ChallengeTag
+        //---------------------------------------------------------------------------------
+        public int postChallengeTag(ChallengeTag challengeTag)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            StringBuilder cStr = new StringBuilder();
+            cStr.AppendFormat("INSERT INTO ChallengeTag(challengeID, tagID) VALUES({0},{1});", challengeTag.ChallengeID, challengeTag.TagID);
+            cmd = CreateCommand(cStr.ToString(), con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
         }
     }
 }
