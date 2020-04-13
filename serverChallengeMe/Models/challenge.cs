@@ -10,7 +10,6 @@ namespace serverChallengeMe.Models
     {
         public int ChallengeID { get; set; }
         public string ChallengeName { get; set; }
-        public string Description { get; set; }
         public double SocialMin { get; set; }
         public double SocialMax { get; set; }
         public double EmotionalMin { get; set; }
@@ -23,11 +22,10 @@ namespace serverChallengeMe.Models
 
         public Challenge() { }
 
-        public Challenge(int challengeID, string challengeName, string description, double socialMin, double socialMax, double emotionalMin, double emotionalMax, double schoolMin, double schoolMax, bool isPrivate)
+        public Challenge(int challengeID, string challengeName, double socialMin, double socialMax, double emotionalMin, double emotionalMax, double schoolMin, double schoolMax, bool isPrivate)
         {
             ChallengeID = challengeID;
             ChallengeName = challengeName;
-            Description = description;
             SocialMin = socialMin;
             SocialMax = socialMax;
             EmotionalMin = emotionalMin;

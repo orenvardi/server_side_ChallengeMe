@@ -188,7 +188,7 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                da = new SqlDataAdapter("SELECT Challenge.challengeID,Challenge.challengeName,Challenge.description ,StudentChallenge.deadline, StudentChallenge.difficulty, StudentChallenge.status, StudentChallenge.studentID FROM Challenge INNER JOIN StudentChallenge ON Challenge.ChallengeID = StudentChallenge.ChallengeID where StudentChallenge.StudentID = " + studentID + ";", con);
+                da = new SqlDataAdapter("SELECT Challenge.*, StudentChallenge.* FROM Challenge INNER JOIN StudentChallenge ON Challenge.ChallengeID = StudentChallenge.ChallengeID where StudentChallenge.StudentID = " + studentID + ";", con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
                 da.Fill(ds);
@@ -489,8 +489,8 @@ namespace serverChallengeMe.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}');", challenge.ChallengeName, challenge.Description, challenge.SocialMin, challenge.SocialMax, challenge.EmotionalMin, challenge.EmotionalMax, challenge.SchoolMin, challenge.SchoolMax, challenge.IsPrivate);
-            String prefix = "INSERT INTO Challenge(challengeName, description, socialMin, socialMax, emotionalMin,  emotionalMax, schoolMin, schoolMax, isPrivate) output INSERTED.challengeID ";
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}');", challenge.ChallengeName, challenge.SocialMin, challenge.SocialMax, challenge.EmotionalMin, challenge.EmotionalMax, challenge.SchoolMin, challenge.SchoolMax, challenge.IsPrivate);
+            String prefix = "INSERT INTO Challenge(challengeName, socialMin, socialMax, emotionalMin,  emotionalMax, schoolMin, schoolMax, isPrivate) output INSERTED.challengeID ";
             command = prefix + sb.ToString();
             return command;
         }
@@ -1349,7 +1349,7 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 40.  GET Student Percent
         //---------------------------------------------------------------------------------
-        public getStudentPercent(int studentID)
+        public DataTable getStudentPercent(int studentID)
         {
             SqlConnection con = null;
             try
@@ -1381,44 +1381,44 @@ namespace serverChallengeMe.Models.DAL
             }
             return dt;
         }
-        //---------------------------------------------------------------------------------
-        // 41.  POST StudentFeatures
-        //---------------------------------------------------------------------------------
-        public int insertStudentScore(DataTable studentPercent)
-        {
-            SqlConnection con;
-            SqlCommand cmd;
+        ////---------------------------------------------------------------------------------
+        //// 41.  POST StudentFeatures
+        ////---------------------------------------------------------------------------------
+        //public int insertStudentScore(DataTable studentPercent)
+        //{
+        //    SqlConnection con;
+        //    SqlCommand cmd;
 
-            try
-            {
-                con = connect("DBConnectionString"); // create the connection
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw (ex);
-            }
-            StringBuilder cStr = new StringBuilder();
-            cStr.AppendFormat("INSERT INTO studentScore(studentID, social, school, emotional, avgScore) VALUES({0},{1},{2},{3},{4});", );
-            cmd = CreateCommand(cStr.ToString(), con);             // create the command
-            try
-            {
-                int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
-            }
-            catch (Exception ex)
-            {
+        //    try
+        //    {
+        //        con = connect("DBConnectionString"); // create the connection
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw (ex);
+        //    }
+        //    StringBuilder cStr = new StringBuilder();
+        //    cStr.AppendFormat("INSERT INTO studentScore(studentID, social, school, emotional, avgScore) VALUES({0},{1},{2},{3},{4});", );
+        //    cmd = CreateCommand(cStr.ToString(), con);             // create the command
+        //    try
+        //    {
+        //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
+        //        return numEffected;
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw (ex);
-            }
-            finally
-            {
-                if (con != null)
-                {
-                    // close the db connection
-                    con.Close();
-                }
-            }
-        }
+        //        throw (ex);
+        //    }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            // close the db connection
+        //            con.Close();
+        //        }
+        //    }
+        //}
     }
 }

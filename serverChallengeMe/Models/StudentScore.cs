@@ -21,5 +21,18 @@ namespace serverChallengeMe.Models
             School = school;
             Emotional = emotional;
         }
+
+        public void getStudentScore(int studentID)
+        {
+            //DBservices dBservices = new DBservices();
+            //StudentScore studentScore = dBservices.getStudentScore(studentID);
+
+            // פונקציה שמקבלת את הציוני תלמיד ומחזירה את האתגרים המתאימים מטבלת אתגרים
+        }
+
+        //MatchStudentToChallenge
+        //MatchStudentToStudent
+
+
     }
 }

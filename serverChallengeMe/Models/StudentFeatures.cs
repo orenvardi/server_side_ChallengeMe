@@ -46,18 +46,6 @@ namespace serverChallengeMe.Models
             return x;
         }
 
-        //פונקציה שמחשבת ציוני תלמיד ועושה אינסרט לטבלת סטודנטסקור
-        public void calculateStudentScore(int studentID)
-        {
-            //1. לקרוא לפונקציה שתחזיר מהדאטה בייס את הסכום של כל קטגוריה ואז האחוזים של כל קטגוריה
-            //לכתוב פונקציה בDBservices
-            DBservices dBservices = new DBservices();
-            DataTable studentPercent = dBservices.getStudentPercent(studentID);
-            //2. עושים אינסרט של הציונים לטבלת סטודנט סקור כולל ציון ממוע של שלושתם
-            //לכתוב פונקציה בDBservisec
-            return dBservices.insertStudentScore(studentPercent);
-        }
-
         public int putStudentFeatures(List<StudentFeatures> StudentFeaturesArr)
         {
             var x = 0;
@@ -66,7 +54,26 @@ namespace serverChallengeMe.Models
             {
                 x = dbs.putStudentFeatures(StudentFeaturesArr[i]);
             }
+            //calculateStudentScore
             return x;
+        }
+
+        //פונקציה שמחשבת ציוני תלמיד ועושה אינסרט לטבלת סטודנטסקור
+        public void calculateStudentScore(int studentID)
+        {
+            //1. לקרוא לפונקציה שתחזיר מהדאטה בייס את הסכום של כל קטגוריה ואז האחוזים של כל קטגוריה
+            //לכתוב פונקציה בDBservices
+            DBservices dBservices = new DBservices();
+            DataTable studentPercent = dBservices.getStudentPercent(studentID);
+            Console.WriteLine(studentPercent);
+
+            double social, emotional, school = 0.0;
+            emotional = Convert.ToDouble(studentPercent.Rows[0][0]);
+            social = Convert.ToDouble(studentPercent.Rows[0][1]) ;
+            school = Convert.ToDouble(studentPercent.Rows[0][2]);
+            //2. עושים אינסרט של הציונים לטבלת סטודנט סקור כולל ציון ממוע של שלושתם
+            //לכתוב פונקציה בDBservisec
+            //return dBservices.insertStudentScore(studentPercent);
         }
     }
 }
