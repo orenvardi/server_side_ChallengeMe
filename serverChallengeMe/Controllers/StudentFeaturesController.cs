@@ -33,9 +33,11 @@ namespace serverChallengeMe.Controllers
             return SF.postStudentFeatures(StudentFeaturesArr);
         }
 
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        // POST api/<controller>
+        public int Put(List<StudentFeatures> StudentFeaturesArr)
         {
+            StudentFeatures SF = new StudentFeatures();
+            return SF.putStudentFeatures(StudentFeaturesArr);
         }
 
         // DELETE api/<controller>/5

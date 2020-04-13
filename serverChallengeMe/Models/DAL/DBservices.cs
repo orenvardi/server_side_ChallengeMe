@@ -1269,7 +1269,7 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //---------------------------------------------------------------------------------
-        // 39.  POST ChallengeTag
+        // 39.  POST StudentFeatures
         //---------------------------------------------------------------------------------
         public int postStudentFeatures(StudentFeatures studentFeatures)
         {
@@ -1307,5 +1307,158 @@ namespace serverChallengeMe.Models.DAL
                 }
             }
         }
+        //---------------------------------------------------------------------------------
+        // 39.  PUT StudentFeatures
+        //---------------------------------------------------------------------------------
+        public int putStudentFeatures(StudentFeatures studentFeatures)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            StringBuilder cStr = new StringBuilder();
+            cStr.AppendFormat("INSERT INTO StudentFeatures(studentID, questionID, answer) VALUES({0},{1},{2});", studentFeatures.StudentID, studentFeatures.QuestionID, studentFeatures.Answer);
+            cmd = CreateCommand(cStr.ToString(), con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
+        //---------------------------------------------------------------------------------
+        // 40.  GET Student Percent
+        //---------------------------------------------------------------------------------
+        public getStudentPercent(int studentID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "select FQ.categoryID, sum(SF.answer) as 'sum', sum(SF.answer) * 2 as 'percent' " +
+                    "from studentFeatures SF join featuresQuestion FQ on SF.questionID = FQ.questionID" +
+                    "where SF.studentID = " + studentID + " group by FQ.categoryID";
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 41.  POST StudentFeatures
+        //---------------------------------------------------------------------------------
+        public int insertStudentScore(DataTable studentPercent)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            StringBuilder cStr = new StringBuilder();
+            cStr.AppendFormat("INSERT INTO studentScore(studentID, social, school, emotional, avgScore) VALUES({0},{1},{2},{3},{4});", );
+            cmd = CreateCommand(cStr.ToString(), con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
+
+
+
+        public getStudentPercent(int studentID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                int[] studentPercent = new int[4];
+
+
+                con = connect("DBConnectionString");
+                string selectSTR = "select FQ.categoryID, sum(SF.answer) as 'sum', sum(SF.answer) * 2 as 'percent' " +
+                    "from studentFeatures SF join featuresQuestion FQ on SF.questionID = FQ.questionID" +
+                    "where SF.studentID = " + studentID + " group by FQ.categoryID";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                if (dr2.HasRows)
+                {
+                    while (dr2.Read())
+                    {
+                        studentPercent[0] = Convert.ToInt32(dr2["teacherID"]);
+                        t.TempPassword = Convert.ToBoolean(dr2["tempPassword"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return t;
+        }
+
     }
 }
