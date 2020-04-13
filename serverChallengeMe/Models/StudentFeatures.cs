@@ -54,7 +54,8 @@ namespace serverChallengeMe.Models
             {
                 x = dbs.putStudentFeatures(StudentFeaturesArr[i]);
             }
-            //calculateStudentScore
+            int studentID = StudentFeaturesArr[0].StudentID;
+            calculateStudentScore(studentID);
             return x;
         }
 

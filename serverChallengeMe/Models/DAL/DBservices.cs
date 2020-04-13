@@ -1325,7 +1325,7 @@ namespace serverChallengeMe.Models.DAL
                 throw (ex);
             }
             StringBuilder cStr = new StringBuilder();
-            cStr.AppendFormat("INSERT INTO StudentFeatures(studentID, questionID, answer) VALUES({0},{1},{2});", studentFeatures.StudentID, studentFeatures.QuestionID, studentFeatures.Answer);
+            cStr.AppendFormat("UPDATE studentFeatures SET answer = {0} WHERE studentID = {1} AND questionID = {2};", studentFeatures.Answer, studentFeatures.StudentID, studentFeatures.QuestionID);
             cmd = CreateCommand(cStr.ToString(), con);             // create the command
             try
             {
