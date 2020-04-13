@@ -1420,45 +1420,5 @@ namespace serverChallengeMe.Models.DAL
                 }
             }
         }
-
-
-
-        public getStudentPercent(int studentID)
-        {
-            SqlConnection con = null;
-            try
-            {
-                int[] studentPercent = new int[4];
-
-
-                con = connect("DBConnectionString");
-                string selectSTR = "select FQ.categoryID, sum(SF.answer) as 'sum', sum(SF.answer) * 2 as 'percent' " +
-                    "from studentFeatures SF join featuresQuestion FQ on SF.questionID = FQ.questionID" +
-                    "where SF.studentID = " + studentID + " group by FQ.categoryID";
-                SqlCommand cmd = new SqlCommand(selectSTR, con);
-                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-                if (dr2.HasRows)
-                {
-                    while (dr2.Read())
-                    {
-                        studentPercent[0] = Convert.ToInt32(dr2["teacherID"]);
-                        t.TempPassword = Convert.ToBoolean(dr2["tempPassword"]);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw (ex);
-            }
-            finally
-            {
-                if (con != null)
-                {
-                    con.Close();
-                }
-            }
-            return t;
-        }
-
     }
 }
