@@ -1356,8 +1356,8 @@ namespace serverChallengeMe.Models.DAL
             {
                 con = connect("DBConnectionString");
                 string str = "select FQ.categoryID, sum(SF.answer) as 'sum', sum(SF.answer) * 2 as 'percent' " +
-                    "from studentFeatures SF join featuresQuestion FQ on SF.questionID = FQ.questionID" +
-                    "where SF.studentID = " + studentID + " group by FQ.categoryID";
+                    " from studentFeatures SF join featuresQuestion FQ on SF.questionID = FQ.questionID" +
+                    " where SF.studentID = " + studentID + " group by FQ.categoryID";
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
@@ -1381,44 +1381,201 @@ namespace serverChallengeMe.Models.DAL
             }
             return dt;
         }
-        ////---------------------------------------------------------------------------------
-        //// 41.  POST StudentFeatures
-        ////---------------------------------------------------------------------------------
-        //public int insertStudentScore(DataTable studentPercent)
-        //{
-        //    SqlConnection con;
-        //    SqlCommand cmd;
+        //---------------------------------------------------------------------------------
+        // 41.  INSERT StudentFeatures
+        //---------------------------------------------------------------------------------
+        public int insertStudentScore(int studentID, double social, double emotional, double school)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
 
-        //    try
-        //    {
-        //        con = connect("DBConnectionString"); // create the connection
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // write to log
-        //        throw (ex);
-        //    }
-        //    StringBuilder cStr = new StringBuilder();
-        //    cStr.AppendFormat("INSERT INTO studentScore(studentID, social, school, emotional, avgScore) VALUES({0},{1},{2},{3},{4});", );
-        //    cmd = CreateCommand(cStr.ToString(), con);             // create the command
-        //    try
-        //    {
-        //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-        //        return numEffected;
-        //    }
-        //    catch (Exception ex)
-        //    {
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            StringBuilder cStr = new StringBuilder();
+            cStr.AppendFormat("INSERT INTO studentScore(studentID, social, school, emotional) VALUES({0},{1},{2},{3});", studentID, social, school, emotional);
+            cmd = CreateCommand(cStr.ToString(), con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
 
-        //        throw (ex);
-        //    }
-        //    finally
-        //    {
-        //        if (con != null)
-        //        {
-        //            // close the db connection
-        //            con.Close();
-        //        }
-        //    }
-        //}
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }     
+        //---------------------------------------------------------------------------------
+        // 42.  UPDATE StudentFeatures
+        //---------------------------------------------------------------------------------
+        public int updateStudentScore(int studentID, double social, double emotional, double school)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            StringBuilder cStr = new StringBuilder();
+            cStr.AppendFormat("UPDATE studentScore SET social = {0}, school = {1}, emotional = {2} WHERE studentID = {3};", social, school, emotional, studentID);
+            cmd = CreateCommand(cStr.ToString(), con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
+        //---------------------------------------------------------------------------------
+        // 43.  GET StudentScore By studentID
+        //---------------------------------------------------------------------------------       
+        public StudentScore getStudentScore(int studentID)
+        {
+            StudentScore studentScore = new StudentScore();
+
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "select * from StudentScore where studentID = '" + studentID + "';";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                if (dr2.HasRows)
+                {
+                    while (dr2.Read())
+                    {
+                        studentScore.StudentID = Convert.ToInt32(dr2["studentID"]);
+                        studentScore.Social = Convert.ToDouble(dr2["social"]);
+                        studentScore.Emotional = Convert.ToDouble(dr2["emotional"]);
+                        studentScore.School = Convert.ToDouble(dr2["school"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return studentScore;
+        }
+        //---------------------------------------------------------------------------------
+        // 44.  GET Challenge By StudentScore
+        //---------------------------------------------------------------------------------
+        public DataTable matchStudentToChallenge(StudentScore studentScore)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "select C.challengeID , count(C.challengeID) as 'popularity' " +
+                " from challenge C left join studentChallenge sc on c.challengeID = sc.challengeID" +
+                " where(" + studentScore.Social + "30 BETWEEN  C.socialMin AND  C.socialMax)" +
+                " AND(" + studentScore.Emotional + " BETWEEN  C.emotionalMin AND  C.emotionalMax)" +
+                " AND(" + studentScore.School + " BETWEEN  C.schoolMin AND  C.schoolMax) " +
+                " GROUP BY C.challengeID order by count(C.challengeID) DESC";
+
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 45.  GET Challenge By Other Students
+        //---------------------------------------------------------------------------------
+        public DataTable matchStudentToStudent(StudentScore studentScore)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "select Sch.challengeID , count(Sch.challengeID) as 'popularity' "+
+                     " from StudentScore Sscore  inner join studentChallenge Sch on Sscore.studentID = Sch.studentID "+
+                     " where Sch.status = 1 and Sch.timeStamp < Sch.deadline "+
+                     " GROUP BY Sch.challengeID, Sscore.social, Sscore.emotional, Sscore.school" +
+                     " having ABS("+studentScore.Social+" - Sscore.social) < 10 "+
+                     " AND ABS("+studentScore.Emotional+" - Sscore.emotional ) < 10 "+
+                     " AND ABS("+studentScore.School+" - Sscore.school ) < 10 "+
+                     " order by count(Sch.challengeID) DESC";
+
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
     }
 }

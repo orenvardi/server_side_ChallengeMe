@@ -42,7 +42,7 @@ namespace serverChallengeMe.Models
             }
             //קריאה לפונקציה שמחשבת את ציוני התלמיד
             int studentID = StudentFeaturesArr[0].StudentID;
-            calculateStudentScore(studentID);
+            calculateStudentScore(studentID, "post");
             return x;
         }
 
@@ -55,26 +55,28 @@ namespace serverChallengeMe.Models
                 x = dbs.putStudentFeatures(StudentFeaturesArr[i]);
             }
             int studentID = StudentFeaturesArr[0].StudentID;
-            calculateStudentScore(studentID);
+            calculateStudentScore(studentID, "put");
             return x;
         }
 
-        //פונקציה שמחשבת ציוני תלמיד ועושה אינסרט לטבלת סטודנטסקור
-        public void calculateStudentScore(int studentID)
+        //פונקציה שמחשבת ציוני תלמיד ועושה אינסרט לטבלת סטודנט.סקור
+        public int calculateStudentScore(int studentID, string command)
         {
             //1. לקרוא לפונקציה שתחזיר מהדאטה בייס את הסכום של כל קטגוריה ואז האחוזים של כל קטגוריה
-            //לכתוב פונקציה בDBservices
             DBservices dBservices = new DBservices();
             DataTable studentPercent = dBservices.getStudentPercent(studentID);
-            Console.WriteLine(studentPercent);
 
             double social, emotional, school = 0.0;
-            emotional = Convert.ToDouble(studentPercent.Rows[0][0]);
-            social = Convert.ToDouble(studentPercent.Rows[0][1]) ;
-            school = Convert.ToDouble(studentPercent.Rows[0][2]);
-            //2. עושים אינסרט של הציונים לטבלת סטודנט סקור כולל ציון ממוע של שלושתם
-            //לכתוב פונקציה בDBservisec
-            //return dBservices.insertStudentScore(studentPercent);
+            emotional = Convert.ToDouble(studentPercent.Rows[0][1]);
+            social = Convert.ToDouble(studentPercent.Rows[1][1]) ;
+            school = Convert.ToDouble(studentPercent.Rows[2][1]);
+
+            //2. עושים אינסרט או פוט של הציונים לטבלת סטודנט סקור
+            // בדיקה האם כבר קיימת רשומה לתלמיד
+            if(command == "post")
+                return dBservices.insertStudentScore(studentID, social, emotional, school);
+            else  //command == "put"
+                return dBservices.updateStudentScore(studentID, social, emotional, school);
         }
     }
 }

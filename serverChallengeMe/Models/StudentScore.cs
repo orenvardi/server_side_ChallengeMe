@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data;
 using serverChallengeMe.Models.DAL;
+using serverChallengeMe.Models;
 
 namespace serverChallengeMe.Models
 {
@@ -22,17 +23,19 @@ namespace serverChallengeMe.Models
             Emotional = emotional;
         }
 
-        public void getStudentScore(int studentID)
+        public DataTable getStudentScore(int studentID)
         {
-            //DBservices dBservices = new DBservices();
-            //StudentScore studentScore = dBservices.getStudentScore(studentID);
+            DBservices dBservices = new DBservices();
+            //פונקציה שמחזירה את ציוני התלמיד
+            StudentScore studentScore = dBservices.getStudentScore(studentID);
 
-            // פונקציה שמקבלת את הציוני תלמיד ומחזירה את האתגרים המתאימים מטבלת אתגרים
+            // פונקציה שמחזירה את האתגרים המתאימים לילד מטבלת אתגרים
+            DataTable matchStudentToChallenge = dBservices.matchStudentToChallenge(studentScore);
+            DataTable distinctTable = matchStudentToChallenge.DefaultView.ToTable( /*distinct*/ true);
+            DataTable matchStudentToStudent = dBservices.matchStudentToStudent(studentScore);
+            matchStudentToChallenge.Merge(matchStudentToStudent, true, MissingSchemaAction.Add);
+            return matchStudentToChallenge;
+
         }
-
-        //MatchStudentToChallenge
-        //MatchStudentToStudent
-
-
     }
 }
