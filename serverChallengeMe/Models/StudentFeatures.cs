@@ -67,9 +67,9 @@ namespace serverChallengeMe.Models
             DataTable studentPercent = dBservices.getStudentPercent(studentID);
 
             double social, emotional, school = 0.0;
-            emotional = Convert.ToDouble(studentPercent.Rows[0][1]);
-            social = Convert.ToDouble(studentPercent.Rows[1][1]) ;
-            school = Convert.ToDouble(studentPercent.Rows[2][1]);
+            emotional = Convert.ToDouble(studentPercent.Rows[0][2]);
+            social = Convert.ToDouble(studentPercent.Rows[1][2]) ;
+            school = Convert.ToDouble(studentPercent.Rows[2][2]);
 
             //2. עושים אינסרט או פוט של הציונים לטבלת סטודנט סקור
             // בדיקה האם כבר קיימת רשומה לתלמיד
