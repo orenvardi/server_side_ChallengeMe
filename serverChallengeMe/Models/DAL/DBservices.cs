@@ -414,8 +414,10 @@ namespace serverChallengeMe.Models.DAL
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
-                int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
+                //int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                int newID = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                return newID;
+          
             }
             catch (Exception ex)
             {
@@ -439,7 +441,7 @@ namespace serverChallengeMe.Models.DAL
             String command;
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", student.Password, student.FirstName, student.LastName, student.Phone, student.ClassID, student.TeacherID, student.BirthDate);
-            String prefix = "INSERT INTO Student(password, firstName, lastName, phone, classID, teacherID, birthDate)";
+            String prefix = "INSERT INTO Student(password, firstName, lastName, phone, classID, teacherID, birthDate) output INSERTED.studentID ";
             command = prefix + sb.ToString();
             return command;
         }

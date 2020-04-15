@@ -62,10 +62,11 @@ namespace serverChallengeMe.Models
             return dBservices.getStudentByPhone(phone);
         }
 
-        public int postStudent(Student student)
+        public DataTable postStudent(Student student)
         {
             DBservices dbs = new DBservices();
-            return dbs.postStudent(student);
+            int studentID = dbs.postStudent(student);
+            return dbs.getStudentById(studentID);
         }
 
         public int putStudent(Student student)

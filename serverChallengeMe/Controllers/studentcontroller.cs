@@ -40,10 +40,11 @@ namespace serverChallengeMe.Controllers
         }
 
         // POST api/<controller>
-        public int Post(Student student)
+        public DataTable Post(Student student)
         {
             Student s = new Student();
             return s.postStudent(student);
+
         }
 
         public int Put(Student student)
