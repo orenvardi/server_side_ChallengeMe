@@ -36,13 +36,12 @@ namespace serverChallengeMe.Models
         {
             var x = 0;
             DBservices dbs = new DBservices();
-            for (int i = 0; i < StudentFeaturesArr.Count; i++)
-            {
-                x = dbs.postStudentFeatures(StudentFeaturesArr[i]);
-            }
+            x = dbs.postStudentFeatures(StudentFeaturesArr);
+            
             //קריאה לפונקציה שמחשבת את ציוני התלמיד
             int studentID = StudentFeaturesArr[0].StudentID;
             calculateStudentScore(studentID, "post");
+
             return x;
         }
 
@@ -50,10 +49,9 @@ namespace serverChallengeMe.Models
         {
             var x = 0;
             DBservices dbs = new DBservices();
-            for (int i = 0; i < StudentFeaturesArr.Count; i++)
-            {
-                x = dbs.putStudentFeatures(StudentFeaturesArr[i]);
-            }
+            x = dbs.putStudentFeatures(StudentFeaturesArr);
+            
+            //קריאה לפונקציה שמחשבת את ציוני התלמיד
             int studentID = StudentFeaturesArr[0].StudentID;
             calculateStudentScore(studentID, "put");
             return x;
@@ -66,14 +64,27 @@ namespace serverChallengeMe.Models
             DBservices dBservices = new DBservices();
             DataTable studentPercent = dBservices.getStudentPercent(studentID);
 
+            // --start of scallings normalization
+            int min = 20;
+            int max = 100;
+
             double social, emotional, school = 0.0;
+
             emotional = Convert.ToDouble(studentPercent.Rows[0][2]);
+            emotional = (emotional - min) / (max - min) * 100;
+
             social = Convert.ToDouble(studentPercent.Rows[1][2]) ;
+            social = (social - min) / (max - min) * 100;
+
             school = Convert.ToDouble(studentPercent.Rows[2][2]);
+            school = (school - min) / (max - min) * 100;
+            // --end of scallings normalization
+
+
 
             //2. עושים אינסרט או פוט של הציונים לטבלת סטודנט סקור
             // בדיקה האם כבר קיימת רשומה לתלמיד
-            if(command == "post")
+            if (command == "post")
                 return dBservices.insertStudentScore(studentID, social, emotional, school);
             else  //command == "put"
                 return dBservices.updateStudentScore(studentID, social, emotional, school);

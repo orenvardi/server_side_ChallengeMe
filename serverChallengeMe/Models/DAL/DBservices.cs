@@ -489,8 +489,8 @@ namespace serverChallengeMe.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}');", challenge.ChallengeName, challenge.SocialMin, challenge.SocialMax, challenge.EmotionalMin, challenge.EmotionalMax, challenge.SchoolMin, challenge.SchoolMax, challenge.IsPrivate);
-            String prefix = "INSERT INTO Challenge(challengeName, socialMin, socialMax, emotionalMin,  emotionalMax, schoolMin, schoolMax, isPrivate) output INSERTED.challengeID ";
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}');", challenge.ChallengeName, challenge.Difficulty, challenge.SocialMin, challenge.SocialMax, challenge.EmotionalMin, challenge.EmotionalMax, challenge.SchoolMin, challenge.SchoolMax, challenge.IsPrivate);
+            String prefix = "INSERT INTO Challenge(challengeName, difficulty, socialMin, socialMax, emotionalMin,  emotionalMax, schoolMin, schoolMax, isPrivate) output INSERTED.challengeID ";
             command = prefix + sb.ToString();
             return command;
         }
@@ -1271,7 +1271,7 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 39.  POST StudentFeatures
         //---------------------------------------------------------------------------------
-        public int postStudentFeatures(StudentFeatures studentFeatures)
+        public int postStudentFeatures(List<StudentFeatures> StudentFeaturesArr)
         {
             SqlConnection con;
             SqlCommand cmd;
@@ -1285,9 +1285,14 @@ namespace serverChallengeMe.Models.DAL
                 // write to log
                 throw (ex);
             }
-            StringBuilder cStr = new StringBuilder();
-            cStr.AppendFormat("INSERT INTO StudentFeatures(studentID, questionID, answer) VALUES({0},{1},{2});", studentFeatures.StudentID, studentFeatures.QuestionID, studentFeatures.Answer);
-            cmd = CreateCommand(cStr.ToString(), con);             // create the command
+
+            string str = "";
+            for (int i = 0; i < StudentFeaturesArr.Count; i++)
+            {
+                str += " INSERT INTO StudentFeatures(studentID, questionID, answer) VALUES(" + StudentFeaturesArr[i].StudentID + "," + StudentFeaturesArr[i].QuestionID + "," + StudentFeaturesArr[i].Answer + "); ";
+            }
+
+            cmd = CreateCommand(str.ToString(), con);      // create the command
             try
             {
                 int numEffected = cmd.ExecuteNonQuery(); // execute the command
@@ -1310,7 +1315,7 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 39.  PUT StudentFeatures
         //---------------------------------------------------------------------------------
-        public int putStudentFeatures(StudentFeatures studentFeatures)
+        public int putStudentFeatures(List<StudentFeatures> StudentFeaturesArr)
         {
             SqlConnection con;
             SqlCommand cmd;
@@ -1324,9 +1329,14 @@ namespace serverChallengeMe.Models.DAL
                 // write to log
                 throw (ex);
             }
-            StringBuilder cStr = new StringBuilder();
-            cStr.AppendFormat("UPDATE studentFeatures SET answer = {0} WHERE studentID = {1} AND questionID = {2};", studentFeatures.Answer, studentFeatures.StudentID, studentFeatures.QuestionID);
-            cmd = CreateCommand(cStr.ToString(), con);             // create the command
+
+            string str = "";
+            for (int i = 0; i < StudentFeaturesArr.Count; i++)
+            {
+                str += " UPDATE studentFeatures SET answer = " + StudentFeaturesArr[i].Answer + " WHERE studentID = " + StudentFeaturesArr[i].StudentID + " AND questionID = " + StudentFeaturesArr[i].QuestionID + "; ";
+            }
+
+            cmd = CreateCommand(str.ToString(), con);      // create the command
             try
             {
                 int numEffected = cmd.ExecuteNonQuery(); // execute the command
@@ -1508,7 +1518,7 @@ namespace serverChallengeMe.Models.DAL
                 con = connect("DBConnectionString");
                 string str = "select C.challengeID , count(C.challengeID) as 'popularity' " +
                 " from challenge C left join studentChallenge sc on c.challengeID = sc.challengeID" +
-                " where(" + studentScore.Social + "30 BETWEEN  C.socialMin AND  C.socialMax)" +
+                " where(" + studentScore.Social + " BETWEEN  C.socialMin AND  C.socialMax)" +
                 " AND(" + studentScore.Emotional + " BETWEEN  C.emotionalMin AND  C.emotionalMax)" +
                 " AND(" + studentScore.School + " BETWEEN  C.schoolMin AND  C.schoolMax) " +
                 " GROUP BY C.challengeID order by count(C.challengeID) DESC";

@@ -31,11 +31,11 @@ namespace serverChallengeMe.Controllers
             return "value";
         }
 
-        // POST api/<controller>
-        public DataTable Post(Challenge challenge)
+        // POST api/Challenge?challenge={challenge}&studentID={studentID}
+        public DataTable Post(Challenge challenge, int studentID)
         {
             Challenge c = new Challenge();
-            return c.postChallenge(challenge);
+            return c.postChallenge(challenge, studentID);
         }
 
         // PUT api/<controller>/5

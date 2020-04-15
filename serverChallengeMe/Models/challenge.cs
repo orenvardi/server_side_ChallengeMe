@@ -10,6 +10,7 @@ namespace serverChallengeMe.Models
     {
         public int ChallengeID { get; set; }
         public string ChallengeName { get; set; }
+        public int Difficulty { get; set; }
         public double SocialMin { get; set; }
         public double SocialMax { get; set; }
         public double EmotionalMin { get; set; }
@@ -22,10 +23,11 @@ namespace serverChallengeMe.Models
 
         public Challenge() { }
 
-        public Challenge(int challengeID, string challengeName, double socialMin, double socialMax, double emotionalMin, double emotionalMax, double schoolMin, double schoolMax, bool isPrivate)
+        public Challenge(int challengeID, string challengeName, int difficulty, double socialMin, double socialMax, double emotionalMin, double emotionalMax, double schoolMin, double schoolMax, bool isPrivate)
         {
             ChallengeID = challengeID;
             ChallengeName = challengeName;
+            Difficulty = difficulty;
             SocialMin = socialMin;
             SocialMax = socialMax;
             EmotionalMin = emotionalMin;
@@ -47,17 +49,22 @@ namespace serverChallengeMe.Models
             return dBservices.getChallengeByName(challengeName);
         }
 
-        public DataTable postChallenge(Challenge Challenge)
+        public DataTable postChallenge(Challenge Challenge, int studentID)
         {
             DBservices dbs = new DBservices();
+
+            //  נוסיף פה חישוב טווחים לפני שעושים אינסרט
+            // --start claculate ranges
+
+            // קבלת אחוזי התלמיד
+            StudentScore studentScore = dbs.getStudentScore(studentID);
+            int teacherEmotional, teacherSocial, teacherSchool = 0;
+
+
+            // --end claculate ranges
+
             int newChallengeID = dbs.postChallenge(Challenge);
             return dbs.getChallengeByID(newChallengeID);
         }
-
-        //public int deleteChallenge(int id)
-        //{
-        //    DBservices dbs = new DBservices();
-        //    return dbs.deleteChallenge(id);
-        //}
     }
 }
