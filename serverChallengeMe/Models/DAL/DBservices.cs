@@ -491,7 +491,7 @@ namespace serverChallengeMe.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}');", challenge.ChallengeName, challenge.Difficulty, challenge.SocialMin, challenge.SocialMax, challenge.EmotionalMin, challenge.EmotionalMax, challenge.SchoolMin, challenge.SchoolMax, challenge.IsPrivate);
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}');", challenge.ChallengeName, challenge.Difficulty, challenge.SocialMin, challenge.SocialMax, challenge.EmotionalMin, challenge.EmotionalMax, challenge.SchoolMin, challenge.SchoolMax, challenge.IsPrivate);
             String prefix = "INSERT INTO Challenge(challengeName, difficulty, socialMin, socialMax, emotionalMin,  emotionalMax, schoolMin, schoolMax, isPrivate) output INSERTED.challengeID ";
             command = prefix + sb.ToString();
             return command;
@@ -1518,12 +1518,12 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                string str = "select C.challengeID , count(C.challengeID) as 'popularity' " +
+                string str = "select C.challengeID " +
                 " from challenge C left join studentChallenge sc on c.challengeID = sc.challengeID" +
                 " where(" + studentScore.Social + " BETWEEN  C.socialMin AND  C.socialMax)" +
                 " AND(" + studentScore.Emotional + " BETWEEN  C.emotionalMin AND  C.emotionalMax)" +
                 " AND(" + studentScore.School + " BETWEEN  C.schoolMin AND  C.schoolMax) " +
-                " GROUP BY C.challengeID order by count(C.challengeID) DESC";
+                " GROUP BY C.challengeID";
 
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
@@ -1557,14 +1557,13 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                string str = "select Sch.challengeID , count(Sch.challengeID) as 'popularity' "+
+                string str = "select Sch.challengeID "+
                      " from StudentScore Sscore  inner join studentChallenge Sch on Sscore.studentID = Sch.studentID "+
                      " where Sch.status = 1 and Sch.timeStamp < Sch.deadline "+
                      " GROUP BY Sch.challengeID, Sscore.social, Sscore.emotional, Sscore.school" +
                      " having ABS("+studentScore.Social+" - Sscore.social) < 10 "+
                      " AND ABS("+studentScore.Emotional+" - Sscore.emotional ) < 10 "+
-                     " AND ABS("+studentScore.School+" - Sscore.school ) < 10 "+
-                     " order by count(Sch.challengeID) DESC";
+                     " AND ABS("+studentScore.School+" - Sscore.school ) < 10 ";
 
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);

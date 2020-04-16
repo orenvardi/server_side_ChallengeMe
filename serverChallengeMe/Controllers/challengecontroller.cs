@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Data;
 using serverChallengeMe.Models;
+using Newtonsoft.Json.Linq;
 
 namespace serverChallengeMe.Controllers
 {
@@ -31,11 +32,11 @@ namespace serverChallengeMe.Controllers
             return "value";
         }
 
-        // POST api/Challenge?challenge={challenge}&studentID={studentID}
-        public DataTable Post(Challenge challenge, int studentID)
+        // POST api/Challenge
+        public DataTable Post([FromBody] JObject data)
         {
             Challenge c = new Challenge();
-            return c.postChallenge(challenge, studentID);
+            return c.postChallenge(data);
         }
 
         // PUT api/<controller>/5
