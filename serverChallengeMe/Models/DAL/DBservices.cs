@@ -1512,58 +1512,111 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 44.  GET Challenge By StudentScore
         //---------------------------------------------------------------------------------
-        public DataTable matchStudentToChallenge(StudentScore studentScore)
-        {
-            SqlConnection con = null;
-            try
-            {
-                con = connect("DBConnectionString");
-                string str = "select C.challengeID " +
-                " from challenge C left join studentChallenge sc on c.challengeID = sc.challengeID" +
-                " where(" + studentScore.Social + " BETWEEN  C.socialMin AND  C.socialMax)" +
-                " AND(" + studentScore.Emotional + " BETWEEN  C.emotionalMin AND  C.emotionalMax)" +
-                " AND(" + studentScore.School + " BETWEEN  C.schoolMin AND  C.schoolMax) " +
-                " GROUP BY C.challengeID";
+        //public DataTable matchStudentToChallenge(StudentScore studentScore)
+        //{
+        //    SqlConnection con = null;
+        //    try
+        //    {
+        //        con = connect("DBConnectionString");
+        //        string str = "select C.challengeID " +
+        //        " from challenge C left join studentChallenge sc on c.challengeID = sc.challengeID" +
+        //        " where(" + studentScore.Social + " BETWEEN  C.socialMin AND  C.socialMax)" +
+        //        " AND(" + studentScore.Emotional + " BETWEEN  C.emotionalMin AND  C.emotionalMax)" +
+        //        " AND(" + studentScore.School + " BETWEEN  C.schoolMin AND  C.schoolMax) " +
+        //        " GROUP BY C.challengeID";
 
-                da = new SqlDataAdapter(str, con);
-                SqlCommandBuilder builder = new SqlCommandBuilder(da);
-                DataSet ds = new DataSet();
-                da.Fill(ds);
-                dt = ds.Tables[0];
-            }
+        //        da = new SqlDataAdapter(str, con);
+        //        SqlCommandBuilder builder = new SqlCommandBuilder(da);
+        //        DataSet ds = new DataSet();
+        //        da.Fill(ds);
+        //        dt = ds.Tables[0];
+        //    }
 
-            catch (Exception ex)
-            {
-                Console.WriteLine("No rows found.");
-                // try to handle the error
-                throw ex;
-            }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("No rows found.");
+        //        // try to handle the error
+        //        throw ex;
+        //    }
 
-            finally
-            {
-                if (con != null)
-                {
-                    con.Close();
-                }
-            }
-            return dt;
-        }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            con.Close();
+        //        }
+        //    }
+        //    return dt;
+        //}
         //---------------------------------------------------------------------------------
         // 45.  GET Challenge By Other Students
         //---------------------------------------------------------------------------------
-        public DataTable matchStudentToStudent(StudentScore studentScore)
+        //public DataTable matchStudentToStudent(StudentScore studentScore)
+        //{
+        //    SqlConnection con = null;
+        //    try
+        //    {
+        //        con = connect("DBConnectionString");
+        //        string str = "select Sch.challengeID "+
+        //             " from StudentScore Sscore  inner join studentChallenge Sch on Sscore.studentID = Sch.studentID "+
+        //             " where Sch.status = 1 and Sch.timeStamp < Sch.deadline "+
+        //             " GROUP BY Sch.challengeID, Sscore.social, Sscore.emotional, Sscore.school" +
+        //             " having ABS("+studentScore.Social+" - Sscore.social) < 10 "+
+        //             " AND ABS("+studentScore.Emotional+" - Sscore.emotional ) < 10 "+
+        //             " AND ABS("+studentScore.School+" - Sscore.school ) < 10 ";
+
+        //        da = new SqlDataAdapter(str, con);
+        //        SqlCommandBuilder builder = new SqlCommandBuilder(da);
+        //        DataSet ds = new DataSet();
+        //        da.Fill(ds);
+        //        dt = ds.Tables[0];
+        //    }
+
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("No rows found.");
+        //        // try to handle the error
+        //        throw ex;
+        //    }
+
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            con.Close();
+        //        }
+        //    }
+        //    return dt;
+        //}
+        //---------------------------------------------------------------------------------
+        // 46.  GET SmartElementOffer 
+        //---------------------------------------------------------------------------------
+        public DataTable findSmartElementOffer(StudentScore studentScore)
         {
             SqlConnection con = null;
             try
             {
                 con = connect("DBConnectionString");
-                string str = "select Sch.challengeID "+
-                     " from StudentScore Sscore  inner join studentChallenge Sch on Sscore.studentID = Sch.studentID "+
-                     " where Sch.status = 1 and Sch.timeStamp < Sch.deadline "+
-                     " GROUP BY Sch.challengeID, Sscore.social, Sscore.emotional, Sscore.school" +
-                     " having ABS("+studentScore.Social+" - Sscore.social) < 10 "+
-                     " AND ABS("+studentScore.Emotional+" - Sscore.emotional ) < 10 "+
-                     " AND ABS("+studentScore.School+" - Sscore.school ) < 10 ";
+                string str = "select c.* from " +
+                    " (select a.challengeID, max(a.popularity) as 'popularity' " +
+                    " from (select C.challengeID, count(C.challengeID) as 'popularity' " +
+                    " from challenge C left join studentChallenge sc on c.challengeID = sc.challengeID " +
+                    " where(" + studentScore.Social + " BETWEEN  C.socialMin AND  C.socialMax) "+
+                    " AND (" + studentScore.Emotional + " BETWEEN  C.emotionalMin AND  C.emotionalMax) " +
+                    " AND(" + studentScore.School + " BETWEEN  C.schoolMin AND  C.schoolMax) " +
+                    " GROUP BY C.challengeID " +
+                    " union all " +
+                    " select Sch.challengeID, count(Sch.challengeID) as 'popularity' " +
+                    " from StudentScore Sscore inner join studentChallenge Sch on Sscore.studentID = Sch.studentID " +
+                    " where Sch.status = 1 and Sch.timeStamp < Sch.deadline " +
+                    " GROUP BY Sch.challengeID, Sscore.social, Sscore.emotional, Sscore.school " +
+                    " having ABS(" + studentScore.Social + " - Sscore.social) < 10 "+
+                    " AND ABS(" + studentScore.Emotional + " - Sscore.emotional) < 10 "+
+                    " AND  ABS(" + studentScore.School + " - Sscore.school) < 10 " +
+                    " ) as a " +
+                    " group by a.challengeID) as b " +
+                    " inner join challenge c on c.challengeID = b.challengeID " +
+                    " order by b.popularity DESC";
 
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);

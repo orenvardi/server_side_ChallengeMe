@@ -30,15 +30,13 @@ namespace serverChallengeMe.Models
             StudentScore studentScore = dBservices.getStudentScore(studentID);
 
             // פונקציה שמחזירה את האתגרים המתאימים לילד מטבלת אתגרים
-            DataTable matchStudentToChallenge4 = dBservices.matchStudentToChallenge(studentScore);
-            DataTable matchStudentToStudent5 = dBservices.matchStudentToStudent(studentScore);
-
-            matchStudentToChallenge4.Merge(matchStudentToStudent5, true, MissingSchemaAction.Add);
-
+            DataTable SmartElementOffer = dBservices.findSmartElementOffer(studentScore);
+            
+            return SmartElementOffer;
+            
+            //DataTable matchStudentToStudent5 = dBservices.matchStudentToStudent(studentScore);
+            //matchStudentToChallenge4.Merge(matchStudentToStudent5, true, MissingSchemaAction.Add);
             //DataTable distinctTable = matchStudentToChallenge4.DefaultView.ToTable( /*distinct*/ true);
-
-            return matchStudentToChallenge4;
-
         }
     }
 }

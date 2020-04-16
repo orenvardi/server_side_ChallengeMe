@@ -13,16 +13,18 @@ namespace serverChallengeMe.Models
         public int Difficulty { get; set; }
         public string Deadline { get; set; }
         public string Status { get; set; }
-   
+        public string TimeStamp { get; set; }
+
         public StudentChallenge() { }
 
-        public StudentChallenge(int challengeID, int studentID, int difficulty, string deadline, string status)
+        public StudentChallenge(int challengeID, int studentID, int difficulty, string deadline, string status, string timeStamp)
         {
             ChallengeID = challengeID;
             StudentID = studentID;
             Difficulty = difficulty;
             Deadline = deadline;
             Status = status;
+            TimeStamp = timeStamp;
         }
 
         public DataTable getStudentChallenge(int studentID)
