@@ -714,7 +714,10 @@ namespace serverChallengeMe.Models.DAL
             {
                 throw (ex);
             }
-            String cStr = "UPDATE StudentChallenge SET difficulty = '" + sc.Difficulty + "', deadline = '" + sc.Deadline + "', status = '" + sc.Status + "' WHERE challengeID  = " + sc.ChallengeID  + " AND studentID = "+ sc.StudentID + ";";
+            string timeStamp = (sc.Status == "0" ? "', timeStamp = null " : "' ");
+            String cStr = "UPDATE StudentChallenge SET difficulty = '" + sc.Difficulty +
+                "', deadline = '" + sc.Deadline + "', status = '" + sc.Status + timeStamp +
+                " WHERE challengeID  = " + sc.ChallengeID  + " AND studentID = "+ sc.StudentID + ";";
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
