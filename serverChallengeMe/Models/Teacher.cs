@@ -65,21 +65,24 @@ namespace serverChallengeMe.Models
                 randomPassword = Membership.GeneratePassword(8, 0) + rnd.Next(1, 10); //פונקציה שיוצרת סיסמא רנדומלית של 8 תווים עם לפחות תו אחד מיוחד וספרה אחת
                 randomPassword = Regex.Replace(randomPassword, @"[^a-zA-Z0-9]", m => rnd.Next(0, 10).ToString());
                 dBservices.updateTeacherPassword(teacherID, randomPassword, 1); //פונקציה שמעדכנת את הסיסמא הרנדומלית בטבלת מחנכים ומכניסה ערך 1 לעמודת 'סיסמא זמנית'
-                try { 
-                MailMessage message = new MailMessage();
-                SmtpClient smtp = new SmtpClient();
-                message.From = new MailAddress("challenge.me555555@gmail.com");
-                message.To.Add(new MailAddress(mail));
-                message.Subject = "challenge me new temporary password";
-                message.IsBodyHtml = true; //to make message body as html  
-                message.Body = "<div><div>הססמה הזמנית החדשה שלך היא: "+ randomPassword + "</div><div>כאשר אתה נכנס אתה תצטרך לשנות את הססמה</div><div>challenge me</div><div>";
-                smtp.Port = 587;
-                smtp.Host = "smtp.gmail.com"; //for gmail host  
-                smtp.EnableSsl = true;
-                smtp.UseDefaultCredentials = false;
-                smtp.Credentials = new NetworkCredential("challenge.me555555@gmail.com", "oren5555");
-                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtp.Send(message);
+
+                
+                try {
+                    SmtpClient smtp = new SmtpClient();
+                    smtp.UseDefaultCredentials = false;
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    smtp.EnableSsl = true;
+                    MailMessage message = new MailMessage();
+                    message.To.Add(new MailAddress(mail));
+                    message.From = new MailAddress("challenge.me555555@gmail.com");
+                    message.Subject = "challenge me new temporary password"; ;
+                    message.Body = "<div><div>הססמה הזמנית החדשה שלך היא: " + randomPassword + "</div><div>כאשר אתה נכנס אתה תצטרך לשנות את הססמה</div><div>challenge me</div><div>";
+                    message.IsBodyHtml = true; //to make message body as html  
+                    smtp.Host = "smtp.gmail.com"; //for gmail host  
+                    smtp.Port = 587;
+                    smtp.Credentials = new System.Net.NetworkCredential("challenge.me555555@gmail.com", "oren5555");
+
+                    smtp.Send(message);
                     return 1;
             } catch (Exception e) { throw e; }
         }
