@@ -92,7 +92,7 @@ namespace serverChallengeMe.Models
             double schoolMax = (S_school + d_school_Max) > 100 ? 100 : (S_school + d_school_Max);
 
             // אם המורה הכניס 0 לאחת מהקטגוריות אז משנים את הטווח ל0 עד 100
-            if (T_emotional==0 | T_social==0 | T_school == 0)
+            if (T_emotional==0 || T_social==0 || T_school == 0)
             {
                 emotionalMin = (T_emotional == 0 ? 0 : emotionalMin);
                 emotionalMax = (T_emotional == 0 ? 100 : emotionalMin);

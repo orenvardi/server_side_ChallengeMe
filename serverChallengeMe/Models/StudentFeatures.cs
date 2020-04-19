@@ -64,7 +64,7 @@ namespace serverChallengeMe.Models
             DBservices dBservices = new DBservices();
             DataTable studentPercent = dBservices.getStudentPercent(studentID);
 
-            // --start of scallings normalization
+            // --start of scallings normalization - from 20-100 to 0-100 
             int min = 20;
             int max = 100;
 
