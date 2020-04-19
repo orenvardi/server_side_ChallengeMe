@@ -75,7 +75,7 @@ namespace serverChallengeMe.Models
                     MailMessage message = new MailMessage();
                     message.To.Add(new MailAddress(mail));
                     message.From = new MailAddress("challenge.me555555@gmail.com");
-                    message.Subject = "challenge me new temporary password"; ;
+                    message.Subject = "challenge me new temporary password";
                     message.Body = "<div><div>הססמה הזמנית החדשה שלך היא: " + randomPassword + "</div><div>כאשר אתה נכנס אתה תצטרך לשנות את הססמה</div><div>challenge me</div><div>";
                     message.IsBodyHtml = true; //to make message body as html  
                     smtp.Host = "smtp.gmail.com"; //for gmail host  
