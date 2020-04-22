@@ -26,6 +26,7 @@ namespace serverChallengeMe.Models
         public DataTable getStudentScore(int studentID)
         {
             DBservices dBservices = new DBservices();
+
             //פונקציה שמחזירה את ציוני התלמיד
             StudentScore studentScore = dBservices.getStudentScore(studentID);
 
@@ -33,10 +34,6 @@ namespace serverChallengeMe.Models
             DataTable SmartElementOffer = dBservices.findSmartElementOffer(studentScore);
             
             return SmartElementOffer;
-            
-            //DataTable matchStudentToStudent5 = dBservices.matchStudentToStudent(studentScore);
-            //matchStudentToChallenge4.Merge(matchStudentToStudent5, true, MissingSchemaAction.Add);
-            //DataTable distinctTable = matchStudentToChallenge4.DefaultView.ToTable( /*distinct*/ true);
         }
     }
 }

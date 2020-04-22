@@ -1600,7 +1600,7 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                string str = "select c.* from " +
+                string str = "select TOP 30 c.* from " +
                     " (select a.challengeID, max(a.popularity) as 'popularity' " +
                     " from (select C.challengeID, count(C.challengeID) as 'popularity' " +
                     " from challenge C left join studentChallenge sc on c.challengeID = sc.challengeID " +
