@@ -11,16 +11,11 @@ namespace serverChallengeMe.Controllers
 {
     public class MessageController : ApiController
     {
-        // GET api/<controller>
-        public IEnumerable<string> Get()
+        // GET api/Message?teacherID={teacherID}
+        public DataTable Get(int teacherID)
         {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
+            Message message = new Message();
+            return message.getStudentsWithMessage(teacherID);
         }
 
         // POST api/<controller>

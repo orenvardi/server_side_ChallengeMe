@@ -32,11 +32,11 @@ namespace serverChallengeMe.Models
             MessageByTeacher = messageByTeacher;
         }
 
-        //public DataTable getMessage()
-        //{
-        //    DBservices dBservices = new DBservices();
-        //    return dBservices.getMessage();
-        //}
+        public DataTable getStudentsWithMessage(int teacherID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getStudentsWithMessage(teacherID);
+        }
 
         //public int postMessage(Message message)
         //{

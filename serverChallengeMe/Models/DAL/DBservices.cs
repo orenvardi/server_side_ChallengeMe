@@ -1598,5 +1598,38 @@ namespace serverChallengeMe.Models.DAL
             }
             return dt;
         }
+        //---------------------------------------------------------------------------------
+        // 45.  get Students With Message
+        //---------------------------------------------------------------------------------
+        public DataTable getStudentsWithMessage(int teacherID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "select studentID from message where teacherID = "+ teacherID+" group by studentID order By max(messageDate) DESC;";
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
     }
 }
