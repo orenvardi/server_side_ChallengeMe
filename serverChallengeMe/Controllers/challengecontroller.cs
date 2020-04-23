@@ -19,6 +19,13 @@ namespace serverChallengeMe.Controllers
             return c.getChallenge();
         }
 
+        // GET api/Challenge?studentID={studentID}
+        public DataTable getChallengesWithoutStudentChallenges(int studentID)
+        {
+            Challenge c = new Challenge();
+            return c.getChallengesWithoutStudentChallenges(studentID);
+        }
+
         // GET api/Challenge?challengeName={challengeName}
         public DataTable getChallengeByName(string challengeName)
         {

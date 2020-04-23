@@ -1010,7 +1010,7 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                da = new SqlDataAdapter("select * from Challenge where challengeName = '" + challengeName + "';", con);
+                da = new SqlDataAdapter("select * from Challenge where isPrivate = 'false' AND challengeName = '" + challengeName + "';", con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
                 da.Fill(ds);
@@ -1513,86 +1513,7 @@ namespace serverChallengeMe.Models.DAL
             return studentScore;
         }
         //---------------------------------------------------------------------------------
-        // 44.  GET Challenge By StudentScore
-        //---------------------------------------------------------------------------------
-        //public DataTable matchStudentToChallenge(StudentScore studentScore)
-        //{
-        //    SqlConnection con = null;
-        //    try
-        //    {
-        //        con = connect("DBConnectionString");
-        //        string str = "select C.challengeID " +
-        //        " from challenge C left join studentChallenge sc on c.challengeID = sc.challengeID" +
-        //        " where(" + studentScore.Social + " BETWEEN  C.socialMin AND  C.socialMax)" +
-        //        " AND(" + studentScore.Emotional + " BETWEEN  C.emotionalMin AND  C.emotionalMax)" +
-        //        " AND(" + studentScore.School + " BETWEEN  C.schoolMin AND  C.schoolMax) " +
-        //        " GROUP BY C.challengeID";
-
-        //        da = new SqlDataAdapter(str, con);
-        //        SqlCommandBuilder builder = new SqlCommandBuilder(da);
-        //        DataSet ds = new DataSet();
-        //        da.Fill(ds);
-        //        dt = ds.Tables[0];
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("No rows found.");
-        //        // try to handle the error
-        //        throw ex;
-        //    }
-
-        //    finally
-        //    {
-        //        if (con != null)
-        //        {
-        //            con.Close();
-        //        }
-        //    }
-        //    return dt;
-        //}
-        //---------------------------------------------------------------------------------
-        // 45.  GET Challenge By Other Students
-        //---------------------------------------------------------------------------------
-        //public DataTable matchStudentToStudent(StudentScore studentScore)
-        //{
-        //    SqlConnection con = null;
-        //    try
-        //    {
-        //        con = connect("DBConnectionString");
-        //        string str = "select Sch.challengeID "+
-        //             " from StudentScore Sscore  inner join studentChallenge Sch on Sscore.studentID = Sch.studentID "+
-        //             " where Sch.status = 1 and Sch.timeStamp < Sch.deadline "+
-        //             " GROUP BY Sch.challengeID, Sscore.social, Sscore.emotional, Sscore.school" +
-        //             " having ABS("+studentScore.Social+" - Sscore.social) < 10 "+
-        //             " AND ABS("+studentScore.Emotional+" - Sscore.emotional ) < 10 "+
-        //             " AND ABS("+studentScore.School+" - Sscore.school ) < 10 ";
-
-        //        da = new SqlDataAdapter(str, con);
-        //        SqlCommandBuilder builder = new SqlCommandBuilder(da);
-        //        DataSet ds = new DataSet();
-        //        da.Fill(ds);
-        //        dt = ds.Tables[0];
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("No rows found.");
-        //        // try to handle the error
-        //        throw ex;
-        //    }
-
-        //    finally
-        //    {
-        //        if (con != null)
-        //        {
-        //            con.Close();
-        //        }
-        //    }
-        //    return dt;
-        //}
-        //---------------------------------------------------------------------------------
-        // 46.  GET SmartElementOffer 
+        // 44.  GET SmartElementOffer 
         //---------------------------------------------------------------------------------
         public DataTable findSmartElementOffer(StudentScore studentScore)
         {
@@ -1621,6 +1542,39 @@ namespace serverChallengeMe.Models.DAL
                     " inner join challenge c on c.challengeID = b.challengeID " +
                     " order by b.popularity DESC";
 
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 45.  get Challenges Without Student Challenges
+        //---------------------------------------------------------------------------------
+        public DataTable getChallengesWithoutStudentChallenges(int studentID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "select * from Challenge where isPrivate = 'false' AND challengeID not in (select challengeID from studentChallenge where studentID = " + studentID + ");";
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();

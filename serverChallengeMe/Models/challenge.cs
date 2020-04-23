@@ -51,6 +51,12 @@ namespace serverChallengeMe.Models
             return dBservices.getChallengeByName(challengeName);
         }
 
+        public DataTable getChallengesWithoutStudentChallenges(int studentID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getChallengesWithoutStudentChallenges(studentID);
+        }
+   
         public DataTable postChallenge(JObject data)
         {
             DBservices dbs = new DBservices();
