@@ -12,29 +12,36 @@ namespace serverChallengeMe.Controllers
     public class MessageController : ApiController
     {
         // GET api/Message?teacherID={teacherID}
-        public DataTable Get(int teacherID)
+        // מחזירה את המספר המזהה של כל התלמידים שיש למורה הזה הודעות איתם מסודר לפי תאריך ההודעה האחרונה של כל תלמיד
+        public DataTable getStudentsWithMessage(int teacherID)
         {
             Message message = new Message();
             return message.getStudentsWithMessage(teacherID);
         }
 
-        // GET api/Message?teacherID={studentID}
-        public DataTable Get2(int studentID)
+        // GET api/Message?teacherID={teacherID}&studentID={studentID}
+        // מחזירה את כמות ההודעות הנכנסות של המורה הזה מהתלמיד הזה
+        public int getMessageTfromSnotRead(int getter_teacherID, int sender_studentID)
         {
             Message message = new Message();
-            return message.getNumOfMessageNotReadForStudents(studentID);
-        }
-        public DataTable getMessageTfromSnotRead(int teacherID, int studentID)
-        {
-            Message message = new Message();
-            return message.getMessageTfromSnotRead(teacherID,studentID);
+            return message.getMessageTfromSnotRead(getter_teacherID, sender_studentID);
         }
 
-        //public DataTable getAllMessage(int teacherID, int studentID)
-        //{
-        //    Message message = new Message();
-        //    return message.getAllMessage(teacherID, studentID);
-        //}
+        // GET api/Message?teacherID={teacherID}&studentID={studentID}
+        // מחזירה את כל ההודעות שיש בין המורה הזה לתלמיד הזה
+        public DataTable getAllMessage(int teacherID, int studentID)
+        {
+            Message message = new Message();
+            return message.getAllMessage(teacherID, studentID);
+        }
+
+        // PUT api/Message
+        // מעדכן ל: MesgRead=true
+        public int Put(int teacherID, int studentID)
+        {
+            Message m = new Message();
+            return m.updateMessage(teacherID, studentID);
+        }
 
         // POST api/<controller>
         public int Post(Message message)
@@ -43,11 +50,16 @@ namespace serverChallengeMe.Controllers
             return m.postMessage(message);
 
         }
-        // PUT api/<controller>/5
-        public int Put(int messageID)
+
+
+
+
+
+        // GET api/Message?teacherID={studentID}
+        public DataTable Get2(int studentID)
         {
-            Message m = new Message();
-            return m.updateMessage(messageID);
+            Message message = new Message();
+            return message.getNumOfMessageNotReadForStudents(studentID);
         }
 
         // DELETE api/<controller>/5

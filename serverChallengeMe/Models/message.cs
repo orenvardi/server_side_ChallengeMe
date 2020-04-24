@@ -31,16 +31,36 @@ namespace serverChallengeMe.Models
             MessageTime = messageTime;
             MessageByTeacher = messageByTeacher;
         }
-        public DataTable getMessageTfromSnotRead(int teacherID, int studentID)
-        {
-            DBservices dBservices = new DBservices();
-            return dBservices.getMessageTfromSnotRead(teacherID, studentID);
-        }
+
+        // מחזירה את המספר המזהה של כל התלמידים שיש למורה הזה הודעות איתם מסודר לפי תאריך ההודעה האחרונה של כל תלמיד
         public DataTable getStudentsWithMessage(int teacherID)
         {
             DBservices dBservices = new DBservices();
             return dBservices.getStudentsWithMessage(teacherID);
         }
+
+        // מחזירה את כמות ההודעות הנכנסות של המורה הזה מהתלמיד הזה
+        public int getMessageTfromSnotRead(int teacherID, int studentID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getMessageTfromSnotRead(teacherID, studentID);
+        }
+
+        // מחזירה את כל ההודעות שיש בין המורה הזה לתלמיד הזה
+        public DataTable getAllMessage(int teacherID, int studentID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getAllMessage(teacherID, studentID);
+        }
+
+        // מעדכן ל: MesgRead=true
+        public int updateMessage(int teacherID, int studentID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.updateMessage(teacherID, studentID);
+        }
+
+
 
         public DataTable getNumOfMessageNotReadForStudents(int studentID)
         {
@@ -48,22 +68,13 @@ namespace serverChallengeMe.Models
             return dBservices.getNumOfMessageNotReadForStudents(studentID);
         }
 
-        //public DataTable getAllMessage(int teacherID, int studentID)
-        //{
-        //    DBservices dBservices = new DBservices();
-        //    return dBservices.getAllMessage(teacherID, studentID);
-        //}
-
         public int postMessage(Message message)
         {
             DBservices dbs = new DBservices();
             return dbs.postMessage(message);
         }
-        public int updateMessage(int messageID)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.updateMessage(messageID);
-        }
+
+        
 
         //public int deleteMessage(int id)
         //{
