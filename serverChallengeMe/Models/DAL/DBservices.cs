@@ -1601,27 +1601,28 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 46.  get Students With Message
         //---------------------------------------------------------------------------------
-        public DataTable getStudentsWithMessage(int teacherID)
+        public List<int> getStudentsWithMessage(int teacherID)
         {
+            List<int> studentIDList = new List<int>();
             SqlConnection con = null;
             try
             {
                 con = connect("DBConnectionString");
-                string str = "select studentID from message where teacherID = "+ teacherID+" group by studentID order By max(messageDate) DESC;";
-                da = new SqlDataAdapter(str, con);
-                SqlCommandBuilder builder = new SqlCommandBuilder(da);
-                DataSet ds = new DataSet();
-                da.Fill(ds);
-                dt = ds.Tables[0];
+                String selectSTR = "select studentID from message where teacherID = " + teacherID + " group by studentID order By max(messageDate) DESC;";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                if (dr2.HasRows)
+                {
+                    while (dr2.Read())
+                    {
+                        studentIDList.Add(Convert.ToInt32(dr2["studentID"]));
+                    }
+                }
             }
-
             catch (Exception ex)
             {
-                Console.WriteLine("No rows found.");
-                // try to handle the error
-                throw ex;
+                throw (ex);
             }
-
             finally
             {
                 if (con != null)
@@ -1629,7 +1630,7 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
                 }
             }
-            return dt;
+            return studentIDList;
         }
         //---------------------------------------------------------------------------------
         // 47.  get Number of Massage For Teache From specific Stu That Not Read
@@ -1649,7 +1650,7 @@ namespace serverChallengeMe.Models.DAL
                     // write to log
                     throw (ex);
                 }
-                String cStr = "select COUNT(messageID) from message where MesgRead = 'false' AND messageByTeacher = 'false' AND studentID = " + studentID + " AND teacherID = " + teacherID + "; ";
+                String cStr = "select COUNT(messageID) from message where MesgRead = 'false' or MesgRead is null AND messageByTeacher = 'false' AND studentID = " + studentID + " AND teacherID = " + teacherID + "; ";
                 cmd = CreateCommand(cStr, con);             // create the command
                 try
                 {
@@ -1785,6 +1786,38 @@ namespace serverChallengeMe.Models.DAL
             String prefix = "INSERT INTO Message(teacherID, studentID, messageTitle, messageText, messageDate, messageTime, messageByTeacher)";
             command = prefix + sb.ToString();
             return command;
+        }
+        //---------------------------------------------------------------------------------
+        // 52.  GET Students by TeacherID
+        //---------------------------------------------------------------------------------
+        public DataTable GetStudentsByTeacherID(int teacherID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                da = new SqlDataAdapter("select * from Student where teacherID = '" + teacherID + "';", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
         }
 
 

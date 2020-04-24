@@ -33,7 +33,7 @@ namespace serverChallengeMe.Models
         }
 
         // מחזירה את המספר המזהה של כל התלמידים שיש למורה הזה הודעות איתם מסודר לפי תאריך ההודעה האחרונה של כל תלמיד
-        public DataTable getStudentsWithMessage(int teacherID)
+        public List<int> getStudentsWithMessage(int teacherID)
         {
             DBservices dBservices = new DBservices();
             return dBservices.getStudentsWithMessage(teacherID);

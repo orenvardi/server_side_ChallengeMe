@@ -18,6 +18,13 @@ namespace serverChallengeMe.Controllers
             return student.getStudents(classID);
         }
 
+        //GET api/Student?teacherID={teacherID}
+        public DataTable GetStudentsByTeacherID(int teacherID)
+        {
+            Student student = new Student();
+            return student.GetStudentsByTeacherID(teacherID);
+        }
+
         // GET api/Student?studentID={studentID}
         public DataTable GetByStudentID(int studentID)
         {

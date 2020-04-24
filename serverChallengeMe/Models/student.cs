@@ -44,6 +44,12 @@ namespace serverChallengeMe.Models
             //מחזיר רשימה של כל התלמידים של כיתה
         }
 
+        public DataTable GetStudentsByTeacherID(int teacherID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.GetStudentsByTeacherID(teacherID);
+        }
+
         public DataTable getStudentById(int studentID)
         {
             DBservices dBservices = new DBservices();
