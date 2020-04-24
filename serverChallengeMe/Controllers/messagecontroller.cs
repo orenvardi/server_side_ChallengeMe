@@ -18,14 +18,36 @@ namespace serverChallengeMe.Controllers
             return message.getStudentsWithMessage(teacherID);
         }
 
-        // POST api/<controller>
-        public void Post([FromBody]string value)
+        // GET api/Message?teacherID={studentID}
+        public DataTable Get2(int studentID)
         {
+            Message message = new Message();
+            return message.getNumOfMessageNotReadForStudents(studentID);
+        }
+        public DataTable getMessageTfromSnotRead(int teacherID, int studentID)
+        {
+            Message message = new Message();
+            return message.getMessageTfromSnotRead(teacherID,studentID);
         }
 
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        //public DataTable getAllMessage(int teacherID, int studentID)
+        //{
+        //    Message message = new Message();
+        //    return message.getAllMessage(teacherID, studentID);
+        //}
+
+        // POST api/<controller>
+        public int Post(Message message)
         {
+            Message m = new Message();
+            return m.postMessage(message);
+
+        }
+        // PUT api/<controller>/5
+        public int Put(int messageID)
+        {
+            Message m = new Message();
+            return m.updateMessage(messageID);
         }
 
         // DELETE api/<controller>/5

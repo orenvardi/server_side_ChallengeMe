@@ -15,11 +15,13 @@ namespace serverChallengeMe.Models
         public string AlertText { get; set; }
         public string AlertDate { get; set; }
         public string AlertTime { get; set; }
+        public bool AlertRead { get; set; }
+
 
 
         public Alert() { }
 
-        public Alert(int alertID, int teacherID, int studentID, string alertTitle, string alertText, string alertDate, string alertTime)
+        public Alert(int alertID, int teacherID, int studentID, string alertTitle, string alertText, string alertDate, string alertTime, bool alertRead)
         {
             AlertID = alertID;
             TeacherID = teacherID;
@@ -28,13 +30,14 @@ namespace serverChallengeMe.Models
             AlertText = alertText;
             AlertDate = alertDate;
             AlertTime = alertTime;
+            AlertRead = alertRead;
         }
 
-        //public DataTable getAlert()
-        //{
-        //    DBservices dBservices = new DBservices();
-        //    return dBservices.getAlert();
-        //}
+        public DataTable getNumOfAlertNotReadForStudents(int studentID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getNumOfAlertNotReadForStudents(studentID);
+        }
 
         //public int postAlert(Alert alert)
         //{

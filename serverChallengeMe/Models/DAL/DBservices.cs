@@ -1599,7 +1599,7 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 45.  get Students With Message
+        // 46.  get Students With Message
         //---------------------------------------------------------------------------------
         public DataTable getStudentsWithMessage(int teacherID)
         {
@@ -1631,5 +1631,188 @@ namespace serverChallengeMe.Models.DAL
             }
             return dt;
         }
+        //---------------------------------------------------------------------------------
+        // 47.  get Number of Messege For Students That Not Read
+        //---------------------------------------------------------------------------------
+          public DataTable getNumOfMessageNotReadForStudents(int studentID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "select COUNT(messageID) from message where studentID = " + studentID + " AND MesgRead=1;";
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 48.  get Number of Alert For Students That Not Read
+        //---------------------------------------------------------------------------------
+        public DataTable getNumOfAlertNotReadForStudents(int studentID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "select COUNT(messageID) from alert where studentID = " + studentID + " AND alertRead=1;";
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 49.  INSERT Message
+        //---------------------------------------------------------------------------------
+        public int postMessage(Message message)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            String cStr = BuildInsertCommandMessage(message);      // helper method to build the insert string
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
+        //--------------------------------------------------------------------
+        // 50.  Build INSERT Message Command
+        //--------------------------------------------------------------------
+        private String BuildInsertCommandMessage(Message message)
+        {
+            String command;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", message.TeacherID, message.StudentID, message.MessageTitle, message.MessageText, message.MessageDate, message.MessageTime, message.MessageByTeacher);
+            String prefix = "INSERT INTO Message(teacherID, studentID, messageTitle, messageText, messageDate, messageTime, messageByTeacher)";
+            command = prefix + sb.ToString();
+            return command;
+        }
+        //---------------------------------------------------------------------------------
+        // 47.  get Number of Massage For Teache From specific Stu That Not Read
+        //---------------------------------------------------------------------------------
+        public DataTable getMessageTfromSnotRead(int teacherID, int studentID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "select COUNT(messageID) from message where studentID = " + studentID + " AND teacherID=" + teacherID + ";";
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 51.  UPDATE If Message Read 
+        //---------------------------------------------------------------------------------
+        public int updateMessage(int messageID)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            String cStr = "UPDATE Message SET MesgRead = 0";
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
     }
-}
+} 
+

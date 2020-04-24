@@ -31,18 +31,39 @@ namespace serverChallengeMe.Models
             MessageTime = messageTime;
             MessageByTeacher = messageByTeacher;
         }
-
+        public DataTable getMessageTfromSnotRead(int teacherID, int studentID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getMessageTfromSnotRead(teacherID, studentID);
+        }
         public DataTable getStudentsWithMessage(int teacherID)
         {
             DBservices dBservices = new DBservices();
             return dBservices.getStudentsWithMessage(teacherID);
         }
 
-        //public int postMessage(Message message)
+        public DataTable getNumOfMessageNotReadForStudents(int studentID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getNumOfMessageNotReadForStudents(studentID);
+        }
+
+        //public DataTable getAllMessage(int teacherID, int studentID)
         //{
-        //    DBservices dbs = new DBservices();
-        //    return dbs.postMessage(message);
+        //    DBservices dBservices = new DBservices();
+        //    return dBservices.getAllMessage(teacherID, studentID);
         //}
+
+        public int postMessage(Message message)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.postMessage(message);
+        }
+        public int updateMessage(int messageID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.updateMessage(messageID);
+        }
 
         //public int deleteMessage(int id)
         //{
