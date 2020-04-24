@@ -40,10 +40,10 @@ namespace serverChallengeMe.Controllers
         }
 
         // GET api/
-        public int GetByUserNameAndPassword(string userName, int password)
+        public int GetByPhoneAndPassword(string phone, int password)
         {
             Student student = new Student();
-            return student.getStudentByUserNameAndPassword(userName, password);
+            return student.getStudentByPhoneAndPassword(phone, password);
         }
 
         // POST api/<controller>

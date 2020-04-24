@@ -246,14 +246,14 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 9.  GET Student By User Name And Password
         //---------------------------------------------------------------------------------
-        public int getStudentByUserNameAndPassword(string userName, int password)
+        public int getStudentByPhoneAndPassword(string phone, int password)
         {
             int id = 0;
             SqlConnection con = null;
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "select studentID from Student where userName = '" + userName + "' AND password = '"+password + "'; ";
+                String selectSTR = "select studentID from Student where phone = '" + phone + "' AND password = '"+password + "'; ";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
                 if (dr2.HasRows)

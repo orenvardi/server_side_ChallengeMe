@@ -56,10 +56,10 @@ namespace serverChallengeMe.Models
             return dBservices.getStudentById(studentID);
         }
 
-        public int getStudentByUserNameAndPassword(string userName, int password)
+        public int getStudentByPhoneAndPassword(string phone, int password)
         {
             DBservices dBservices = new DBservices();
-            return dBservices.getStudentByUserNameAndPassword(userName, password);
+            return dBservices.getStudentByPhoneAndPassword(phone, password);
         }
 
         public int getStudentByPhone(string phone)
