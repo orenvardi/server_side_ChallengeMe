@@ -1650,7 +1650,7 @@ namespace serverChallengeMe.Models.DAL
                     // write to log
                     throw (ex);
                 }
-                String cStr = "select COUNT(messageID) from message where MesgRead = 'false' or MesgRead is null AND messageByTeacher = 'false' AND studentID = " + studentID + " AND teacherID = " + teacherID + "; ";
+                String cStr = "select COUNT(messageID) from message where (MesgRead = 'false' or MesgRead is null) AND messageByTeacher = 'false' AND studentID = " + studentID + " AND teacherID = " + teacherID + "; ";
                 cmd = CreateCommand(cStr, con);             // create the command
                 try
                 {
@@ -1819,8 +1819,46 @@ namespace serverChallengeMe.Models.DAL
             }
             return dt;
         }
+        //---------------------------------------------------------------------------------
+        // 53.  get UnRead Message Count for teacher
+        //---------------------------------------------------------------------------------
+        public int getUnReadMessageCount(int teacherID)
+        {
+            {
+                SqlConnection con;
+                SqlCommand cmd;
 
+                try
+                {
+                    con = connect("DBConnectionString"); // create the connection
+                }
+                catch (Exception ex)
+                {
+                    // write to log
+                    throw (ex);
+                }
+                String cStr = "select COUNT(messageID) from message where (MesgRead = 'false' or MesgRead is null) AND messageByTeacher = 'false' AND teacherID = " + teacherID + "; ";
+                cmd = CreateCommand(cStr, con);             // create the command
+                try
+                {
+                    int unReadCount = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                    return unReadCount;
+                }
+                catch (Exception ex)
+                {
 
+                    throw (ex);
+                }
+                finally
+                {
+                    if (con != null)
+                    {
+                        // close the db connection
+                        con.Close();
+                    }
+                }
+            }
+        }
 
 
 

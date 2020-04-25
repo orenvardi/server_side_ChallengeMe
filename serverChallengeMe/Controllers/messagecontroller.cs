@@ -11,6 +11,14 @@ namespace serverChallengeMe.Controllers
 {
     public class MessageController : ApiController
     {
+        // GET api/Message?teacherID_UnRead={teacherID}
+        // מחזירה את כמות ההודעות שלא קראו שיש למורה
+        public int getUnReadMessageCount(int teacherID_UnRead)
+        {
+            Message message = new Message();
+            return message.getUnReadMessageCount(teacherID_UnRead);
+        }
+        
         // GET api/Message?teacherID={teacherID}
         // מחזירה את המספר המזהה של כל התלמידים שיש למורה הזה הודעות איתם מסודר לפי תאריך ההודעה האחרונה של כל תלמיד
         public List<int> getStudentsWithMessage(int teacherID)

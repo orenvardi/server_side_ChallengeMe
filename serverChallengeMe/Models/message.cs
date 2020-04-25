@@ -32,6 +32,13 @@ namespace serverChallengeMe.Models
             MessageByTeacher = messageByTeacher;
         }
 
+        // מחזירה את כמות ההודעות שלא קראו שיש למורה
+        public int getUnReadMessageCount(int teacherID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getUnReadMessageCount(teacherID);
+        }
+
         // מחזירה את המספר המזהה של כל התלמידים שיש למורה הזה הודעות איתם מסודר לפי תאריך ההודעה האחרונה של כל תלמיד
         public List<int> getStudentsWithMessage(int teacherID)
         {
@@ -60,21 +67,20 @@ namespace serverChallengeMe.Models
             return dbs.updateMessage(teacherID, studentID);
         }
 
-
-
-        public DataTable getNumOfMessageNotReadForStudents(int studentID)
-        {
-            DBservices dBservices = new DBservices();
-            return dBservices.getNumOfMessageNotReadForStudents(studentID);
-        }
-
         public int postMessage(Message message)
         {
             DBservices dbs = new DBservices();
             return dbs.postMessage(message);
         }
 
-        
+
+
+        // ??????????
+        public DataTable getNumOfMessageNotReadForStudents(int studentID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getNumOfMessageNotReadForStudents(studentID);
+        }
 
         //public int deleteMessage(int id)
         //{
