@@ -74,6 +74,14 @@ namespace serverChallengeMe.Models
             return dbs.updateMessage(teacherID, studentID);
         }
 
+        // PUT api/Message?studentID={studentID}
+        // מעדכן עבור התלמיד את כל ההודעות לנקראו
+        public int updateStudentMessage(int studentID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.updateStudentMessage(studentID);
+        }
+
         public int postMessage(Message message)
         {
             DBservices dbs = new DBservices();

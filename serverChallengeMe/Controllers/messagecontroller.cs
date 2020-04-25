@@ -51,12 +51,20 @@ namespace serverChallengeMe.Controllers
             return message.getAllMessage(teacherID, studentID);
         }
 
-        // PUT api/Message
-        // מעדכן ל: MesgRead=true
+        // PUT api/Message?teacherID={teacherID}&studentID={studentID}
+        // מעדכן עבור המורה את כל ההודעות של התלמיד הזה לנקראו
         public int Put(int teacherID, int studentID)
         {
             Message m = new Message();
             return m.updateMessage(teacherID, studentID);
+        }
+
+        // PUT api/Message?studentID={studentID}
+        // מעדכן עבור התלמיד את כל ההודעות לנקראו
+        public int Put(int studentID)
+        {
+            Message m = new Message();
+            return m.updateStudentMessage(studentID);
         }
 
         // POST api/<controller>
