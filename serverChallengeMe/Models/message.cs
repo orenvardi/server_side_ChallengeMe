@@ -39,6 +39,13 @@ namespace serverChallengeMe.Models
             return dBservices.getUnReadMessageCount(teacherID);
         }
 
+        // מחזירה את כמות ההודעות שלא קראו שיש לתלמיד
+        public int getStudentUnReadMessageCount(int studentID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getStudentUnReadMessageCount(studentID);
+        }
+
         // מחזירה את המספר המזהה של כל התלמידים שיש למורה הזה הודעות איתם מסודר לפי תאריך ההודעה האחרונה של כל תלמיד
         public List<int> getStudentsWithMessage(int teacherID)
         {

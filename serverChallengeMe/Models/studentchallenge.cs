@@ -45,7 +45,11 @@ namespace serverChallengeMe.Models
             return dbs.updateStudentChallenge(sc);
         }
 
-
+        public int updateStatus (int challengeID, int studentID, string status)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.updateStatus(challengeID, studentID, status);
+        }
         public int deleteStudentChallenge(int studentID, int challengeID)
         {
             DBservices dbs = new DBservices();

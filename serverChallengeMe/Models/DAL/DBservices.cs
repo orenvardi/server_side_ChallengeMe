@@ -1720,7 +1720,7 @@ namespace serverChallengeMe.Models.DAL
             {
                 throw (ex);
             }
-            String cStr = "UPDATE Message SET MesgRead = 'true' where studentID = " + studentID + " AND teacherID = " + teacherID + ";";
+            String cStr = "UPDATE Message SET MesgRead = 'true' where messageByTeacher='false' AND studentID = " + studentID + " AND teacherID = " + teacherID + ";";
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
@@ -1838,6 +1838,79 @@ namespace serverChallengeMe.Models.DAL
                     throw (ex);
                 }
                 String cStr = "select COUNT(messageID) from message where (MesgRead = 'false' or MesgRead is null) AND messageByTeacher = 'false' AND teacherID = " + teacherID + "; ";
+                cmd = CreateCommand(cStr, con);             // create the command
+                try
+                {
+                    int unReadCount = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                    return unReadCount;
+                }
+                catch (Exception ex)
+                {
+
+                    throw (ex);
+                }
+                finally
+                {
+                    if (con != null)
+                    {
+                        // close the db connection
+                        con.Close();
+                    }
+                }
+            }
+        }
+        //---------------------------------------------------------------------------------
+        // 54.  UPDATE StudentChallenge status
+        //---------------------------------------------------------------------------------
+        public int updateStatus(int challengeID, int studentID, string status)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            String cStr = "UPDATE StudentChallenge SET status = '" + status + "' WHERE challengeID  = " + challengeID + " AND studentID = " + studentID + ";";
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+        //---------------------------------------------------------------------------------
+        // 55.  get Student UnRead Message Count for
+        //---------------------------------------------------------------------------------
+        public int getStudentUnReadMessageCount(int studentID)
+        {
+            {
+                SqlConnection con;
+                SqlCommand cmd;
+
+                try
+                {
+                    con = connect("DBConnectionString"); // create the connection
+                }
+                catch (Exception ex)
+                {
+                    // write to log
+                    throw (ex);
+                }
+                String cStr = "select COUNT(messageID) from message where (MesgRead = 'false' or MesgRead is null) AND messageByTeacher = 'true' AND studentID = " + studentID + "; ";
                 cmd = CreateCommand(cStr, con);             // create the command
                 try
                 {

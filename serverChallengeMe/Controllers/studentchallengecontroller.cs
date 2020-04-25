@@ -32,6 +32,14 @@ namespace serverChallengeMe.Controllers
             return stuC.putStudentChallenge(sc);
         }
 
+        // PUT api/StudentChallenge?challengeID={challengeID}&studentID={studentID}&status={status}
+        // עדכון סטטוס כאשר התלמיד לוחץ
+        public int Put(int challengeID, int studentID, string status)
+        {
+            StudentChallenge stuC = new StudentChallenge();
+            return stuC.updateStatus(challengeID, studentID, status);
+        }
+
         // DELETE api/<controller>/5
         public int Delete(int studentID, int challengeID)
         {
