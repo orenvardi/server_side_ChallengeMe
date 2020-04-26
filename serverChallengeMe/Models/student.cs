@@ -23,6 +23,7 @@ namespace serverChallengeMe.Models
 
         public Student() { }
 
+
         public Student(int studentID, string userName, string password, string firstName, string lastName, string phone, int classID, int teacherID, int avatarID, string birthDate)
         {
             StudentID = studentID;
