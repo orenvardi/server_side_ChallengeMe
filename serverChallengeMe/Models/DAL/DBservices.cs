@@ -246,28 +246,26 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 9.  GET Student By User Name And Password
         //---------------------------------------------------------------------------------
-        public int getStudentByPhoneAndPassword(string phone, int password)
+        public DataTable getStudentByPhoneAndPassword(string phone, string password)
         {
-            int id = 0;
             SqlConnection con = null;
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "select studentID from Student where phone = '" + phone + "' AND password = '"+password + "'; ";
-                SqlCommand cmd = new SqlCommand(selectSTR, con);
-                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-                if (dr2.HasRows)
-                {
-                    while (dr2.Read())
-                    {
-                        id = Convert.ToInt32(dr2["studentID"]);
-                    }
-                }
+                da = new SqlDataAdapter("select studentID, teacherID from Student where phone = '" + phone + "' AND password = '" + password + "'; ", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
             }
+
             catch (Exception ex)
             {
-                throw (ex);
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
             }
+
             finally
             {
                 if (con != null)
@@ -275,7 +273,7 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
                 }
             }
-            return id;
+            return dt;
         }
         //---------------------------------------------------------------------------------
         // .  GET Student By Phone

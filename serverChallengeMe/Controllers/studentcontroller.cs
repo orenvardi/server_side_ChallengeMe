@@ -47,7 +47,7 @@ namespace serverChallengeMe.Controllers
         }
 
         // GET api/
-        public int GetByPhoneAndPassword(string phone, int password)
+        public DataTable GetByPhoneAndPassword(string phone, string password)
         {
             Student student = new Student();
             return student.getStudentByPhoneAndPassword(phone, password);

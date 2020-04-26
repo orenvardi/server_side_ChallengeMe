@@ -61,7 +61,7 @@ namespace serverChallengeMe.Models
             return dBservices.getStudentNameById(studentID);
         }
 
-        public int getStudentByPhoneAndPassword(string phone, int password)
+        public DataTable getStudentByPhoneAndPassword(string phone, string password)
         {
             DBservices dBservices = new DBservices();
             return dBservices.getStudentByPhoneAndPassword(phone, password);
