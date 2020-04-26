@@ -55,12 +55,19 @@ namespace serverChallengeMe.Models
             DBservices dBservices = new DBservices();
             return dBservices.getStudentById(studentID);
         }
+        public DataTable getStudenNametById (int studentID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getStudentNameById(studentID);
+        }
 
         public int getStudentByPhoneAndPassword(string phone, int password)
         {
             DBservices dBservices = new DBservices();
             return dBservices.getStudentByPhoneAndPassword(phone, password);
         }
+
+        
 
         public int getStudentByPhone(string phone)
         {

@@ -2037,6 +2037,42 @@ namespace serverChallengeMe.Models.DAL
             }
             return dt;
         }
-    }
-} 
+   
+//---------------------------------------------------------------------------------
+// 49. get Name of students by id
+//---------------------------------------------------------------------------------
 
+public DataTable getStudentNameById(int studentID)
+{
+    SqlConnection con = null;
+    try
+    {
+        con = connect("DBConnectionString");
+        da = new SqlDataAdapter("select firstName, lastName, avatarID from Student where studentID =" + studentID + ";", con);
+        SqlCommandBuilder builder = new SqlCommandBuilder(da);
+        DataSet ds = new DataSet();
+        da.Fill(ds);
+        dt = ds.Tables[0];
+    }
+
+    catch (Exception ex)
+    {
+        Console.WriteLine("No rows found.");
+        // try to handle the error
+        throw ex;
+    }
+
+    finally
+    {
+        if (con != null)
+        {
+            con.Close();
+        }
+    }
+    return dt;
+}
+
+
+
+    }
+}
