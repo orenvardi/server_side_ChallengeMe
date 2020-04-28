@@ -17,8 +17,6 @@ namespace serverChallengeMe.Models
         public string AlertTime { get; set; }
         public bool AlertRead { get; set; }
 
-
-
         public Alert() { }
 
         public Alert(int alertID, int teacherID, int studentID, string alertTitle, string alertText, string alertDate, string alertTime, bool alertRead)
@@ -31,6 +29,13 @@ namespace serverChallengeMe.Models
             AlertDate = alertDate;
             AlertTime = alertTime;
             AlertRead = alertRead;
+        }
+
+        // מחזירה את כמות ההודעות שלא נקראו שיש למורה
+        public int getUnReadAlertCount(int teacherID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getUnReadAlertCount(teacherID);
         }
 
         public DataTable getNumOfAlertNotReadForStudents(int studentID)

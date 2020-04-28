@@ -16,11 +16,11 @@ namespace serverChallengeMe.Models
         public string MessageDate { get; set; }
         public string MessageTime { get; set; }
         public bool MessageByTeacher { get; set; }
-
+        public bool MesgRead { get; set; }
 
         public Message() { }
 
-        public Message(int messageID, int teacherID, int studentID, string messageTitle, string messageText, string messageDate, string messageTime, bool messageByTeacher)
+        public Message(int messageID, int teacherID, int studentID, string messageTitle, string messageText, string messageDate, string messageTime, bool messageByTeacher, bool mesgRead)
         {
             MessageID = messageID;
             TeacherID = teacherID;
@@ -30,9 +30,10 @@ namespace serverChallengeMe.Models
             MessageDate = messageDate;
             MessageTime = messageTime;
             MessageByTeacher = messageByTeacher;
+            MesgRead = mesgRead;
         }
 
-        // מחזירה את כמות ההודעות שלא קראו שיש למורה
+        // מחזירה את כמות ההודעות שלא נקראו שיש למורה
         public int getUnReadMessageCount(int teacherID)
         {
             DBservices dBservices = new DBservices();

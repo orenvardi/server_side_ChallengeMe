@@ -11,6 +11,14 @@ namespace serverChallengeMe.Controllers
 {
     public class AlertController : ApiController
     {
+        // GET api/Alert?teacherID_UnRead={teacherID}
+        // מחזירה את כמות ההתראות שלא נקראו שיש למורה
+        public int getUnReadAlertCount(int teacherID_UnRead)
+        {
+            Alert alert = new Alert();
+            return alert.getUnReadAlertCount(teacherID_UnRead);
+        }
+        
         // GET api/<controller>
         public DataTable Get(int studentID)
         {

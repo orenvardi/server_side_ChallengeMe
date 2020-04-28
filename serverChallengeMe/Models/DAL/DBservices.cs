@@ -110,7 +110,6 @@ namespace serverChallengeMe.Models.DAL
             }
             return t;
         }
-
         //---------------------------------------------------------------------------------
         // 5.  GET Teacher By mail
         //---------------------------------------------------------------------------------       
@@ -414,8 +413,9 @@ namespace serverChallengeMe.Models.DAL
             {
                 //int numEffected = cmd.ExecuteNonQuery(); // execute the command
                 int newID = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
-                return newID;
-          
+                return newID; 
+
+
             }
             catch (Exception ex)
             {
@@ -1962,15 +1962,180 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
             }
         }
+        //---------------------------------------------------------------------------------
+        // 57.  get UnRead Alert Count for teacher
+        //---------------------------------------------------------------------------------
+        public int getUnReadAlertCount(int teacherID)
+        {
+            {
+                SqlConnection con;
+                SqlCommand cmd;
 
+                try
+                {
+                    con = connect("DBConnectionString"); // create the connection
+                }
+                catch (Exception ex)
+                {
+                    // write to log
+                    throw (ex);
+                }
+                String cStr = "select COUNT(alertID) from Alert where (AlertRead = 'false' or AlertRead is null) AND teacherID = " + teacherID + "; ";
+                cmd = CreateCommand(cStr, con);             // create the command
+                try
+                {
+                    int unReadCount = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                    return unReadCount;
+                }
+                catch (Exception ex)
+                {
 
+                    throw (ex);
+                }
+                finally
+                {
+                    if (con != null)
+                    {
+                        // close the db connection
+                        con.Close();
+                    }
+                }
+            }
+        }
+        //---------------------------------------------------------------------------------
+        // 58.  GET Alert Settings By TeacherID
+        //---------------------------------------------------------------------------------       
+        public AlertSettings getAlertSettingsByTeacherID(int teacherID)
+        {
+            AlertSettings alertSettings = new AlertSettings();
+
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "select * from AlertSettings where teacherID = " + teacherID + ";";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                if (dr2.HasRows)
+                {
+                    while (dr2.Read())
+                    {
+                        alertSettings.AlertSettingID = Convert.ToInt32(dr2["alertSettingID"]);
+                        alertSettings.TeacherID = Convert.ToInt32(dr2["teacherID"]);
+                        alertSettings.AlertPositive = Convert.ToBoolean(dr2["alertPositive"]);
+                        alertSettings.AlertNegative = Convert.ToBoolean(dr2["alertNegative"]);
+                        alertSettings.AlertHelp = Convert.ToBoolean(dr2["alertHelp"]);
+                        alertSettings.AlertLate = Convert.ToBoolean(dr2["alertLate"]);
+                        alertSettings.AlertPreDate = Convert.ToInt32(dr2["alertPreDate"]);
+                        alertSettings.AlertIdle = Convert.ToInt32(dr2["alertIdle"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return alertSettings;
+        }
+        //---------------------------------------------------------------------------------
+        // 59.  INSERT Alert Settings
+        //---------------------------------------------------------------------------------
+        public int postAlertSettings(AlertSettings alertSettings)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            String cStr = BuildInsertCommandAlertSettings(alertSettings);      // helper method to build the insert string
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {             
+                //int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                int newID = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                return newID; 
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
+        //--------------------------------------------------------------------
+        // 60.  Build INSERT AlertSettings Command
+        //--------------------------------------------------------------------
+        private String BuildInsertCommandAlertSettings(AlertSettings alertSettings)
+        {
+            String command;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", alertSettings.TeacherID, alertSettings.AlertPositive, alertSettings.AlertNegative, alertSettings.AlertHelp, alertSettings.AlertLate, alertSettings.AlertPreDate, alertSettings.AlertIdle);
+            String prefix = "INSERT INTO AlertSettings(teacherID, alertPositive, alertNegative, alertHelp, alertLate, alertPreDate, alertIdle) output INSERTED.alertSettingID ";
+            command = prefix + sb.ToString();
+            return command;
+        }
+        //---------------------------------------------------------------------------------
+        // 61.  UPDATE Alert Settings
+        //---------------------------------------------------------------------------------
+        public int putAlertSettings(AlertSettings alertSettings)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            String cStr = "UPDATE AlertSettings SET alertPositive = '"+ alertSettings.AlertPositive+ "', alertNegative = '" +
+                alertSettings.AlertNegative+ "', alertHelp = '" + alertSettings.AlertHelp+ "', alertLate = '"+alertSettings.AlertLate+
+                "', alertPreDate = "+ alertSettings.AlertPreDate+ ", AlertIdle = "+alertSettings.AlertIdle + 
+                " WHERE alertSettingID = "+ alertSettings.AlertSettingID+"; ";
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
 
 
 
 
 
         //---------------------------------------------------------------------------------
-        // 47.  ???????????????? get Number of Messege For Students That Not Read
+        // 47.  ?????????לעמוד תלמיד??????? get Number of Messege For Students That Not Read
         //---------------------------------------------------------------------------------
         public DataTable getNumOfMessageNotReadForStudents(int studentID)
         {
@@ -2003,7 +2168,7 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 48. ??????????????????????? get Number of Alert For Students That Not Read
+        // 48. ????????????לעמוד תלמיד??????????? get Number of Alert For Students That Not Read
         //---------------------------------------------------------------------------------
         public DataTable getNumOfAlertNotReadForStudents(int studentID)
         {

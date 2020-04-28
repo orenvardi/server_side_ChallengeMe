@@ -32,22 +32,22 @@ namespace serverChallengeMe.Models
             AlertIdle = alertIdle;
         }
 
-        //public DataTable getAlertSettings()
-        //{
-        //    DBservices dBservices = new DBservices();
-        //    return dBservices.getAlertSettings();
-        //}
+        public AlertSettings getAlertSettingsByTeacherID(int teacherID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getAlertSettingsByTeacherID(teacherID);
+        }
 
-        //public int postAlertSettings(AlertSettings alertSettings)
-        //{
-        //    DBservices dbs = new DBservices();
-        //    return dbs.postAlertSettings(alertSettings);
-        //}
+        public int putAlertSettings(AlertSettings alertSettings)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.putAlertSettings(alertSettings);
+        }
 
-        //public int deleteAlertSettings(int id)
-        //{
-        //    DBservices dbs = new DBservices();
-        //    return dbs.deleteAlertSettings(id);
-        //}
+        public int postAlertSettings(AlertSettings alertSettings)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.postAlertSettings(alertSettings);
+        }
     }
 }

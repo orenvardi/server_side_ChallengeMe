@@ -11,31 +11,26 @@ namespace serverChallengeMe.Controllers
 {
     public class AlertSettingsController : ApiController
     {
-        // GET api/<controller>
-        public IEnumerable<string> Get()
+        // GET api/AlertSettings
+        // מחזיר הגדרות של מחנך לפי המזהה של המחנך
+        public AlertSettings GetByTeacherID(int teacherID)
         {
-            return new string[] { "value1", "value2" };
+            AlertSettings alertS = new AlertSettings();
+            return alertS.getAlertSettingsByTeacherID(teacherID);
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
+        // PUT api/AlertSettings
+        public int Put(AlertSettings alertSettings)
         {
-            return "value";
+            AlertSettings alertS = new AlertSettings();
+            return alertS.putAlertSettings(alertSettings);
         }
 
-        // POST api/<controller>
-        public void Post([FromBody]string value)
+        // POST api/AlertSettings
+        public int Post(AlertSettings alertSettings)
         {
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
+            AlertSettings alertS = new AlertSettings();
+            return alertS.postAlertSettings(alertSettings);
         }
     }
 }

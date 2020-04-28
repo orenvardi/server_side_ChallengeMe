@@ -12,7 +12,7 @@ namespace serverChallengeMe.Controllers
     public class MessageController : ApiController
     {
         // GET api/Message?teacherID_UnRead={teacherID}
-        // מחזירה את כמות ההודעות שלא קראו שיש למורה
+        // מחזירה את כמות ההודעות שלא נקראו שיש למורה
         public int getUnReadMessageCount(int teacherID_UnRead)
         {
             Message message = new Message();
@@ -72,7 +72,6 @@ namespace serverChallengeMe.Controllers
         {
             Message m = new Message();
             return m.postMessage(message);
-
         }
 
 
