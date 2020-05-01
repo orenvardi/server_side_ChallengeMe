@@ -36,6 +36,18 @@ namespace serverChallengeMe.Models
             return dBservices.getStudentChallenge(studentID);
         }
 
+        public string getChallengeImage(int studentID, int challengeID)
+        {
+            DBservices dBservices = new DBservices();
+            string imagePath = dBservices.getChallengeImage(studentID, challengeID);
+            string base64ImageRepresentation;
+           
+                byte[] imageArray = System.IO.File.ReadAllBytes(imagePath);
+                base64ImageRepresentation = Convert.ToBase64String(imageArray);
+            
+            return base64ImageRepresentation;
+        }
+
         public int postStudentChallenge(StudentChallenge sc)
         {
             DBservices dbs = new DBservices();
@@ -51,10 +63,10 @@ namespace serverChallengeMe.Models
         //string image, int challengeID, int studentID
         public int putChallengeImage(StudentChallenge sc)
         {
-            DBservices dbs = new DBservices();
+           
             //string folderPath = Server.MapPath("~/ImagesFolder/");  //Create a Folder in your Root directory on your solution.
             string fileName = sc.ChallengeID + ".png";
-            string imagePath = "C:\\Users\\user\\Desktop\\ChallengeMeClient\\src\\img" + fileName;
+            string imagePath = "C:\\Users\\lipaz\\Desktop\\challenge_me\\src\\img\\challengesImages\\" + fileName;
 
             string base64StringData = sc.Image; // Your base 64 string data
             string cleandata = base64StringData.Replace("data:image/png;base64,", "");
@@ -62,6 +74,7 @@ namespace serverChallengeMe.Models
             MemoryStream ms = new MemoryStream(data);
             System.Drawing.Image img = System.Drawing.Image.FromStream(ms);
             img.Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
+            DBservices dbs = new DBservices();
             return dbs.putChallengeImage(imagePath, sc.ChallengeID, sc.StudentID);
         }
 
@@ -75,10 +88,5 @@ namespace serverChallengeMe.Models
             DBservices dbs = new DBservices();
             return dbs.deleteStudentChallenge(studentID, challengeID);
         }
-
-
-
-
-
     }
 }

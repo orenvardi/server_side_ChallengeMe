@@ -18,6 +18,13 @@ namespace serverChallengeMe.Controllers
             return stuC.getStudentChallenge(studentID);
         }
 
+        //GET api/StudentChallenge?studentID ={studentID}
+        public string Get(int studentID,int challengeID)
+        {
+            StudentChallenge stuC = new StudentChallenge();
+            return stuC.getChallengeImage(studentID, challengeID);
+        }
+
         // POST api/<controller>
         public int Post(StudentChallenge sc)
         {
@@ -26,18 +33,20 @@ namespace serverChallengeMe.Controllers
         }
 
         // PUT api/<controller>/5
+        //public int Put(StudentChallenge sc)
+        //{
+        //    StudentChallenge stuC = new StudentChallenge();
+        //    return stuC.putStudentChallenge(sc);
+        //}
+
+
+        //string image, int challengeID, int studentID
+        // PUT api/<controller>/5
+        // שמירת התמונה שהתלמיד בחר לאתגר
         public int Put(StudentChallenge sc)
         {
             StudentChallenge stuC = new StudentChallenge();
-            return stuC.putStudentChallenge(sc);
-        }
-
-        // PUT api/<controller>/5
-        // שמירת התמונה שהתלמיד בחר לאתגר
-        public int Put(string image, int challengeID, int studentID)
-        {
-            StudentChallenge stuC = new StudentChallenge();
-            return stuC.putChallengeImage(image, challengeID, studentID);
+            return stuC.putChallengeImage(sc);
         }
 
         // PUT api/StudentChallenge?challengeID={challengeID}&studentID={studentID}&status={status}

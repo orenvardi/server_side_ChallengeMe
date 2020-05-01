@@ -2161,7 +2161,43 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
             }
         }
+        //---------------------------------------------------------------------------------
+        // 63.  GET Alert Settings By TeacherID
+        //---------------------------------------------------------------------------------       
+        public string getChallengeImage(int studentID, int challengeID)
+        {
+            string imagePath = "";
 
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "select image from studentChallenge where studentID = " + studentID + " AND challengeID = "+ challengeID + ";";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                if (dr2.HasRows)
+                {
+                    while (dr2.Read())
+                    {
+                        if (DBNull.Value.Equals(dr2["image"]))
+                            imagePath = "C:\\Users\\lipaz\\Desktop\\challenge_me\\src\\img\\challengesImages\\emptyImg.png";
+                        else imagePath = (string)dr2["image"];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return imagePath;
+        }
 
 
 
