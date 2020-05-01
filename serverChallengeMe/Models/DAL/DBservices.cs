@@ -1679,7 +1679,7 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                string str = "select * from message M join student S on M.studentID = S.studentID where M.studentID = " + studentID + ";";
+                string str = "select * from message M join student S on M.studentID = S.studentID where M.studentID = " + studentID + " order by M.messageID DESC;";
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();

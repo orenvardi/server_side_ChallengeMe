@@ -68,7 +68,7 @@ namespace serverChallengeMe.Models
             return dBservices.getAllMessage(teacherID, studentID);
         }
 
-        // מעדכן ל: MesgRead=true
+        // מעדכן עבור המורה את כל ההודעות של התלמיד הזה לנקראו
         public int updateMessage(int teacherID, int studentID)
         {
             DBservices dbs = new DBservices();

@@ -14,10 +14,11 @@ namespace serverChallengeMe.Models
         public string Deadline { get; set; }
         public string Status { get; set; }
         public string TimeStamp { get; set; }
+        public string Image { get; set; }
 
         public StudentChallenge() { }
 
-        public StudentChallenge(int challengeID, int studentID, int difficulty, string deadline, string status, string timeStamp)
+        public StudentChallenge(int challengeID, int studentID, int difficulty, string deadline, string status, string timeStamp, string image)
         {
             ChallengeID = challengeID;
             StudentID = studentID;
@@ -25,6 +26,7 @@ namespace serverChallengeMe.Models
             Deadline = deadline;
             Status = status;
             TimeStamp = timeStamp;
+            Image = image;
         }
 
         public DataTable getStudentChallenge(int studentID)
