@@ -209,6 +209,7 @@
     <Compile Include="Models\DAL\DBservices.cs" />
     <Compile Include="Models\FeaturesQuestion.cs" />
     <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\pathOfImage.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\StudentChallenge.cs" />
     <Compile Include="Models\StudentFeatures.cs" />

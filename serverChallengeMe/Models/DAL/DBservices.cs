@@ -2180,7 +2180,7 @@ namespace serverChallengeMe.Models.DAL
                     while (dr2.Read())
                     {
                         if (DBNull.Value.Equals(dr2["image"]))
-                            imagePath = "C:\\Users\\lipaz\\Desktop\\challenge_me\\src\\img\\challengesImages\\emptyImg.png";
+                            imagePath = pathOfImage.path+ "emptyImg.png";
                         else imagePath = (string)dr2["image"];
                     }
                 }

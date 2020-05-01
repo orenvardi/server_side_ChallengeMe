@@ -5,6 +5,9 @@ using System.Web;
 using System.Data;
 using System.IO;
 using serverChallengeMe.Models.DAL;
+
+
+
 namespace serverChallengeMe.Models
 {
     public class StudentChallenge
@@ -66,7 +69,7 @@ namespace serverChallengeMe.Models
            
             //string folderPath = Server.MapPath("~/ImagesFolder/");  //Create a Folder in your Root directory on your solution.
             string fileName = sc.ChallengeID + ".png";
-            string imagePath = "C:\\Users\\lipaz\\Desktop\\challenge_me\\src\\img\\challengesImages\\" + fileName;
+            string imagePath = pathOfImage.path + fileName;
 
             string base64StringData = sc.Image; // Your base 64 string data
             string cleandata = base64StringData.Replace("data:image/png;base64,", "");
