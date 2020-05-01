@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data;
+using System.IO;
 using serverChallengeMe.Models.DAL;
 namespace serverChallengeMe.Models
 {
@@ -45,6 +46,23 @@ namespace serverChallengeMe.Models
         {
             DBservices dbs = new DBservices();
             return dbs.updateStudentChallenge(sc);
+        }
+
+        //string image, int challengeID, int studentID
+        public int putChallengeImage(StudentChallenge sc)
+        {
+            DBservices dbs = new DBservices();
+            //string folderPath = Server.MapPath("~/ImagesFolder/");  //Create a Folder in your Root directory on your solution.
+            string fileName = sc.ChallengeID + ".png";
+            string imagePath = "C:\\Users\\user\\Desktop\\ChallengeMeClient\\src\\img" + fileName;
+
+            string base64StringData = sc.Image; // Your base 64 string data
+            string cleandata = base64StringData.Replace("data:image/png;base64,", "");
+            byte[] data = System.Convert.FromBase64String(cleandata);
+            MemoryStream ms = new MemoryStream(data);
+            System.Drawing.Image img = System.Drawing.Image.FromStream(ms);
+            img.Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
+            return dbs.putChallengeImage(imagePath, sc.ChallengeID, sc.StudentID);
         }
 
         public int updateStatus (int challengeID, int studentID, string status)

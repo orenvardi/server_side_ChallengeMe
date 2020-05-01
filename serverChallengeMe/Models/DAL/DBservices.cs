@@ -2128,6 +2128,38 @@ namespace serverChallengeMe.Models.DAL
                 if (con != null)
                     con.Close();
             }
+        }      
+        //---------------------------------------------------------------------------------
+        // 62.  UPDATE If Message Read 
+        //---------------------------------------------------------------------------------
+        public int putChallengeImage(string imagePath, int challengeID, int studentID)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            String cStr = "UPDATE studentChallenge SET image = '"+ imagePath+ "' where challengeID = "+ challengeID+" AND studentID = " + studentID + ";";
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
         }
 
 

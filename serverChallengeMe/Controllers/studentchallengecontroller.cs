@@ -32,6 +32,14 @@ namespace serverChallengeMe.Controllers
             return stuC.putStudentChallenge(sc);
         }
 
+        // PUT api/<controller>/5
+        // שמירת התמונה שהתלמיד בחר לאתגר
+        public int Put(string image, int challengeID, int studentID)
+        {
+            StudentChallenge stuC = new StudentChallenge();
+            return stuC.putChallengeImage(image, challengeID, studentID);
+        }
+
         // PUT api/StudentChallenge?challengeID={challengeID}&studentID={studentID}&status={status}
         // עדכון סטטוס כאשר התלמיד לוחץ
         public int Put(int challengeID, int studentID, string status)
