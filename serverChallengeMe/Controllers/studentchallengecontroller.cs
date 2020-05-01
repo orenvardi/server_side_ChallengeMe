@@ -33,17 +33,20 @@ namespace serverChallengeMe.Controllers
         }
 
         // PUT api/<controller>/5
-        //public int Put(StudentChallenge sc)
-        //{
-        //    StudentChallenge stuC = new StudentChallenge();
-        //    return stuC.putStudentChallenge(sc);
-        //}
+       
+        public int Put(StudentChallenge sc)
+        {
+            StudentChallenge stuC = new StudentChallenge();
+            return stuC.putStudentChallenge(sc);
+        }
 
 
         //string image, int challengeID, int studentID
         // PUT api/<controller>/5
         // שמירת התמונה שהתלמיד בחר לאתגר
-        public int Put(StudentChallenge sc)
+        [HttpPut]
+        [Route("api/StudentChallenge/AddImg")]
+        public int Put2(StudentChallenge sc)
         {
             StudentChallenge stuC = new StudentChallenge();
             return stuC.putChallengeImage(sc);
