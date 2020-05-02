@@ -33,7 +33,6 @@ namespace serverChallengeMe.Controllers
         }
 
         // PUT api/<controller>/5
-       
         public int Put(StudentChallenge sc)
         {
             StudentChallenge stuC = new StudentChallenge();
