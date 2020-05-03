@@ -99,6 +99,7 @@ namespace serverChallengeMe.Models.DAL
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
                 throw (ex);
             }
             finally
@@ -1965,6 +1966,7 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 57.  get UnRead Alert Count for teacher
         //---------------------------------------------------------------------------------
+
         public int getUnReadAlertCount(int teacherID)
         {
             {
@@ -1989,7 +1991,7 @@ namespace serverChallengeMe.Models.DAL
                 }
                 catch (Exception ex)
                 {
-
+                   
                     throw (ex);
                 }
                 finally
