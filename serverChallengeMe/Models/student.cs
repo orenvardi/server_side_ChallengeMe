@@ -18,13 +18,13 @@ namespace serverChallengeMe.Models
         public string Phone { get; set; }
         public int ClassID { get; set; }
         public int TeacherID { get; set; }
-        public int AvatarID { get; set; }
+        public string Avatar { get; set; }
         public string BirthDate { get; set; }
 
         public Student() { }
 
 
-        public Student(int studentID, string userName, string password, string firstName, string lastName, string phone, int classID, int teacherID, int avatarID, string birthDate)
+        public Student(int studentID, string userName, string password, string firstName, string lastName, string phone, int classID, int teacherID, string avatar, string birthDate)
         {
             StudentID = studentID;
             UserName = userName;
@@ -34,7 +34,7 @@ namespace serverChallengeMe.Models
             Phone = phone;
             ClassID = classID;
             TeacherID = teacherID;
-            AvatarID = avatarID;
+            Avatar = avatar;
             BirthDate = birthDate;
         }
 

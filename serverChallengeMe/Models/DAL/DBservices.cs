@@ -2279,7 +2279,7 @@ public DataTable getStudentNameById(int studentID)
     try
     {
         con = connect("DBConnectionString");
-        da = new SqlDataAdapter("select firstName, lastName, avatarID from Student where studentID =" + studentID + ";", con);
+        da = new SqlDataAdapter("select firstName, lastName, avatar from Student where studentID =" + studentID + ";", con);
         SqlCommandBuilder builder = new SqlCommandBuilder(da);
         DataSet ds = new DataSet();
         da.Fill(ds);
