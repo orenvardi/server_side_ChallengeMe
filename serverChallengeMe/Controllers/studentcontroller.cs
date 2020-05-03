@@ -67,6 +67,13 @@ namespace serverChallengeMe.Controllers
             return s.putStudent(student);
         }
 
+        // מעדכן את האווטאר שהתלמיד בחר בטבלת תלמיד
+        public int Put(int studentID, string avatar)
+        {
+            Student s = new Student();
+            return s.putAvatar(studentID, avatar);
+        }
+
         // DELETE api/<controller>/5
         public int Delete(int studentID)
         {

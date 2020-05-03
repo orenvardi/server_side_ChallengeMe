@@ -68,8 +68,6 @@ namespace serverChallengeMe.Models
             return dBservices.getStudentByPhoneAndPassword(phone, password);
         }
 
-        
-
         public int getStudentByPhone(string phone)
         {
             DBservices dBservices = new DBservices();
@@ -87,6 +85,12 @@ namespace serverChallengeMe.Models
         {
             DBservices dbs = new DBservices();
             return dbs.updateStudentDetails(student);
+        }
+    
+        public int putAvatar(int studentID, string avatar)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.putAvatar(studentID, avatar);
         }
 
         public int deleteStudent(int studentID)
