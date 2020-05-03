@@ -74,6 +74,12 @@ namespace serverChallengeMe.Models
             return dBservices.getStudentByPhone(phone);
         }
 
+        public int GetSuccessCount(int studentID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.GetSuccessCount(studentID);
+        }
+
         public DataTable postStudent(Student student)
         {
             DBservices dbs = new DBservices();

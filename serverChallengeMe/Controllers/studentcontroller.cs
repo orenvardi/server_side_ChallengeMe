@@ -53,12 +53,20 @@ namespace serverChallengeMe.Controllers
             return student.getStudentByPhoneAndPassword(phone, password);
         }
 
+        [HttpGet]
+        [Route("api/Student/SuccessCount")]
+        // GET api/Student?studentID={studentID}
+        public int GetSuccessCount(int studentID)
+        {
+            Student student = new Student();
+            return student.GetSuccessCount(studentID);
+        }
+
         // POST api/<controller>
         public DataTable Post(Student student)
         {
             Student s = new Student();
             return s.postStudent(student);
-
         }
 
         public int Put(Student student)

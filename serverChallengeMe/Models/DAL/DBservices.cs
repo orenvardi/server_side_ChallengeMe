@@ -2128,9 +2128,9 @@ namespace serverChallengeMe.Models.DAL
                 if (con != null)
                     con.Close();
             }
-        }      
+        }
         //---------------------------------------------------------------------------------
-        // 62.  UPDATE If Message Read 
+        // 62.  put Challenge Image
         //---------------------------------------------------------------------------------
         public int putChallengeImage(string imagePath, int challengeID, int studentID)
         {
@@ -2162,7 +2162,7 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //---------------------------------------------------------------------------------
-        // 63.  GET Alert Settings By TeacherID
+        // 63.  get Challenge Image
         //---------------------------------------------------------------------------------       
         public string getChallengeImage(int studentID, int challengeID)
         {
@@ -2199,7 +2199,7 @@ namespace serverChallengeMe.Models.DAL
             return imagePath;
         }
         //---------------------------------------------------------------------------------
-        // 64.  UPDATE If Message Read 
+        // 64.  put Avatar
         //---------------------------------------------------------------------------------
         public int putAvatar(int studentID, string avatar)
         {
@@ -2228,6 +2228,46 @@ namespace serverChallengeMe.Models.DAL
             {
                 if (con != null)
                     con.Close();
+            }
+        }
+        //---------------------------------------------------------------------------------
+        // 65. GetSuccessCount
+        //---------------------------------------------------------------------------------
+        public int GetSuccessCount(int studentID)
+        {
+            {
+                SqlConnection con;
+                SqlCommand cmd;
+
+                try
+                {
+                    con = connect("DBConnectionString"); // create the connection
+                }
+                catch (Exception ex)
+                {
+                    // write to log
+                    throw (ex);
+                }
+                String cStr = "select COUNT(*) from studentChallenge where studentID = " + studentID + " AND status = 1; ";
+                cmd = CreateCommand(cStr, con);             // create the command
+                try
+                {
+                    int successCounter = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                    return successCounter;
+                }
+                catch (Exception ex)
+                {
+
+                    throw (ex);
+                }
+                finally
+                {
+                    if (con != null)
+                    {
+                        // close the db connection
+                        con.Close();
+                    }
+                }
             }
         }
 
