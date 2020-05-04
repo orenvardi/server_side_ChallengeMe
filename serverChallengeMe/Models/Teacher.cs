@@ -79,7 +79,9 @@ namespace serverChallengeMe.Models
                     message.Body = "<div><div>הססמה הזמנית החדשה שלך היא: " + randomPassword + "</div><div>כאשר אתה נכנס אתה תצטרך לשנות את הססמה</div><div>challenge me</div><div>";
                     message.IsBodyHtml = true; //to make message body as html  
                     smtp.Host = "smtp.gmail.com"; //for gmail host  
-                    smtp.Port = 587;
+                    smtp.Port = 465;
+
+                    //smtp.Port = 587;
                     smtp.Credentials = new System.Net.NetworkCredential("challenge.me555555@gmail.com", "oren5555");
 
                     smtp.Send(message);
