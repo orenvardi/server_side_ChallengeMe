@@ -74,15 +74,16 @@ namespace serverChallengeMe.Models
                     smtp.EnableSsl = true;
                     MailMessage message = new MailMessage();
                     message.To.Add(new MailAddress(mail));
-                    message.From = new MailAddress("challenge.me555555@gmail.com");
+                    message.From = new MailAddress("challengeme@walla.co.il");
                     message.Subject = "challenge me new temporary password";
                     message.Body = "<div><div>הססמה הזמנית החדשה שלך היא: " + randomPassword + "</div><div>כאשר אתה נכנס אתה תצטרך לשנות את הססמה</div><div>challenge me</div><div>";
                     message.IsBodyHtml = true; //to make message body as html  
-                    smtp.Host = "smtp.gmail.com"; //for gmail host  
-                    smtp.Port = 465;
+                    smtp.Host = "out.walla.co.il"; //for walla host  
+                    //smtp.Host = "smtp.gmail.com"; //for gmail host  
 
+                    smtp.Port = 587;
                     //smtp.Port = 587;
-                    smtp.Credentials = new System.Net.NetworkCredential("challenge.me555555@gmail.com", "oren5555");
+                    smtp.Credentials = new System.Net.NetworkCredential("challengeme@walla.co.il", "a1b2c3d4");
 
                     smtp.Send(message);
                     return 1;

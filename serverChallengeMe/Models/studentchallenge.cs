@@ -67,14 +67,24 @@ namespace serverChallengeMe.Models
         // שמירת נתיב תמונת האתגר בדאטה בייס
         public int putChallengeImage(StudentChallenge sc)
         {
-            // מגדירים ששם הקובץ יהיה המספר המזהה של האתגר עם הסיומת המתאימה
-            string fileName = sc.ChallengeID + ".png";
-            // נתיב התמונה נלקח מהמחלקה הסטטית שלנו בתוספת שם הקובץ
-            string imagePath = PathOfImage.path + fileName;
             // התמונה מתקבלת מהצד לקוח כבייס 64, שומרים אותה במשתנה
             string base64StringData = sc.Image; // Your base 64 string data
+
+            //remove everything before the first /
+            string type = base64StringData.Substring(base64StringData.IndexOf("/")+1);
+            
+            // remove everything after the first /
+            type = type.Substring(0, type.IndexOf(";"));
+
+            // מגדירים ששם הקובץ יהיה המספר המזהה של האתגר עם הסיומת המתאימה
+            string fileName = sc.ChallengeID.ToString() + 's' + sc.StudentID.ToString() + "."+type;
+           
+            // נתיב התמונה נלקח מהמחלקה הסטטית שלנו בתוספת שם הקובץ
+            string imagePath = PathOfImage.path + fileName;
+            
             // חותכים את התחלת הסטרינג כי זה מיותר
-            string cleandata = base64StringData.Replace("data:image/png;base64,", "");
+            string cleandata = base64StringData.Replace("data:image/"+ type + ";base64,", "");
+            
             // עושים המרה מבייס 64 למערך של ביטים
             byte[] data = System.Convert.FromBase64String(cleandata);
 
