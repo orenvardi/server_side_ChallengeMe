@@ -13,6 +13,6 @@ namespace serverChallengeMe.Models
         // אורן
         //public static string path = "C:\\Users\\user\\Desktop\\ChallengeMeClient\\src\\img\\challengesImages\\";
         // רופין
-        //public static string path = HostingEnvironment.MapPath("~/challengesImages") +"\\";
+        public static string path = HostingEnvironment.MapPath("~/challengesImages") + "\\";
     }
 }
