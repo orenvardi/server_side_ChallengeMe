@@ -62,6 +62,15 @@ namespace serverChallengeMe.Controllers
             return student.GetSuccessCount(studentID);
         }
 
+        [HttpGet]
+        [Route("api/Student/ImageStudent")]
+        // GET api/Student?studentID={studentID}
+        public string GetImageStudent(int studentID)
+        {
+            Student student = new Student();
+            return student.GetImageStudent(studentID);
+        }
+
         // POST api/<controller>
         public DataTable Post(Student student)
         {
@@ -73,6 +82,14 @@ namespace serverChallengeMe.Controllers
         {
             Student s = new Student();
             return s.putStudent(student);
+        }
+        [HttpPut]
+        [Route("api/Student/AddImgStudent")]
+        // image + studentID
+        public int Put2(Student student)
+        {
+            Student s = new Student();
+            return s.putStudentImage(student);
         }
 
         // מעדכן את האווטאר שהתלמיד בחר בטבלת תלמיד

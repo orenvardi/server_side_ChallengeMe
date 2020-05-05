@@ -2280,7 +2280,7 @@ namespace serverChallengeMe.Models.DAL
 
 
         //---------------------------------------------------------------------------------
-        // 47.  ?????????לעמוד תלמיד??????? get Number of Messege For Students That Not Read
+        // 66.  ?????????לעמוד תלמיד??????? get Number of Messege For Students That Not Read
         //---------------------------------------------------------------------------------
         public DataTable getNumOfMessageNotReadForStudents(int studentID)
         {
@@ -2313,7 +2313,7 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // 48. ????????????לעמוד תלמיד??????????? get Number of Alert For Students That Not Read
+        // 67. ????????????לעמוד תלמיד??????????? get Number of Alert For Students That Not Read
         //---------------------------------------------------------------------------------
         public DataTable getNumOfAlertNotReadForStudents(int studentID)
         {
@@ -2347,7 +2347,7 @@ namespace serverChallengeMe.Models.DAL
         }
    
 //---------------------------------------------------------------------------------
-// 49. get Name of students by id
+// 68. get Name of students by id
 //---------------------------------------------------------------------------------
 
 public DataTable getStudentNameById(int studentID)
@@ -2379,8 +2379,77 @@ public DataTable getStudentNameById(int studentID)
     }
     return dt;
 }
+        //---------------------------------------------------------------------------------
+        // 62.  put Challenge Image
+        //---------------------------------------------------------------------------------
+        public int putStudentImage(string imagePath, int studentID)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            String cStr = "UPDATE Student SET imageStudent = '" + imagePath + "' where studentID = " + studentID + ";";
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+        //---------------------------------------------------------------------------------
+        // 63.  get Challenge Image
+        //---------------------------------------------------------------------------------       
+        public string GetImageStudent(int studentID)
+        {
+            string imagePath = "";
 
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "select imageStudent from Student where studentID = " + studentID + ";";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                if (dr2.HasRows)
+                {
+                    while (dr2.Read())
+                    {
+                        if (DBNull.Value.Equals(dr2["imageStudent"]))
+                            imagePath = PathOfImage.path + "emptyUserImg.png";
+                        else imagePath = (string)dr2["imageStudent"];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return imagePath;
+        }
 
+        
 
     }
 }
