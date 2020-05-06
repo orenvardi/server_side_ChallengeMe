@@ -60,36 +60,38 @@ namespace serverChallengeMe.Models
             var randomPassword = "";
             if (teacherID != 0) //במידה שקיים מחנך עם המייל הזה
             {
+                // יצירת סיסמה רנדומלית 
                 Random rnd = new Random();
                 //string newPwd = Guid.NewGuid().ToString().Substring(0, 8) + rnd.Next(1, 10);
                 randomPassword = Membership.GeneratePassword(8, 0) + rnd.Next(1, 10); //פונקציה שיוצרת סיסמא רנדומלית של 8 תווים עם לפחות תו אחד מיוחד וספרה אחת
                 randomPassword = Regex.Replace(randomPassword, @"[^a-zA-Z0-9]", m => rnd.Next(0, 10).ToString());
-                dBservices.updateTeacherPassword(teacherID, randomPassword, 1); //פונקציה שמעדכנת את הסיסמא הרנדומלית בטבלת מחנכים ומכניסה ערך 1 לעמודת 'סיסמא זמנית'
-
                 
+                // שליחת מייל
                 try {
                     SmtpClient smtp = new SmtpClient();
-                    smtp.UseDefaultCredentials = false;
+                    smtp.UseDefaultCredentials = true;
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtp.EnableSsl = true;
                     MailMessage message = new MailMessage();
-                    message.To.Add(new MailAddress(mail));
-                    message.From = new MailAddress("challengeme@walla.co.il");
+                    message.To.Add(mail);
+                    message.From = new MailAddress("challenge.me555555@gmail.com");
+                    //message.From = new MailAddress("challengeme@walla.co.il");
                     message.Subject = "challenge me new temporary password";
                     message.Body = "<div><div>הססמה הזמנית החדשה שלך היא: " + randomPassword + "</div><div>כאשר אתה נכנס אתה תצטרך לשנות את הססמה</div><div>challenge me</div><div>";
                     message.IsBodyHtml = true; //to make message body as html  
-                    smtp.Host = "out.walla.co.il"; //for walla host  
-                    //smtp.Host = "smtp.gmail.com"; //for gmail host  
-
-                    smtp.Port = 587;
-                    //smtp.Port = 587;
-                    smtp.Credentials = new System.Net.NetworkCredential("challengeme@walla.co.il", "a1b2c3d4");
-
+                    //smtp.Host = "out.walla.co.il"; //for walla host  
+                    smtp.Host = "smtp.gmail.com"; //for gmail host  
+                    smtp.Port = 25;
+                    //smtp.Port = 587;  
+                    //smtp.Port = 465;  
+                    smtp.Credentials = new System.Net.NetworkCredential("challenge.me555555@gmail.com", "oren5555");
+                    //smtp.Credentials = new System.Net.NetworkCredential("challengeme@walla.co.il", "a1b2c3d4");
                     smtp.Send(message);
+                    //פונקציה שמעדכנת את הסיסמא הרנדומלית בטבלת מחנכים ומכניסה ערך 1 לעמודת 'סיסמא זמנית'
+                    dBservices.updateTeacherPassword(teacherID, randomPassword, 1); 
                     return 1;
-            } catch (Exception e) { throw e; }
-        }
-    
+                } catch (Exception e) { throw e; }
+            } 
             return 0;
             //אם המייל קיים מחזיר 1 שמסמל על זה ששונתה הססמה, אם המייל לא קיים מחזיר 0
         }
