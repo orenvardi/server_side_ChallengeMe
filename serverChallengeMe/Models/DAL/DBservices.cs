@@ -2168,7 +2168,7 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------       
         public string getChallengeImage(int studentID, int challengeID)
         {
-            string imagePath = "";
+            string fileName = "";
 
             SqlConnection con = null;
             try
@@ -2182,8 +2182,8 @@ namespace serverChallengeMe.Models.DAL
                     while (dr2.Read())
                     {
                         if (DBNull.Value.Equals(dr2["image"]))
-                            imagePath = PathOfImage.path+ "emptyImg.png";
-                        else imagePath = (string)dr2["image"];
+                            fileName = "emptyImg.png";
+                        else fileName = (string)dr2["image"];
                     }
                 }
             }
@@ -2198,7 +2198,7 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
                 }
             }
-            return imagePath;
+            return fileName;
         }
         //---------------------------------------------------------------------------------
         // 64.  put Avatar
@@ -2430,7 +2430,7 @@ public DataTable getStudentNameById(int studentID)
                     while (dr2.Read())
                     {
                         if (DBNull.Value.Equals(dr2["imageStudent"]))
-                            imagePath = PathOfImage.path + "emptyUserImg.png";
+                            imagePath = "emptyUserImg.png";
                         else imagePath = (string)dr2["imageStudent"];
                     }
                 }

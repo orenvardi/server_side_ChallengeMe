@@ -41,8 +41,11 @@ namespace serverChallengeMe.Models
         public string getChallengeImage(int studentID, int challengeID)
         {
             DBservices dBservices = new DBservices();
-            // לוקחים את נתיב התמונה ששמור כסטרינג בטבלה בדאטה בייס
-            string imagePath = dBservices.getChallengeImage(studentID, challengeID);
+            // לוקחים את שם התמונה ששמור כסטרינג בטבלה בדאטה בייס
+            string fileName = dBservices.getChallengeImage(studentID, challengeID);
+            // נתיב התמונה נלקח מהמחלקה הסטטית שלנו בתוספת שם הקובץ
+            string imagePath = PathOfImage.path + fileName;
+
             // ממירים את נתיב התמונה מסטרינג למערך של ביטים
             byte[] imageArray = System.IO.File.ReadAllBytes(imagePath);
             // ממירים את מערך הביטים לבייס 64
@@ -64,22 +67,20 @@ namespace serverChallengeMe.Models
         }
 
         //string image, int challengeID, int studentID
-        // שמירת נתיב תמונת האתגר בדאטה בייס
+        // שמירת שם הקובץ של תמונת האתגר בדאטה בייס
         public int putChallengeImage(StudentChallenge sc)
         {
             // התמונה מתקבלת מהצד לקוח כבייס 64, שומרים אותה במשתנה
             string base64StringData = sc.Image; // Your base 64 string data
 
-            //remove everything before the first /
-            string type = base64StringData.Substring(base64StringData.IndexOf("/")+1);
-            
-            // remove everything after the first /
-            type = type.Substring(0, type.IndexOf(";"));
+            //מחלצים את סוג הקובץ מתוך הסטרינג של הבייס64
+            string type = base64StringData.Substring(base64StringData.IndexOf("/")+1); //remove everything before the first / include
+            type = type.Substring(0, type.IndexOf(";"));  // remove everything after the first ; include
 
             // מגדירים ששם הקובץ יהיה המספר המזהה של האתגר עם הסיומת המתאימה
             string fileName = sc.ChallengeID.ToString() + 's' + sc.StudentID.ToString() + "."+type;
-           
-            // נתיב התמונה נלקח מהמחלקה הסטטית שלנו בתוספת שם הקובץ
+
+            // נתיב התמונה כדי לשמור את התמונה בתיקייה - נלקח מהמחלקה הסטטית שלנו בתוספת שם הקובץ
             string imagePath = PathOfImage.path + fileName;
             
             // חותכים את התחלת הסטרינג כי זה מיותר
@@ -94,7 +95,7 @@ namespace serverChallengeMe.Models
             img.Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
             // שומרים בטבלה בדאטה בייס את נתיב התמונה
             DBservices dbs = new DBservices();
-            return dbs.putChallengeImage(imagePath, sc.ChallengeID, sc.StudentID);
+            return dbs.putChallengeImage(fileName, sc.ChallengeID, sc.StudentID);
         }
 
         public int updateStatus (int challengeID, int studentID, string status)
