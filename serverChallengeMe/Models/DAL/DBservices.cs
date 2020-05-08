@@ -362,8 +362,9 @@ namespace serverChallengeMe.Models.DAL
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
-                int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
+                //int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                int newID = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                return newID;
             }
             catch (Exception ex)
             {
@@ -380,14 +381,14 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //--------------------------------------------------------------------
-        // 12.  Build INSERT Teacher Command
+        // 12.  Build INSERT Teacher Command && Default Allert Setting
         //--------------------------------------------------------------------
         private String BuildInsertCommandTeacher(Teacher teacher)
         {
             String command;
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}','{7}');", teacher.UserName, teacher.Password, teacher.FirstName, teacher.LastName, teacher.Mail, teacher.Phone, teacher.School,'0');
-            String prefix = "INSERT INTO Teacher(userName, password, firstName, lastName, mail, phone, school,tempPassword)";
+            String prefix = "INSERT INTO Teacher(userName, password, firstName, lastName, mail, phone, school,tempPassword) output INSERTED.teacherID ";
             command = prefix + sb.ToString();
             return command;
         }
@@ -2049,7 +2050,7 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 59.  INSERT Alert Settings
         //---------------------------------------------------------------------------------
-        public int postAlertSettings(AlertSettings alertSettings)
+        public int postAlertSettings(int teacherID)
         {
             SqlConnection con;
             SqlCommand cmd;
@@ -2063,13 +2064,13 @@ namespace serverChallengeMe.Models.DAL
                 // write to log
                 throw (ex);
             }
-            String cStr = BuildInsertCommandAlertSettings(alertSettings);      // helper method to build the insert string
+            String cStr = BuildInsertCommandAlertSettings(teacherID);      // helper method to build the insert string
             cmd = CreateCommand(cStr, con);             // create the command
             try
-            {             
-                //int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                int newID = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
-                return newID; 
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                //int newID = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                return numEffected; 
             }
             catch (Exception ex)
             {
@@ -2087,11 +2088,11 @@ namespace serverChallengeMe.Models.DAL
         //--------------------------------------------------------------------
         // 60.  Build INSERT AlertSettings Command
         //--------------------------------------------------------------------
-        private String BuildInsertCommandAlertSettings(AlertSettings alertSettings)
+        private String BuildInsertCommandAlertSettings(int teacherID)
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", alertSettings.TeacherID, alertSettings.AlertPositive, alertSettings.AlertNegative, alertSettings.AlertHelp, alertSettings.AlertLate, alertSettings.AlertPreDate, alertSettings.AlertIdle);
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", teacherID, "true", "true", "true", "true", 5, 14);
             String prefix = "INSERT INTO AlertSettings(teacherID, alertPositive, alertNegative, alertHelp, alertLate, alertPreDate, alertIdle) output INSERTED.alertSettingID ";
             command = prefix + sb.ToString();
             return command;
