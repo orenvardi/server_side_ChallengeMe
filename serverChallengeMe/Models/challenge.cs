@@ -78,34 +78,40 @@ namespace serverChallengeMe.Models
 
             //  חישוב טווחים לפני שעושים אינסרט
             // --start claculate ranges
-            double d_emotional = 150.17 * Math.Exp(-0.034 * T_emotional);
+            double a = 150.17;
+            double b = -0.034;
+            int c = 6;
+            
+            double d_emotional = a * Math.Exp(b * T_emotional);
             double d_emotional_Min = d_emotional / difficulty;
-            double d_emotional_Max = d_emotional / (6 - difficulty);
+            double d_emotional_Max = d_emotional / (c - difficulty);
 
-            double d_social = 150.17 * Math.Exp(-0.034 * T_social);
+            double d_social = a * Math.Exp(b * T_social);
             double d_social_Min = d_social / difficulty;
-            double d_social_Max = d_social / (6 - difficulty);
+            double d_social_Max = d_social / (c - difficulty);
 
-            double d_school = 150.17 * Math.Exp(-0.034 * T_school);
+            double d_school = a * Math.Exp(b * T_school);
             double d_school_Min = d_school / difficulty;
-            double d_school_Max = d_school / (6 - difficulty);
+            double d_school_Max = d_school / (c - difficulty);
 
-            double emotionalMin = (S_emotional - d_emotional_Min) < 0 ? 0 : (S_emotional - d_emotional_Min);
-            double emotionalMax = (S_emotional + d_emotional_Max) > 100 ? 100 : (S_emotional + d_emotional_Max);
-            double socialMin = (S_social - d_social_Min) < 0 ? 0 : (S_social - d_social_Min);
-            double socialMax = (S_social + d_social_Max) > 100 ? 100 : (S_social + d_social_Max);
-            double schoolMin = (S_school - d_school_Min) < 0 ? 0 : (S_school - d_school_Min);
-            double schoolMax = (S_school + d_school_Max) > 100 ? 100 : (S_school + d_school_Max);
+            int min = 0;
+            int max = 100;
+            double emotionalMin = (S_emotional - d_emotional_Min) < min ? min : (S_emotional - d_emotional_Min);
+            double emotionalMax = (S_emotional + d_emotional_Max) > max ? max : (S_emotional + d_emotional_Max);
+            double socialMin = (S_social - d_social_Min) < min ? min : (S_social - d_social_Min);
+            double socialMax = (S_social + d_social_Max) > max ? max : (S_social + d_social_Max);
+            double schoolMin = (S_school - d_school_Min) < min ? min : (S_school - d_school_Min);
+            double schoolMax = (S_school + d_school_Max) > max ? max : (S_school + d_school_Max);
 
             // אם המורה הכניס 0 לאחת מהקטגוריות אז משנים את הטווח ל0 עד 100
             if (T_emotional==0 || T_social==0 || T_school == 0)
             {
-                emotionalMin = (T_emotional == 0 ? 0 : emotionalMin);
-                emotionalMax = (T_emotional == 0 ? 100 : emotionalMin);
-                socialMin = (T_social == 0 ? 0 : socialMin);
-                socialMax = (T_social == 0 ? 100 : socialMax);
-                schoolMin = (T_school == 0 ? 0 : schoolMin);
-                schoolMax = (T_school == 0 ? 100 : schoolMax);
+                emotionalMin = (T_emotional == min ? min: emotionalMin);
+                emotionalMax = (T_emotional == min ? max : emotionalMin);
+                socialMin = (T_social == min ? min: socialMin);
+                socialMax = (T_social == min ? max : socialMax);
+                schoolMin = (T_school == min ? min: schoolMin);
+                schoolMax = (T_school == min ? max : schoolMax);
             }
             // --end claculate ranges
 

@@ -63,7 +63,8 @@ namespace serverChallengeMe.Models
                 return 0;
 
             // יצירת סיסמה רנדומלית 
-            string randomPassword = Guid.NewGuid().ToString("n").Substring(0, 7) + new Random().Next(1, 10);
+            string randomPassword = Membership.GeneratePassword(8, 0);
+            //string randomPassword = Guid.NewGuid().ToString("n").Substring(0, 8);
 
             // שליחת מייל
             bool hasSend = sendMail(TeacherMail, randomPassword);

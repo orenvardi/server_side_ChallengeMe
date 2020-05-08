@@ -54,6 +54,13 @@ namespace serverChallengeMe.Models
             return dBservices.GetStudentsByTeacherID(teacherID);
         }
 
+        //GET api/Student?teacherID={teacherID}&name={name}
+        public DataTable searchStudentsByName(int teacherID, string name)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.searchStudentsByName(teacherID, name);
+        }
+
         public DataTable getStudentById(int studentID)
         {
             DBservices dBservices = new DBservices();
