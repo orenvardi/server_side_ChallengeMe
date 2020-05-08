@@ -63,7 +63,7 @@ namespace serverChallengeMe.Controllers
         [HttpGet]
         [Route("api/Student/SuccessCount")]
         // GET api/Student?studentID={studentID}
-        public int GetSuccessCount(int studentID)
+        public List<int> GetSuccessCount(int studentID)
         {
             Student student = new Student();
             return student.GetSuccessCount(studentID);

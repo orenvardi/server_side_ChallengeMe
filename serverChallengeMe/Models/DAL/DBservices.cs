@@ -114,14 +114,14 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 5.  GET Teacher By mail
         //---------------------------------------------------------------------------------       
-        public int getTeacherByMail(string mail)
+        public int getTeacherByMail(string mail, string username)
         {
             int id = 0;
             SqlConnection con = null;
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "select teacherID from Teacher where mail = '" + mail + "';";
+                String selectSTR = "select teacherID from Teacher where userName = '" + username + "' AND mail = '" + mail + "';";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
                 if (dr2.HasRows)
@@ -2383,7 +2383,7 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                da = new SqlDataAdapter("select * from Student where teacherID = "+ teacherID+" AND firstName + ' ' + lastName LIKE '%" + name + "%'; ", con);
+                da = new SqlDataAdapter("select * from Student where teacherID = " + teacherID + " AND firstName + ' ' + lastName LIKE '%" + name + "%'; ", con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
                 da.Fill(ds);
@@ -2406,6 +2406,47 @@ namespace serverChallengeMe.Models.DAL
             }
             return dt;
         }
+        //---------------------------------------------------------------------------------
+        // 70. GetChallengesCount
+        //---------------------------------------------------------------------------------
+        public int GetChallengesCount(int studentID)
+        {
+            {
+                SqlConnection con;
+                SqlCommand cmd;
+
+                try
+                {
+                    con = connect("DBConnectionString"); // create the connection
+                }
+                catch (Exception ex)
+                {
+                    // write to log
+                    throw (ex);
+                }
+                String cStr = "select COUNT(*) from studentChallenge where studentID = " + studentID + "; ";
+                cmd = CreateCommand(cStr, con);             // create the command
+                try
+                {
+                    int successCounter = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                    return successCounter;
+                }
+                catch (Exception ex)
+                {
+
+                    throw (ex);
+                }
+                finally
+                {
+                    if (con != null)
+                    {
+                        // close the db connection
+                        con.Close();
+                    }
+                }
+            }
+        }
+
 
 
 
@@ -2478,6 +2519,6 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
 
-        
+
     }
 }

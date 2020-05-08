@@ -84,10 +84,13 @@ namespace serverChallengeMe.Models
             return dBservices.getStudentByPhone(phone);
         }
 
-        public int GetSuccessCount(int studentID)
+        public List<int> GetSuccessCount(int studentID)
         {
+            List<int> ChallengesCount = new List<int>();
             DBservices dBservices = new DBservices();
-            return dBservices.GetSuccessCount(studentID);
+            ChallengesCount.Add(dBservices.GetSuccessCount(studentID));
+            ChallengesCount.Add(dBservices.GetChallengesCount(studentID));
+            return ChallengesCount;
         }
         public string GetImageStudent(int studentID)
         {

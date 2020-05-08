@@ -26,10 +26,10 @@ namespace serverChallengeMe.Controllers
         }
 
         // GET api/Teacher?mail={mail}
-        public int GetByMail(string mail)
+        public int GetByMail(string mail, string username)
         {
             Teacher teacher = new Teacher();
-            return teacher.getTeacherByMail(mail);
+            return teacher.getTeacherByMail(mail, username);
         }
 
         // GET api/Teacher?teacherID={teacherID}

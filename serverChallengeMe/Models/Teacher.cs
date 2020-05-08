@@ -52,11 +52,11 @@ namespace serverChallengeMe.Models
             //מחזיר רשימה של כל המחנכים
         }
 
-        public int getTeacherByMail(string TeacherMail)
+        public int getTeacherByMail(string TeacherMail, string username)
         {
             //בדיקה האם קיים מחנך עם המייל הזה - אם קיים מחזיר את המספר המזהה של המחנך, אם לא קיים מחזיר אפס
             DBservices dBservices = new DBservices();
-            int teacherID = dBservices.getTeacherByMail(TeacherMail);
+            int teacherID = dBservices.getTeacherByMail(TeacherMail, username);
 
             //אם המייל קיים מחזיר 1 שמסמל על זה ששונתה הססמה, אם המייל לא קיים מחזיר 0
             if (teacherID == 0)
