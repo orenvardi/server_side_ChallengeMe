@@ -80,7 +80,7 @@ namespace serverChallengeMe.Models.DAL
         public Teacher isTeacherExists(string username, string password)
         {
             Teacher t = new Teacher();
-            
+
             SqlConnection con = null;
             try
             {
@@ -114,14 +114,14 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 5.  GET Teacher By mail
         //---------------------------------------------------------------------------------       
-        public int getTeacherByMail(string mail)
+        public int getTeacherByMail(string mail, string username)
         {
             int id = 0;
             SqlConnection con = null;
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "select teacherID from Teacher where mail = '" + mail + "';";
+                String selectSTR = "select teacherID from Teacher where userName = '" + username + "' AND mail = '" + mail + "';";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
                 if (dr2.HasRows)
@@ -220,7 +220,7 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                da = new SqlDataAdapter("select * from Challenge;", con);
+                da = new SqlDataAdapter("select * from Challenge where isPrivate = 'false';", con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
                 da.Fill(ds);
@@ -285,7 +285,7 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "select studentID from Student where phone = '" + phone  + "'; ";
+                String selectSTR = "select studentID from Student where phone = '" + phone + "'; ";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
                 if (dr2.HasRows)
@@ -362,12 +362,13 @@ namespace serverChallengeMe.Models.DAL
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
-                int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
+                //int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                int newID = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                return newID;
             }
             catch (Exception ex)
             {
-              
+
                 throw (ex);
             }
             finally
@@ -380,14 +381,14 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //--------------------------------------------------------------------
-        // 12.  Build INSERT Teacher Command
+        // 12.  Build INSERT Teacher Command && Default Allert Setting
         //--------------------------------------------------------------------
         private String BuildInsertCommandTeacher(Teacher teacher)
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}','{7}');", teacher.UserName, teacher.Password, teacher.FirstName, teacher.LastName, teacher.Mail, teacher.Phone, teacher.School,'0');
-            String prefix = "INSERT INTO Teacher(userName, password, firstName, lastName, mail, phone, school,tempPassword)";
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}','{7}');", teacher.UserName, teacher.Password, teacher.FirstName, teacher.LastName, teacher.Mail, teacher.Phone, teacher.School, '0');
+            String prefix = "INSERT INTO Teacher(userName, password, firstName, lastName, mail, phone, school,tempPassword) output INSERTED.teacherID ";
             command = prefix + sb.ToString();
             return command;
         }
@@ -414,7 +415,7 @@ namespace serverChallengeMe.Models.DAL
             {
                 //int numEffected = cmd.ExecuteNonQuery(); // execute the command
                 int newID = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
-                return newID; 
+                return newID;
 
 
             }
@@ -565,7 +566,7 @@ namespace serverChallengeMe.Models.DAL
 
             //שימוש בפרמטרים כשיש סיכוי שיהיה מחרוזת עם גרש שיכולה להוות בעיה 
             String cStr = "INSERT INTO Class(className, teacherID) VALUES(@ClassName, " + c.TeacherID + ");";
-            cmd = CreateCommand(cStr, con);             
+            cmd = CreateCommand(cStr, con);
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@ClassName";
             param.Value = c.ClassName;
@@ -578,7 +579,7 @@ namespace serverChallengeMe.Models.DAL
             }
             catch (Exception ex)
             {
-                
+
                 throw (ex);
             }
             finally
@@ -606,7 +607,7 @@ namespace serverChallengeMe.Models.DAL
             {
                 throw (ex);
             }
-            String cStr = "UPDATE Teacher SET password = '"+password+"', tempPassword = "+ tempPassword + " WHERE TeacherID = "+teacherID+";";  
+            String cStr = "UPDATE Teacher SET password = '" + password + "', tempPassword = " + tempPassword + " WHERE TeacherID = " + teacherID + ";";
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
@@ -654,7 +655,7 @@ namespace serverChallengeMe.Models.DAL
             }
             catch (Exception ex)
             {
-                
+
                 throw (ex);
             }
             finally
@@ -688,7 +689,7 @@ namespace serverChallengeMe.Models.DAL
             }
             catch (Exception ex)
             {
-               
+
                 throw (ex);
             }
             finally
@@ -716,7 +717,7 @@ namespace serverChallengeMe.Models.DAL
             string timeStamp = (sc.Status == "0" ? "', timeStamp = null " : "' ");
             String cStr = "UPDATE StudentChallenge SET difficulty = '" + sc.Difficulty +
                 "', deadline = '" + sc.Deadline + "', status = '" + sc.Status + timeStamp +
-                " WHERE challengeID  = " + sc.ChallengeID  + " AND studentID = "+ sc.StudentID + ";";
+                " WHERE challengeID  = " + sc.ChallengeID + " AND studentID = " + sc.StudentID + ";";
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
@@ -749,7 +750,7 @@ namespace serverChallengeMe.Models.DAL
             {
                 throw (ex);
             }
-            String cStr = "UPDATE Student SET password= '" + s.Password + "', firstName = '" + s.FirstName + "', lastName  = '" + s.LastName + "', phone = '" + s.Phone + "', birthDate = '" + s.BirthDate +"' WHERE studentID = " + s.StudentID + ";";
+            String cStr = "UPDATE Student SET password= '" + s.Password + "', firstName = '" + s.FirstName + "', lastName  = '" + s.LastName + "', phone = '" + s.Phone + "', birthDate = '" + s.BirthDate + "' WHERE studentID = " + s.StudentID + ";";
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
@@ -777,7 +778,7 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                da = new SqlDataAdapter("select * from Class where teacherID = '"+teacherID+"';", con);
+                da = new SqlDataAdapter("select * from Class where teacherID = '" + teacherID + "';", con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
                 da.Fill(ds);
@@ -949,7 +950,7 @@ namespace serverChallengeMe.Models.DAL
                 throw (ex);
             } //DELETE FROM Publishers
             // WHERE City = 'New York'
-            String cStr = "DELETE FROM StudentChallenge WHERE studentID  = '" + studentID + "' AND challengeID= '"+ challengeID + "' ";
+            String cStr = "DELETE FROM StudentChallenge WHERE studentID  = '" + studentID + "' AND challengeID= '" + challengeID + "' ";
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
@@ -971,20 +972,20 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         public int checkIfTeacherExistByUsername(string userName)
         {
-            
+
             Teacher t = new Teacher();
 
             SqlConnection con = null;
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "select teacherID from Teacher where userName = '" + userName+ "'";
+                String selectSTR = "select teacherID from Teacher where userName = '" + userName + "'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
                 if (dr2.HasRows)
                 {
-                  
-                        return 1;
+
+                    return 1;
                 }
             }
             catch (Exception ex)
@@ -1210,7 +1211,7 @@ namespace serverChallengeMe.Models.DAL
                 }
 
                 con = connect("DBConnectionString");
-                da = new SqlDataAdapter("SELECT DISTINCT Challenge.* FROM Challenge INNER JOIN ChallengeTag ON Challenge.ChallengeID = ChallengeTag.ChallengeID INNER JOIN Tag ON Tag.TagID =ChallengeTag.TagID where " + str , con);
+                da = new SqlDataAdapter("SELECT DISTINCT Challenge.* FROM Challenge INNER JOIN ChallengeTag ON Challenge.ChallengeID = ChallengeTag.ChallengeID INNER JOIN Tag ON Tag.TagID =ChallengeTag.TagID where " + str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
                 da.Fill(ds);
@@ -1433,7 +1434,7 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
                 }
             }
-        }     
+        }
         //---------------------------------------------------------------------------------
         // 42.  UPDATE StudentFeatures
         //---------------------------------------------------------------------------------
@@ -1524,7 +1525,7 @@ namespace serverChallengeMe.Models.DAL
                     " (select a.challengeID, max(a.popularity) as 'popularity' " +
                     " from (select C.challengeID, count(C.challengeID) as 'popularity' " +
                     " from challenge C left join studentChallenge sc on c.challengeID = sc.challengeID " +
-                    " where(" + studentScore.Social + " BETWEEN  C.socialMin AND  C.socialMax) "+
+                    " where(" + studentScore.Social + " BETWEEN  C.socialMin AND  C.socialMax) " +
                     " AND (" + studentScore.Emotional + " BETWEEN  C.emotionalMin AND  C.emotionalMax) " +
                     " AND(" + studentScore.School + " BETWEEN  C.schoolMin AND  C.schoolMax) " +
                     " GROUP BY C.challengeID " +
@@ -1533,8 +1534,8 @@ namespace serverChallengeMe.Models.DAL
                     " from StudentScore Sscore inner join studentChallenge Sch on Sscore.studentID = Sch.studentID " +
                     " where Sch.status = 1 and Sch.timeStamp < Sch.deadline " +
                     " GROUP BY Sch.challengeID, Sscore.social, Sscore.emotional, Sscore.school " +
-                    " having ABS(" + studentScore.Social + " - Sscore.social) < 10 "+
-                    " AND ABS(" + studentScore.Emotional + " - Sscore.emotional) < 10 "+
+                    " having ABS(" + studentScore.Social + " - Sscore.social) < 10 " +
+                    " AND ABS(" + studentScore.Emotional + " - Sscore.emotional) < 10 " +
                     " AND  ABS(" + studentScore.School + " - Sscore.school) < 10 " +
                     " ) as a " +
                     " group by a.challengeID) as b " +
@@ -1946,7 +1947,7 @@ namespace serverChallengeMe.Models.DAL
             {
                 throw (ex);
             }
-            String cStr = "UPDATE Message SET MesgRead = 'true' where messageByTeacher='true' AND studentID = " + studentID+ ";";
+            String cStr = "UPDATE Message SET MesgRead = 'true' where messageByTeacher='true' AND studentID = " + studentID + ";";
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
@@ -1991,7 +1992,7 @@ namespace serverChallengeMe.Models.DAL
                 }
                 catch (Exception ex)
                 {
-                   
+
                     throw (ex);
                 }
                 finally
@@ -2049,7 +2050,7 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 59.  INSERT Alert Settings
         //---------------------------------------------------------------------------------
-        public int postAlertSettings(AlertSettings alertSettings)
+        public int postAlertSettings(int teacherID)
         {
             SqlConnection con;
             SqlCommand cmd;
@@ -2063,13 +2064,13 @@ namespace serverChallengeMe.Models.DAL
                 // write to log
                 throw (ex);
             }
-            String cStr = BuildInsertCommandAlertSettings(alertSettings);      // helper method to build the insert string
+            String cStr = BuildInsertCommandAlertSettings(teacherID);      // helper method to build the insert string
             cmd = CreateCommand(cStr, con);             // create the command
             try
-            {             
-                //int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                int newID = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
-                return newID; 
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                //int newID = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                return numEffected;
             }
             catch (Exception ex)
             {
@@ -2087,11 +2088,11 @@ namespace serverChallengeMe.Models.DAL
         //--------------------------------------------------------------------
         // 60.  Build INSERT AlertSettings Command
         //--------------------------------------------------------------------
-        private String BuildInsertCommandAlertSettings(AlertSettings alertSettings)
+        private String BuildInsertCommandAlertSettings(int teacherID)
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", alertSettings.TeacherID, alertSettings.AlertPositive, alertSettings.AlertNegative, alertSettings.AlertHelp, alertSettings.AlertLate, alertSettings.AlertPreDate, alertSettings.AlertIdle);
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", teacherID, "true", "true", "true", "true", 5, 14);
             String prefix = "INSERT INTO AlertSettings(teacherID, alertPositive, alertNegative, alertHelp, alertLate, alertPreDate, alertIdle) output INSERTED.alertSettingID ";
             command = prefix + sb.ToString();
             return command;
@@ -2111,10 +2112,10 @@ namespace serverChallengeMe.Models.DAL
             {
                 throw (ex);
             }
-            String cStr = "UPDATE AlertSettings SET alertPositive = '"+ alertSettings.AlertPositive+ "', alertNegative = '" +
-                alertSettings.AlertNegative+ "', alertHelp = '" + alertSettings.AlertHelp+ "', alertLate = '"+alertSettings.AlertLate+
-                "', alertPreDate = "+ alertSettings.AlertPreDate+ ", AlertIdle = "+alertSettings.AlertIdle + 
-                " WHERE alertSettingID = "+ alertSettings.AlertSettingID+"; ";
+            String cStr = "UPDATE AlertSettings SET alertPositive = '" + alertSettings.AlertPositive + "', alertNegative = '" +
+                alertSettings.AlertNegative + "', alertHelp = '" + alertSettings.AlertHelp + "', alertLate = '" + alertSettings.AlertLate +
+                "', alertPreDate = " + alertSettings.AlertPreDate + ", AlertIdle = " + alertSettings.AlertIdle +
+                " WHERE alertSettingID = " + alertSettings.AlertSettingID + "; ";
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
@@ -2146,7 +2147,7 @@ namespace serverChallengeMe.Models.DAL
             {
                 throw (ex);
             }
-            String cStr = "UPDATE studentChallenge SET image = '"+ imagePath+ "' where challengeID = "+ challengeID+" AND studentID = " + studentID + ";";
+            String cStr = "UPDATE studentChallenge SET image = '" + imagePath + "' where challengeID = " + challengeID + " AND studentID = " + studentID + ";";
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
@@ -2168,13 +2169,13 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------       
         public string getChallengeImage(int studentID, int challengeID)
         {
-            string imagePath = "";
+            string fileName = "";
 
             SqlConnection con = null;
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "select image from studentChallenge where studentID = " + studentID + " AND challengeID = "+ challengeID + ";";
+                String selectSTR = "select image from studentChallenge where studentID = " + studentID + " AND challengeID = " + challengeID + ";";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
                 if (dr2.HasRows)
@@ -2182,8 +2183,8 @@ namespace serverChallengeMe.Models.DAL
                     while (dr2.Read())
                     {
                         if (DBNull.Value.Equals(dr2["image"]))
-                            imagePath = PathOfImage.path+ "emptyImg.png";
-                        else imagePath = (string)dr2["image"];
+                            fileName = "emptyImg.png";
+                        else fileName = (string)dr2["image"];
                     }
                 }
             }
@@ -2198,7 +2199,7 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
                 }
             }
-            return imagePath;
+            return fileName;
         }
         //---------------------------------------------------------------------------------
         // 64.  put Avatar
@@ -2272,7 +2273,179 @@ namespace serverChallengeMe.Models.DAL
                 }
             }
         }
+        //---------------------------------------------------------------------------------
+        // 66. get Name of students by id
+        //---------------------------------------------------------------------------------
+        public DataTable getStudentNameById(int studentID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                da = new SqlDataAdapter("select firstName, lastName, avatar from Student where studentID =" + studentID + ";", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
 
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 67.  put Student Image
+        //---------------------------------------------------------------------------------
+        public int putStudentImage(string imagePath, int studentID)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            String cStr = "UPDATE Student SET imageStudent = '" + imagePath + "' where studentID = " + studentID + ";";
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+        //---------------------------------------------------------------------------------
+        // 68.  get Student Image
+        //---------------------------------------------------------------------------------       
+        public string GetImageStudent(int studentID)
+        {
+            string imagePath = "";
+
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "select imageStudent from Student where studentID = " + studentID + ";";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                if (dr2.HasRows)
+                {
+                    while (dr2.Read())
+                    {
+                        if (DBNull.Value.Equals(dr2["imageStudent"]))
+                            imagePath = "emptyUserImg.png";
+                        else imagePath = (string)dr2["imageStudent"];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return imagePath;
+        }
+        //---------------------------------------------------------------------------------
+        // 69.  GET Student By User Name And Password
+        //---------------------------------------------------------------------------------
+        public DataTable searchStudentsByName(int teacherID, string name)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                da = new SqlDataAdapter("select * from Student where teacherID = " + teacherID + " AND firstName + ' ' + lastName LIKE '%" + name + "%'; ", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 70. GetChallengesCount
+        //---------------------------------------------------------------------------------
+        public int GetChallengesCount(int studentID)
+        {
+            {
+                SqlConnection con;
+                SqlCommand cmd;
+
+                try
+                {
+                    con = connect("DBConnectionString"); // create the connection
+                }
+                catch (Exception ex)
+                {
+                    // write to log
+                    throw (ex);
+                }
+                String cStr = "select COUNT(*) from studentChallenge where studentID = " + studentID + "; ";
+                cmd = CreateCommand(cStr, con);             // create the command
+                try
+                {
+                    int successCounter = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                    return successCounter;
+                }
+                catch (Exception ex)
+                {
+
+                    throw (ex);
+                }
+                finally
+                {
+                    if (con != null)
+                    {
+                        // close the db connection
+                        con.Close();
+                    }
+                }
+            }
+        }
 
 
 
@@ -2345,111 +2518,7 @@ namespace serverChallengeMe.Models.DAL
             }
             return dt;
         }
-   
-//---------------------------------------------------------------------------------
-// 68. get Name of students by id
-//---------------------------------------------------------------------------------
 
-public DataTable getStudentNameById(int studentID)
-{
-    SqlConnection con = null;
-    try
-    {
-        con = connect("DBConnectionString");
-        da = new SqlDataAdapter("select firstName, lastName, avatar from Student where studentID =" + studentID + ";", con);
-        SqlCommandBuilder builder = new SqlCommandBuilder(da);
-        DataSet ds = new DataSet();
-        da.Fill(ds);
-        dt = ds.Tables[0];
-    }
-
-    catch (Exception ex)
-    {
-        Console.WriteLine("No rows found.");
-        // try to handle the error
-        throw ex;
-    }
-
-    finally
-    {
-        if (con != null)
-        {
-            con.Close();
-        }
-    }
-    return dt;
-}
-        //---------------------------------------------------------------------------------
-        // 62.  put Challenge Image
-        //---------------------------------------------------------------------------------
-        public int putStudentImage(string imagePath, int studentID)
-        {
-            SqlConnection con;
-            SqlCommand cmd;
-            try
-            {
-                con = connect("DBConnectionString"); // create the connection
-            }
-            catch (Exception ex)
-            {
-                throw (ex);
-            }
-            String cStr = "UPDATE Student SET imageStudent = '" + imagePath + "' where studentID = " + studentID + ";";
-            cmd = CreateCommand(cStr, con);             // create the command
-            try
-            {
-                int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
-            }
-            catch (Exception ex)
-            {
-                throw (ex);
-            }
-            finally
-            {
-                if (con != null)
-                    con.Close();
-            }
-        }
-        //---------------------------------------------------------------------------------
-        // 63.  get Challenge Image
-        //---------------------------------------------------------------------------------       
-        public string GetImageStudent(int studentID)
-        {
-            string imagePath = "";
-
-            SqlConnection con = null;
-            try
-            {
-                con = connect("DBConnectionString");
-                String selectSTR = "select imageStudent from Student where studentID = " + studentID + ";";
-                SqlCommand cmd = new SqlCommand(selectSTR, con);
-                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-                if (dr2.HasRows)
-                {
-                    while (dr2.Read())
-                    {
-                        if (DBNull.Value.Equals(dr2["imageStudent"]))
-                            imagePath = PathOfImage.path + "emptyUserImg.png";
-                        else imagePath = (string)dr2["imageStudent"];
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw (ex);
-            }
-            finally
-            {
-                if (con != null)
-                {
-                    con.Close();
-                }
-            }
-            return imagePath;
-        }
-
-        
 
     }
 }

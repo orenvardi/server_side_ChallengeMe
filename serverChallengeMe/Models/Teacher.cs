@@ -5,7 +5,6 @@ using System.Web;
 using System.Data;
 using serverChallengeMe.Models.DAL;
 using System.Web.Security;
-
 using System.Net;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
@@ -26,7 +25,7 @@ namespace serverChallengeMe.Models
 
         public Teacher() { }
 
-        public Teacher(int teacherID, string userName, string password, string firstName, string lastName, string phone, string mail, string school,bool tempPassword)
+        public Teacher(int teacherID, string userName, string password, string firstName, string lastName, string phone, string mail, string school, bool tempPassword)
         {
             TeacherID = teacherID;
             UserName = userName;
@@ -53,46 +52,64 @@ namespace serverChallengeMe.Models
             //מחזיר רשימה של כל המחנכים
         }
 
-        public int getTeacherByMail(string mail)
+        public int getTeacherByMail(string TeacherMail, string username)
         {
+            //בדיקה האם קיים מחנך עם המייל הזה - אם קיים מחזיר את המספר המזהה של המחנך, אם לא קיים מחזיר אפס
             DBservices dBservices = new DBservices();
-            var teacherID = dBservices.getTeacherByMail(mail); //אם קיים מחנך עם המייל הזה מחזיר את המספר המזהה של המחנך, אם לא קיים מחזיר אפס
-            var randomPassword = "";
-            if (teacherID != 0) //במידה שקיים מחנך עם המייל הזה
-            {
-                Random rnd = new Random();
-                //string newPwd = Guid.NewGuid().ToString().Substring(0, 8) + rnd.Next(1, 10);
-                randomPassword = Membership.GeneratePassword(8, 0) + rnd.Next(1, 10); //פונקציה שיוצרת סיסמא רנדומלית של 8 תווים עם לפחות תו אחד מיוחד וספרה אחת
-                randomPassword = Regex.Replace(randomPassword, @"[^a-zA-Z0-9]", m => rnd.Next(0, 10).ToString());
-                dBservices.updateTeacherPassword(teacherID, randomPassword, 1); //פונקציה שמעדכנת את הסיסמא הרנדומלית בטבלת מחנכים ומכניסה ערך 1 לעמודת 'סיסמא זמנית'
+            int teacherID = dBservices.getTeacherByMail(TeacherMail, username);
 
-                
-                try {
-                    SmtpClient smtp = new SmtpClient();
-                    smtp.UseDefaultCredentials = false;
-                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    smtp.EnableSsl = true;
-                    MailMessage message = new MailMessage();
-                    message.To.Add(new MailAddress(mail));
-                    message.From = new MailAddress("challengeme@walla.co.il");
-                    message.Subject = "challenge me new temporary password";
-                    message.Body = "<div><div>הססמה הזמנית החדשה שלך היא: " + randomPassword + "</div><div>כאשר אתה נכנס אתה תצטרך לשנות את הססמה</div><div>challenge me</div><div>";
-                    message.IsBodyHtml = true; //to make message body as html  
-                    smtp.Host = "out.walla.co.il"; //for walla host  
-                    //smtp.Host = "smtp.gmail.com"; //for gmail host  
-
-                    smtp.Port = 587;
-                    //smtp.Port = 587;
-                    smtp.Credentials = new System.Net.NetworkCredential("challengeme@walla.co.il", "a1b2c3d4");
-
-                    smtp.Send(message);
-                    return 1;
-            } catch (Exception e) { throw e; }
-        }
-    
-            return 0;
             //אם המייל קיים מחזיר 1 שמסמל על זה ששונתה הססמה, אם המייל לא קיים מחזיר 0
+            if (teacherID == 0)
+                return 0;
+
+            // יצירת סיסמה רנדומלית 
+            string randomPassword = Membership.GeneratePassword(8, 0);
+            //string randomPassword = Guid.NewGuid().ToString("n").Substring(0, 8);
+
+            // שליחת מייל
+            bool hasSend = sendMail(TeacherMail, randomPassword);
+
+            //פונקציה שמעדכנת את הסיסמא הרנדומלית בטבלת מחנכים ומכניסה ערך 1 לעמודת סיסמא זמנית
+            if (hasSend == true)
+                return dBservices.updateTeacherPassword(teacherID, randomPassword, 1);
+
+            // אם שליחת המייל נכשלה
+            return 0; 
         }
+
+        public bool sendMail(string TeacherMail, string randomPassword)
+        {
+            string smtpAddr = "smtp.gmail.com";
+            int portNumber = 587;
+            bool enableSSL = true;
+            string emailFromAddress = "challengeme.ruppin@gmail.com";
+            string password = "oren5555";
+            string subject = "challenge me new temporary password";
+            string body = "<div dir='rtl'><div>הססמה הזמנית החדשה שלך היא: " + randomPassword + "</div><br /><div>כאשר אתה נכנס אתה תצטרך לשנות את הססמה</div><div>challenge me</div><div>";
+
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress(emailFromAddress);
+            mail.To.Add(TeacherMail);
+            mail.Subject = subject;
+            mail.Body = body;
+            mail.IsBodyHtml = true;
+
+            SmtpClient smtp = new SmtpClient(smtpAddr, portNumber);
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new NetworkCredential(emailFromAddress, password);
+            smtp.EnableSsl = enableSSL;
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+            try
+            {
+                smtp.Send(mail);
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        } 
 
         public DataTable getTeacherById(int teacherID)
         {
@@ -108,7 +125,9 @@ namespace serverChallengeMe.Models
         public int postTeacher(Teacher teacher)
         {
             DBservices dbs = new DBservices();
-            return dbs.postTeacher(teacher);
+            int teacherID = dbs.postTeacher(teacher);
+            AlertSettings a = new AlertSettings();
+            return a.postAlertSettings(teacherID);
         }
 
         public int putNewTeacherPassword(int teacherID, string password)
@@ -123,10 +142,10 @@ namespace serverChallengeMe.Models
             return dbs.updateTeacherDetails(t);
         }
 
-    //public int deleteTeacher(int id)
-    //{
-    //    DBservices dbs = new DBservices();
-    //    return dbs.deleteTeacher(id);
-    //}
-}
+        //public int deleteTeacher(int id)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.deleteTeacher(id);
+        //}
+    }
 }

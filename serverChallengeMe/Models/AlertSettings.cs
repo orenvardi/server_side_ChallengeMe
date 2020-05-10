@@ -44,10 +44,10 @@ namespace serverChallengeMe.Models
             return dBservices.putAlertSettings(alertSettings);
         }
 
-        public int postAlertSettings(AlertSettings alertSettings)
+        public int postAlertSettings(int teacherID)
         {
             DBservices dBservices = new DBservices();
-            return dBservices.postAlertSettings(alertSettings);
+            return dBservices.postAlertSettings(teacherID);
         }
     }
 }

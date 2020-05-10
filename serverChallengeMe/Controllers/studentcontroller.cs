@@ -25,6 +25,13 @@ namespace serverChallengeMe.Controllers
             return student.GetStudentsByTeacherID(teacherID);
         }
 
+        //GET api/Student?teacherID={teacherID}&name={name}
+        public DataTable GetStudentsByName(int teacherID, string name)
+        {
+            Student student = new Student();
+            return student.searchStudentsByName(teacherID, name);
+        }
+
         // GET api/Student?studentID={studentID}
         public DataTable GetByStudentID(int studentID)
         {
@@ -56,7 +63,7 @@ namespace serverChallengeMe.Controllers
         [HttpGet]
         [Route("api/Student/SuccessCount")]
         // GET api/Student?studentID={studentID}
-        public int GetSuccessCount(int studentID)
+        public List<int> GetSuccessCount(int studentID)
         {
             Student student = new Student();
             return student.GetSuccessCount(studentID);

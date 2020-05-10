@@ -25,12 +25,5 @@ namespace serverChallengeMe.Controllers
             AlertSettings alertS = new AlertSettings();
             return alertS.putAlertSettings(alertSettings);
         }
-
-        // POST api/AlertSettings
-        public int Post(AlertSettings alertSettings)
-        {
-            AlertSettings alertS = new AlertSettings();
-            return alertS.postAlertSettings(alertSettings);
-        }
     }
 }

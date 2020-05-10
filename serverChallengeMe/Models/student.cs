@@ -54,6 +54,13 @@ namespace serverChallengeMe.Models
             return dBservices.GetStudentsByTeacherID(teacherID);
         }
 
+        //GET api/Student?teacherID={teacherID}&name={name}
+        public DataTable searchStudentsByName(int teacherID, string name)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.searchStudentsByName(teacherID, name);
+        }
+
         public DataTable getStudentById(int studentID)
         {
             DBservices dBservices = new DBservices();
@@ -77,25 +84,29 @@ namespace serverChallengeMe.Models
             return dBservices.getStudentByPhone(phone);
         }
 
-        public int GetSuccessCount(int studentID)
+        public List<int> GetSuccessCount(int studentID)
         {
+            List<int> ChallengesCount = new List<int>();
             DBservices dBservices = new DBservices();
-            return dBservices.GetSuccessCount(studentID);
+            ChallengesCount.Add(dBservices.GetSuccessCount(studentID));
+            ChallengesCount.Add(dBservices.GetChallengesCount(studentID));
+            return ChallengesCount;
         }
         public string GetImageStudent(int studentID)
         {
             DBservices dBservices = new DBservices();
-            // לוקחים את נתיב התמונה ששמור כסטרינג בטבלה בדאטה בייס
-            string imagePath = dBservices.GetImageStudent(studentID);
+            // לוקחים את שם התמונה ששמור כסטרינג בטבלה בדאטה בייס
+            string fileName = dBservices.GetImageStudent(studentID);
+            // נתיב התמונה נלקח מהמחלקה הסטטית שלנו בתוספת שם הקובץ
+            string imagePath = PathOfImage.path + fileName;
+
             // ממירים את נתיב התמונה מסטרינג למערך של ביטים
             byte[] imageArray = System.IO.File.ReadAllBytes(imagePath);
             // ממירים את מערך הביטים לבייס 64
             string base64ImageRepresentation = Convert.ToBase64String(imageArray);
             // מחזירים את התמונה לצד לקוח כבייס 64
-            return base64ImageRepresentation;
-           
-        }
-        
+            return base64ImageRepresentation;           
+        }        
 
         public DataTable postStudent(Student student)
         {
@@ -114,16 +125,14 @@ namespace serverChallengeMe.Models
             // התמונה מתקבלת מהצד לקוח כבייס 64, שומרים אותה במשתנה
             string base64StringData = student.Image; // Your base 64 string data
 
-            //remove everything before the first /
-            string type = base64StringData.Substring(base64StringData.IndexOf("/") + 1);
-
-            // remove everything after the first /
-            type = type.Substring(0, type.IndexOf(";"));
+            //מחלצים את סוג הקובץ מתוך הסטרינג של הבייס64
+            string type = base64StringData.Substring(base64StringData.IndexOf("/") + 1); //remove everything before the first / include
+            type = type.Substring(0, type.IndexOf(";"));  // remove everything after the first ; include
 
             // מגדירים ששם הקובץ יהיה המספר המזהה של האתגר עם הסיומת המתאימה
             string fileName = student.StudentID.ToString() + "sImg." + type;
 
-            // נתיב התמונה נלקח מהמחלקה הסטטית שלנו בתוספת שם הקובץ
+            // נתיב התמונה כדי לשמור את התמונה בתיקייה - נלקח מהמחלקה הסטטית שלנו בתוספת שם הקובץ
             string imagePath = PathOfImage.path + fileName;
 
             // חותכים את התחלת הסטרינג כי זה מיותר
@@ -138,7 +147,7 @@ namespace serverChallengeMe.Models
             img.Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
             // שומרים בטבלה בדאטה בייס את נתיב התמונה
             DBservices dbs = new DBservices();
-            return dbs.putStudentImage(imagePath, student.StudentID);
+            return dbs.putStudentImage(fileName, student.StudentID);
         }
         
 
