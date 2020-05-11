@@ -116,7 +116,13 @@ namespace serverChallengeMe.Models
             DBservices dBservices = new DBservices();
             return dBservices.getTeacherById(teacherID); 
         }
-        
+
+        public int GetIsTeacherExistByPhone(string phone)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.GetIsTeacherExistByPhone(phone);
+        }
+
         public int checkIfTeacherExistByUsername(string username)
         {
             DBservices dBservices = new DBservices();

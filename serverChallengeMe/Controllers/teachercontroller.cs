@@ -25,7 +25,7 @@ namespace serverChallengeMe.Controllers
             return teacher.isTeacherExists(username, password);
         }
 
-        // GET api/Teacher?mail={mail}
+        // GET api/Teacher?mail={mail}&username={username}
         public int GetByMail(string mail, string username)
         {
             Teacher teacher = new Teacher();
@@ -40,10 +40,17 @@ namespace serverChallengeMe.Controllers
         }
 
         // GET api/Teacher?usernameNewTeacher={username}
-        public int GetByTeacherID2(string usernameNewTeacher)
+        public int GetIsTeacherExistByUsername(string usernameNewTeacher)
         {
             Teacher teacher = new Teacher();
             return teacher.checkIfTeacherExistByUsername(usernameNewTeacher);
+        }
+
+        // GET api/Teacher?phone={phone}
+        public int GetIsTeacherExistByPhone(string phone)
+        {
+            Teacher teacher = new Teacher();
+            return teacher.GetIsTeacherExistByPhone(phone);
         }
 
         // POST api/<controller>

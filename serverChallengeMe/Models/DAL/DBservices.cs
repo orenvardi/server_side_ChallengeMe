@@ -2446,7 +2446,36 @@ namespace serverChallengeMe.Models.DAL
                 }
             }
         }
-
+        //---------------------------------------------------------------------------------
+        // 71.  Get Is Teacher Exist By Phone
+        //---------------------------------------------------------------------------------
+        public int GetIsTeacherExistByPhone(string phone)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "select teacherID from Teacher where phone = '" + phone + "'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                if (dr2.HasRows)
+                {
+                    return 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return 0;
+        }
 
 
 
