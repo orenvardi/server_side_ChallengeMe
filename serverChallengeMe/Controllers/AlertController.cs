@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Data;
 using serverChallengeMe.Models;
+using serverChallengeMe.Models.DAL;
 
 namespace serverChallengeMe.Controllers
 {
@@ -26,10 +27,11 @@ namespace serverChallengeMe.Controllers
             return alert.getNumOfAlertNotReadForStudents(studentID);
         }
 
-
-        // POST api/<controller>
-        public void Post([FromBody]string value)
+        // POST api/Alert
+        public int Post(Alert alert)
         {
+            DBservices dbs = new DBservices();
+            return dbs.postAlert(alert);
         }
 
         // PUT api/<controller>/5

@@ -56,7 +56,7 @@ namespace serverChallengeMe.Controllers
         [HttpGet]
         [Route("api/Teacher/getTeacherToken")]
         // GET api/Teacher/getTeacherToken
-        public int getTeacherToken(int teacherID)
+        public string getTeacherToken(int teacherID)
         {
             Teacher t = new Teacher();
             return t.getTeacherToken(teacherID);

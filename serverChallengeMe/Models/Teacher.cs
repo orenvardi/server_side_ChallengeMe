@@ -138,7 +138,7 @@ namespace serverChallengeMe.Models
             return a.postAlertSettings(teacherID);
         }
 
-        public int getTeacherToken(int teacherID)
+        public string getTeacherToken(int teacherID)
         {
             DBservices dbs = new DBservices();
             return dbs.getTeacherToken(teacherID);

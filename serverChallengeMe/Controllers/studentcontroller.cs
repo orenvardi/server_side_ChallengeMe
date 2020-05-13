@@ -47,10 +47,19 @@ namespace serverChallengeMe.Controllers
         }
 
         // GET api/Student?studentPhone={Phone}
-        public int GetByStudentPhone(string phone)
+        public int GetStudentIdByPhone(string phone)
         {
             Student student = new Student();
-            return student.getStudentByPhone(phone);
+            return student.GetStudentIdByPhone(phone);
+        }
+
+        [HttpGet]
+        [Route("api/Student/GetStudentByPhone")]
+        // GET api/Student/GetStudentByPhone?phone={phone}
+        public Student GetStudentByPhone(string phone)
+        {
+            Student student = new Student();
+            return student.GetStudentByPhone(phone);
         }
 
         // GET api/
@@ -81,7 +90,7 @@ namespace serverChallengeMe.Controllers
         [HttpGet]
         [Route("api/Student/getStudentToken")]
         // GET api/Student/getStudentToken
-        public int getStudentToken(int studentID)
+        public string getStudentToken(int studentID)
         {
             Student s = new Student();
             return s.getStudentToken(studentID);

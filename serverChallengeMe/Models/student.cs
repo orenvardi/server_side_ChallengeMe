@@ -81,13 +81,19 @@ namespace serverChallengeMe.Models
             return dBservices.getStudentByPhoneAndPassword(phone, password);
         }
 
-        public int getStudentByPhone(string phone)
+        public int GetStudentIdByPhone(string phone)
         {
             DBservices dBservices = new DBservices();
-            return dBservices.getStudentByPhone(phone);
+            return dBservices.GetStudentIdByPhone(phone);
         }
 
-        public int getStudentToken(int studentID)
+        public Student GetStudentByPhone(string phone)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.GetStudentByPhone(phone);
+        }
+
+        public string getStudentToken(int studentID)
         {
             DBservices dbs = new DBservices();
             return dbs.getStudentToken(studentID);

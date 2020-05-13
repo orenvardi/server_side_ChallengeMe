@@ -44,11 +44,11 @@ namespace serverChallengeMe.Models
             return dBservices.getNumOfAlertNotReadForStudents(studentID);
         }
 
-        //public int postAlert(Alert alert)
-        //{
-        //    DBservices dbs = new DBservices();
-        //    return dbs.postAlert(alert);
-        //}
+        public int postAlert(Alert alert)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.postAlert(alert);
+        }
 
         //public int deleteAlert(int id)
         //{

@@ -250,7 +250,7 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                da = new SqlDataAdapter("select studentID, teacherID from Student where phone = '" + phone + "' AND password = '" + password + "'; ", con);
+                da = new SqlDataAdapter("select * from Student where phone = '" + phone + "' AND password = '" + password + "'; ", con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
                 da.Fill(ds);
@@ -274,9 +274,9 @@ namespace serverChallengeMe.Models.DAL
             return dt;
         }
         //---------------------------------------------------------------------------------
-        // .  GET Student By Phone
+        // .  GET StudentID By Phone
         //---------------------------------------------------------------------------------
-        public int getStudentByPhone(string phone)
+        public int GetStudentIdByPhone(string phone)
         {
             int id = 0;
             SqlConnection con = null;
@@ -2541,9 +2541,9 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 74.  GET Student By studentID
         //---------------------------------------------------------------------------------       
-        public int getStudentToken(int studentID)
+        public string getStudentToken(int studentID)
         {
-            int token = 0;
+            string token = "";
             SqlConnection con = null;
             try
             {
@@ -2555,7 +2555,7 @@ namespace serverChallengeMe.Models.DAL
                 {
                     while (dr2.Read())
                     {
-                        token = Convert.ToInt32(dr2["teacherID"]);
+                        token = (string)dr2["studentToken"];
                     }
                 }
             }
@@ -2575,9 +2575,9 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 75.  GET TeacherToken By teacherID
         //---------------------------------------------------------------------------------       
-        public int getTeacherToken(int teacherID)
+        public string getTeacherToken(int teacherID)
         {
-            int token = 0;
+            string token = "";
             SqlConnection con = null;
             try
             {
@@ -2589,7 +2589,7 @@ namespace serverChallengeMe.Models.DAL
                 {
                     while (dr2.Read())
                     {
-                        token = Convert.ToInt32(dr2["teacherID"]);
+                        token = (string)dr2["teacherToken"];
                     }
                 }
             }
@@ -2605,6 +2605,101 @@ namespace serverChallengeMe.Models.DAL
                 }
             }
             return token;
+        }
+        //---------------------------------------------------------------------------------
+        // 76.  POST Alert
+        //---------------------------------------------------------------------------------
+        public int postAlert(Alert alert)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            String cStr = BuildInsertCommandAlert(alert);      // helper method to build the insert string
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
+        //--------------------------------------------------------------------
+        // 77.  Build INSERT Alert Command
+        //--------------------------------------------------------------------
+        private String BuildInsertCommandAlert(Alert alert)
+        {
+            String command;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("VALUES({0}, {1}, '{2}', '{3}', '{4}','{5}',{6});", alert.TeacherID, alert.StudentID, alert.AlertTitle, alert.AlertText, alert.AlertDate, alert.AlertTime, 0);
+            String prefix = "INSERT INTO Alert(teacherID, studentID, alertTitle, alertText, alertDate, alertTime, alertRead) ";
+            command = prefix + sb.ToString();
+            return command;
+        }
+        //---------------------------------------------------------------------------------
+        // 78.  GET Student By Phone
+        //---------------------------------------------------------------------------------
+        public Student GetStudentByPhone(string phone)
+        {
+            Student student = new Student();
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "select * from Student where phone = " + phone + ";";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                if (dr2.HasRows)
+                {
+                    while (dr2.Read())
+                    {
+                        student.StudentID = Convert.ToInt32(dr2["StudentID"]);
+                        student.UserName = (string)dr2["UserName"];
+                        //student.Password = Convert.ToBoolean(dr2["Password"]);
+                        student.FirstName = (string)dr2["FirstName"];
+                        student.LastName = (string)dr2["LastName"];
+                        student.Phone = (string)dr2["Phone"];
+                        student.ClassID = Convert.ToInt32(dr2["ClassID"]);
+                        student.TeacherID = Convert.ToInt32(dr2["TeacherID"]);
+                        student.Avatar = (string)dr2["Avatar"];
+                        student.BirthDate = (string)dr2["BirthDate"];
+                        student.Image = (string)dr2["imageStudent"];
+                        student.StudentToken = (string)dr2["StudentToken"];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return student;
         }
 
 
