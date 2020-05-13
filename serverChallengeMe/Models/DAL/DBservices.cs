@@ -144,7 +144,6 @@ namespace serverChallengeMe.Models.DAL
             }
             return id;
         }
-
         //---------------------------------------------------------------------------------
         // 6.  GET Teacher By ID
         //---------------------------------------------------------------------------------       
@@ -2538,6 +2537,74 @@ namespace serverChallengeMe.Models.DAL
                 if (con != null)
                     con.Close();
             }
+        }
+        //---------------------------------------------------------------------------------
+        // 74.  GET Student By studentID
+        //---------------------------------------------------------------------------------       
+        public int getStudentToken(int studentID)
+        {
+            int token = 0;
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "select studentToken from Student where studentID = '" + studentID + "';";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                if (dr2.HasRows)
+                {
+                    while (dr2.Read())
+                    {
+                        token = Convert.ToInt32(dr2["teacherID"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return token;
+        }
+        //---------------------------------------------------------------------------------
+        // 75.  GET TeacherToken By teacherID
+        //---------------------------------------------------------------------------------       
+        public int getTeacherToken(int teacherID)
+        {
+            int token = 0;
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "select teacherToken from Teacher where teacherID = '" + teacherID + "';";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                if (dr2.HasRows)
+                {
+                    while (dr2.Read())
+                    {
+                        token = Convert.ToInt32(dr2["teacherID"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return token;
         }
 
 

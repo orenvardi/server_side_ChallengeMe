@@ -78,6 +78,15 @@ namespace serverChallengeMe.Controllers
             return student.GetImageStudent(studentID);
         }
 
+        [HttpGet]
+        [Route("api/Student/getStudentToken")]
+        // GET api/Student/getStudentToken
+        public int getStudentToken(int studentID)
+        {
+            Student s = new Student();
+            return s.getStudentToken(studentID);
+        }
+
         [HttpPost]
         [Route("api/Student/studentToken")]
         // GET api/Student/studentToken

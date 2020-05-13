@@ -53,6 +53,15 @@ namespace serverChallengeMe.Controllers
             return teacher.GetIsTeacherExistByPhone(phone);
         }
 
+        [HttpGet]
+        [Route("api/Teacher/getTeacherToken")]
+        // GET api/Teacher/getTeacherToken
+        public int getTeacherToken(int teacherID)
+        {
+            Teacher t = new Teacher();
+            return t.getTeacherToken(teacherID);
+        }
+
         // POST api/<controller>
         public int Post(Teacher teacher)
         {

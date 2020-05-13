@@ -87,6 +87,12 @@ namespace serverChallengeMe.Models
             return dBservices.getStudentByPhone(phone);
         }
 
+        public int getStudentToken(int studentID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.getStudentToken(studentID);
+        }
+
         public List<int> GetSuccessCount(int studentID)
         {
             List<int> ChallengesCount = new List<int>();
