@@ -2522,7 +2522,7 @@ namespace serverChallengeMe.Models.DAL
             {
                 throw (ex);
             }
-            String cStr = "UPDATE Teacher SET teacherToken = '" + teacher.TeacherToken + "' where studentID = " + teacher.TeacherID + ";";
+            String cStr = "UPDATE Teacher SET teacherToken = '" + teacher.TeacherToken + "' where teacherID = " + teacher.TeacherID + ";";
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
