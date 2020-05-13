@@ -60,6 +60,15 @@ namespace serverChallengeMe.Controllers
             return t.postTeacher(teacher);
         }
 
+        [HttpPost]
+        [Route("api/Teacher/teacherToken")]
+        // GET api/Teacher/teacherToken
+        public int PostTeacherToken(Teacher teacher)
+        {
+            Teacher t = new Teacher();
+            return t.PostTeacherToken(teacher);
+        }
+
         // PUT api/Teacher?teacherID={teacherID}&password={password}
         public int PutTeacherPassword(int teacherID, string password)
         {

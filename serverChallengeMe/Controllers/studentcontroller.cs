@@ -81,10 +81,10 @@ namespace serverChallengeMe.Controllers
         [HttpPost]
         [Route("api/Student/studentToken")]
         // GET api/Student/studentToken
-        public int PostToken(Student student)
+        public int PostStudentToken(Student student)
         {
             Student s = new Student();
-            return s.PostToken(student);
+            return s.PostPostStudentTokenToken(student);
         }
 
         // POST api/<controller>

@@ -2476,9 +2476,9 @@ namespace serverChallengeMe.Models.DAL
             return 0;
         }
         //---------------------------------------------------------------------------------
-        // 67.  Post Student Token
+        // 72.  Post Student Token
         //---------------------------------------------------------------------------------
-        public int PostToken(Student student)
+        public int PostStudentToken(Student student)
         {
             SqlConnection con;
             SqlCommand cmd;
@@ -2507,7 +2507,38 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
             }
         }
-
+        //---------------------------------------------------------------------------------
+        // 73.  Post Teacher Token
+        //---------------------------------------------------------------------------------
+        public int PostTeacherToken(Teacher teacher)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            String cStr = "UPDATE Teacher SET teacherToken = '" + teacher.TeacherToken + "' where studentID = " + teacher.TeacherID + ";";
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
 
 
 

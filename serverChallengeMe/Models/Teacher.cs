@@ -138,6 +138,12 @@ namespace serverChallengeMe.Models
             return a.postAlertSettings(teacherID);
         }
 
+        public int PostTeacherToken(Teacher teacher)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.PostTeacherToken(teacher);
+        }
+
         public int putNewTeacherPassword(int teacherID, string password)
         {
             DBservices dbs = new DBservices();

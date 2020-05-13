@@ -118,10 +118,10 @@ namespace serverChallengeMe.Models
             return dbs.getStudentById(studentID);
         }
 
-        public int PostToken(Student student)
+        public int PostStudentToken(Student student)
         {
             DBservices dbs = new DBservices();
-            return dbs.PostToken(student);
+            return dbs.PostStudentToken(student);
         }
 
         public int putStudent(Student student)
