@@ -22,11 +22,13 @@ namespace serverChallengeMe.Models
         public string Avatar { get; set; }
         public string BirthDate { get; set; }
         public string Image { get; set; }
+        public string StudentToken { get; set; }
+
 
         public Student() { }
 
 
-        public Student(int studentID, string userName, string password, string firstName, string lastName, string phone, int classID, int teacherID, string avatar, string birthDate, string image)
+        public Student(int studentID, string userName, string password, string firstName, string lastName, string phone, int classID, int teacherID, string avatar, string birthDate, string image, string studentToken)
         {
             StudentID = studentID;
             UserName = userName;
@@ -39,6 +41,7 @@ namespace serverChallengeMe.Models
             Avatar = avatar;
             BirthDate = birthDate;
             Image = image;
+            StudentToken = studentToken;
         }
 
         public DataTable getStudents(int classID)
@@ -113,6 +116,12 @@ namespace serverChallengeMe.Models
             DBservices dbs = new DBservices();
             int studentID = dbs.postStudent(student);
             return dbs.getStudentById(studentID);
+        }
+
+        public int PostToken(Student student)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.PostToken(student);
         }
 
         public int putStudent(Student student)

@@ -2476,6 +2476,44 @@ namespace serverChallengeMe.Models.DAL
             }
             return 0;
         }
+        //---------------------------------------------------------------------------------
+        // 67.  Post Student Token
+        //---------------------------------------------------------------------------------
+        public int PostToken(Student student)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            String cStr = "UPDATE Student SET studentToken = '" + student.StudentToken + "' where studentID = " + student.StudentID + ";";
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
+
+
+
+
+
 
 
 

@@ -22,10 +22,11 @@ namespace serverChallengeMe.Models
         public string Mail { get; set; }
         public string School { get; set; }
         public bool TempPassword { get; set; }
+        public string TeacherToken { get; set; }
 
         public Teacher() { }
 
-        public Teacher(int teacherID, string userName, string password, string firstName, string lastName, string phone, string mail, string school, bool tempPassword)
+        public Teacher(int teacherID, string userName, string password, string firstName, string lastName, string phone, string mail, string school, bool tempPassword, string teacherToken)
         {
             TeacherID = teacherID;
             UserName = userName;
@@ -36,6 +37,7 @@ namespace serverChallengeMe.Models
             Mail = mail;
             School = school;
             TempPassword = tempPassword;
+            TeacherToken = teacherToken;
         }
 
         public Teacher isTeacherExists(string username, string password)
