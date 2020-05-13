@@ -84,7 +84,7 @@ namespace serverChallengeMe.Controllers
         public int PostStudentToken(Student student)
         {
             Student s = new Student();
-            return s.PostPostStudentTokenToken(student);
+            return s.PostStudentToken(student);
         }
 
         // POST api/<controller>
