@@ -2651,8 +2651,8 @@ namespace serverChallengeMe.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES({0}, {1}, '{2}', '{3}', '{4}','{5}',{6});", alert.TeacherID, alert.StudentID, alert.AlertTitle, alert.AlertText, alert.AlertDate, alert.AlertTime, 0);
-            String prefix = "INSERT INTO Alert(teacherID, studentID, alertTitle, alertText, alertDate, alertTime, alertRead) ";
+            sb.AppendFormat("VALUES({0}, {1}, '{2}', '{3}', '{4}', '{5}', {6}, '{7}');", alert.TeacherID, alert.StudentID, alert.AlertTitle, alert.AlertText, alert.AlertDate, alert.AlertTime, 0, alert.AlertTypeID);
+            String prefix = "INSERT INTO Alert(teacherID, studentID, alertTitle, alertText, alertDate, alertTime, alertRead, alertTypeID) ";
             command = prefix + sb.ToString();
             return command;
         }
@@ -2700,6 +2700,145 @@ namespace serverChallengeMe.Models.DAL
                 }
             }
             return student;
+        }
+        //---------------------------------------------------------------------------------
+        // 79.  GET Passed Deadline Challenges For Alert
+        //---------------------------------------------------------------------------------
+        public DataTable passedDeadlineChallenges()
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "SELECT S.teacherID, S.studentID, S.firstName, S.lastName, SC.deadline, SC.status, C.challengeName, CL.className " +
+                    " FROM studentChallenge SC join Student S on SC.studentID = S.studentID join challenge C on SC.challengeID = C.challengeID " +
+                    " join Class CL on CL.classID = S.classID WHERE SC.status <> '1' AND SC.deadline < CONVERT(char(10), GetDate(), 126) ";
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 79.  GET Idle Students For Alert
+        //---------------------------------------------------------------------------------
+        public DataTable idleStudents()
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "SELECT S.* FROM Student S join AlertSettings A on S.teacherID = A.teacherID WHERE GetDate() - S.lastLogDate = A.alertIdle";
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 80.  GET preDeadline Challenges For Alert
+        //---------------------------------------------------------------------------------
+        public DataTable preDeadlineChallenges()
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "SELECT S.teacherID, S.studentID, S.firstName, S.lastName, SC.deadline, SC.status, C.challengeName, CL.className, DATEDIFF(day, SC.deadline, GetDate()) as 'daysPreDeadline' "+
+                    " FROM studentChallenge SC join Student S on SC.studentID = S.studentID join Class CL on CL.classID = S.classID "+
+                    " join challenge C on SC.challengeID = C.challengeID join AlertSettings A on S.teacherID = A.teacherID WHERE SC.status <> 1 "+
+                    " AND GetDate() > SC.deadline AND GetDate() -SC.deadline <= A.alertPreDate";
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 81.  GET Teacher Alerts
+        //---------------------------------------------------------------------------------
+        public DataTable getTeacherAlerts(int teacherID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "select A.* from Alert A join AlertSettings AST on A.teacherID = AST.teacherID WHERE "+ 
+                    " A.teacherID = "+ teacherID+" AND ((AST.alertPositive = 1 AND A.alertTypeID = 1) OR (AST.alertNegative = 1 AND A.alertTypeID = 2) "+
+                    " OR (AST.alertHelp = 1 AND A.alertTypeID = 3) OR (AST.alertLate = 1 AND A.alertTypeID = 4) OR A.alertTypeID > 4)";
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
         }
 
 

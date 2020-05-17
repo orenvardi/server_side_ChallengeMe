@@ -19,7 +19,16 @@ namespace serverChallengeMe.Controllers
             Alert alert = new Alert();
             return alert.getUnReadAlertCount(teacherID_UnRead);
         }
-        
+
+        [HttpGet]
+        [Route("api/Alert/getTeacherAlerts/teacherID")]
+        // מחזירה את כל ההתראות שיש למורה לפי ההגדרות שלו
+        public DataTable getTeacherAlerts(int teacherID)
+        {
+            Alert alert = new Alert();
+            return alert.getTeacherAlerts(teacherID);
+        }
+
         // GET api/<controller>
         public DataTable Get(int studentID)
         {
