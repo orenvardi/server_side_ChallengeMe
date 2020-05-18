@@ -144,10 +144,10 @@ namespace serverChallengeMe.Models
             return dbs.getTeacherToken(teacherID);
         }
 
-        public int PostTeacherToken(Teacher teacher)
+        public int PutTeacherToken(Teacher teacher)
         {
             DBservices dbs = new DBservices();
-            return dbs.PostTeacherToken(teacher);
+            return dbs.PutTeacherToken(teacher);
         }
 
         public int putNewTeacherPassword(int teacherID, string password)

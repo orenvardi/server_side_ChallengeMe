@@ -21,7 +21,7 @@ namespace serverChallengeMe.Controllers
         }
 
         [HttpGet]
-        [Route("api/Alert/getTeacherAlerts/teacherID")]
+        [Route("api/Alert/getTeacherAlerts")]
         // מחזירה את כל ההתראות שיש למורה לפי ההגדרות שלו
         public DataTable getTeacherAlerts(int teacherID)
         {
@@ -39,18 +39,23 @@ namespace serverChallengeMe.Controllers
         // POST api/Alert
         public int Post(Alert alert)
         {
-            DBservices dbs = new DBservices();
-            return dbs.postAlert(alert);
+            Alert a = new Alert();
+            return a.postAlert(alert);
         }
 
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        // מעדכן עבור המורה את ההתראה לנקראה
+        // PUT api/Alert
+        public int Put(int alertID)
         {
+            Alert a = new Alert();
+            return a.putAlertToRead(alertID);
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public int Delete(int alertID)
         {
+            Alert alert = new Alert();
+            return alert.deleteAlert(alertID);
         }
     }
 }

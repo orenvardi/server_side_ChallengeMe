@@ -896,8 +896,6 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
             }
         }
-
-
         //---------------------------------------------------------------------------------
         // 28.  DELETE Class
         //---------------------------------------------------------------------------------
@@ -2507,9 +2505,9 @@ namespace serverChallengeMe.Models.DAL
             }
         }
         //---------------------------------------------------------------------------------
-        // 73.  Post Teacher Token
+        // 73.  Put Teacher Token
         //---------------------------------------------------------------------------------
-        public int PostTeacherToken(Teacher teacher)
+        public int PutTeacherToken(Teacher teacher)
         {
             SqlConnection con;
             SqlCommand cmd;
@@ -2555,7 +2553,10 @@ namespace serverChallengeMe.Models.DAL
                 {
                     while (dr2.Read())
                     {
-                        token = (string)dr2["studentToken"];
+                        if (DBNull.Value.Equals(dr2["studentToken"]))
+                            token = "";
+                        else
+                            token = (string)dr2["studentToken"];
                     }
                 }
             }
@@ -2589,7 +2590,10 @@ namespace serverChallengeMe.Models.DAL
                 {
                     while (dr2.Read())
                     {
-                        token = (string)dr2["teacherToken"];
+                        if (DBNull.Value.Equals(dr2["teacherToken"]))
+                            token = "";
+                        else
+                            token = (string)dr2["teacherToken"];
                     }
                 }
             }
@@ -2744,7 +2748,7 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                string str = "SELECT S.* FROM Student S join AlertSettings A on S.teacherID = A.teacherID WHERE GetDate() - S.lastLogDate = A.alertIdle";
+                string str = "SELECT S.*, DATEDIFF(day, S.lastLogDate, GetDate()) AS 'idleTime' FROM Student S join AlertSettings A on S.teacherID = A.teacherID WHERE DATEDIFF(day, S.lastLogDate, GetDate()) % A.alertIdle = 0";
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
@@ -2777,10 +2781,12 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                string str = "SELECT S.teacherID, S.studentID, S.firstName, S.lastName, SC.deadline, SC.status, C.challengeName, CL.className, DATEDIFF(day, SC.deadline, GetDate()) as 'daysPreDeadline' "+
-                    " FROM studentChallenge SC join Student S on SC.studentID = S.studentID join Class CL on CL.classID = S.classID "+
-                    " join challenge C on SC.challengeID = C.challengeID join AlertSettings A on S.teacherID = A.teacherID WHERE SC.status <> 1 "+
-                    " AND GetDate() > SC.deadline AND GetDate() -SC.deadline <= A.alertPreDate";
+                string str = "SELECT S.teacherID, S.studentID, S.firstName, S.lastName, SC.deadline, SC.status, "+
+                    "C.challengeName, CL.className, DATEDIFF(day, GetDate(), SC.deadline) as 'daysPreDeadline' " +
+                    "FROM studentChallenge SC join Student S on SC.studentID = S.studentID " +
+                    "join Class CL on CL.classID = S.classID join challenge C on SC.challengeID = C.challengeID " +
+                    "join AlertSettings A on S.teacherID = A.teacherID " +
+                    "WHERE SC.status <> 1 AND SC.deadline > GetDate() AND DATEDIFF(day, GetDate(), SC.deadline) = A.alertPreDate";
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
@@ -2839,7 +2845,70 @@ namespace serverChallengeMe.Models.DAL
             }
             return dt;
         }
-
+        //---------------------------------------------------------------------------------
+        // 82.  DELETE Alert
+        //---------------------------------------------------------------------------------
+        public int deleteAlert(int alertID)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            } 
+            String cStr = "DELETE FROM Alert WHERE alertID  = '" + alertID + "' ";
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+        //---------------------------------------------------------------------------------
+        // 83.  UPDATE Alert = Read 
+        //---------------------------------------------------------------------------------
+        public int putAlertToRead(int alertID)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            String cStr = "UPDATE Alert SET alertRead = 'true' where alertID = " + alertID + ";";
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
 
 
 
@@ -2915,7 +2984,5 @@ namespace serverChallengeMe.Models.DAL
             }
             return dt;
         }
-
-
     }
 }

@@ -96,7 +96,7 @@ namespace serverChallengeMe.Controllers
             return s.getStudentToken(studentID);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("api/Student/studentToken")]
         // GET api/Student/studentToken
         public int PostStudentToken(Student student)

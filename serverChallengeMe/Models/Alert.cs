@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Data;
 using serverChallengeMe.Models.DAL;
+using serverChallengeMe.Models.FCM;
+
 namespace serverChallengeMe.Models
 {
     public class Alert
@@ -62,11 +64,20 @@ namespace serverChallengeMe.Models
             return dbs.postAlert(alert);
         }
 
-        //public int deleteAlert(int id)
-        //{
-        //    DBservices dbs = new DBservices();
-        //    return dbs.deleteAlert(id);
-        //}
+        // מעדכן עבור המורה את ההתראה לנקראה
+        public int putAlertToRead(int alertID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.putAlertToRead(alertID);
+        }
+
+        // מחיקת התראה
+        public int deleteAlert(int alertID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.deleteAlert(alertID);
+        }
+
 
         //----START--התראות אוטומטיות--------
         //1. התראה כאשר עבר דדליין של אתגר והסטטוס שונה מהצליח
@@ -74,7 +85,7 @@ namespace serverChallengeMe.Models
         {
             DBservices dbs = new DBservices();
             DateTime date = DateTime.Now; 
-            string alertDate = date.ToString("yyyy, MMMM dd");
+            string alertDate = date.ToString("yyyy-MM-dd");
 
             DataTable passDeadline = dbs.passedDeadlineChallenges();
             foreach (DataRow row in passDeadline.Rows)
@@ -83,9 +94,10 @@ namespace serverChallengeMe.Models
                 string body = "לתלמיד מכיתה " + row["firstName"] + " " + row["lastName"] + " נגמר הזמן לביצוע האתגר " + row["challengeName"];
                 string toToken = dbs.getTeacherToken(Convert.ToInt32(row["teacherID"]));
 
-                Alert alert = new Alert(0, Convert.ToInt32(row["teacherID"]), Convert.ToInt32(row["studentID"]), title, body, alertDate, DateTime.Now.ToString("HH:mm"), false, 0);
+                Alert alert = new Alert(0, Convert.ToInt32(row["teacherID"]), Convert.ToInt32(row["studentID"]), title, body, alertDate, DateTime.Now.ToString("HH:mm"), false, 4);
                 postAlert(alert);
-                postToFirebase(title, body, toToken); //לא עובד כרגע
+                if (toToken != "" && toToken != null)
+                    PushNotificationLogic.PushNotification(title, body, toToken);
             }
         }
 
@@ -94,7 +106,7 @@ namespace serverChallengeMe.Models
         {
             DBservices dbs = new DBservices();
             DateTime date = DateTime.Now;
-            string alertDate = date.ToString("yyyy, MMMM dd");
+            string alertDate = date.ToString("yyyy-MM-dd");
 
             DataTable idleStudents = dbs.idleStudents();
             foreach (DataRow row in idleStudents.Rows)
@@ -103,9 +115,10 @@ namespace serverChallengeMe.Models
                 string body = "התלמיד " + row["firstName"] + " " + row["lastName"] + " לא נכנס לאפליקציה כבר " + row["idleTime"]+" ימים";
                 string toToken = dbs.getTeacherToken(Convert.ToInt32(row["teacherID"]));
 
-                Alert alert = new Alert(0, Convert.ToInt32(row["teacherID"]), Convert.ToInt32(row["studentID"]), title, body, alertDate, DateTime.Now.ToString("HH:mm"), false,0);
+                Alert alert = new Alert(0, Convert.ToInt32(row["teacherID"]), Convert.ToInt32(row["studentID"]), title, body, alertDate, DateTime.Now.ToString("HH:mm"), false,6);
                 postAlert(alert);
-                postToFirebase(title, body, toToken);
+                if (toToken != "" && toToken != null)
+                    PushNotificationLogic.PushNotification(title, body, toToken);
             }
         }
 
@@ -114,7 +127,7 @@ namespace serverChallengeMe.Models
         {
             DBservices dbs = new DBservices();
             DateTime date = DateTime.Now;
-            string alertDate = date.ToString("yyyy, MMMM dd");
+            string alertDate = date.ToString("yyyy-MM-dd");
 
             DataTable preDeadlineChallenges = dbs.preDeadlineChallenges();
             foreach (DataRow row in preDeadlineChallenges.Rows)
@@ -123,49 +136,12 @@ namespace serverChallengeMe.Models
                 string body = "לתלמיד " + row["firstName"] + " " + row["lastName"] + " נשארו " + row["daysPreDeadline"] + " ימים להשלים את האתגר: "+row["challengeName"];
                 string toToken = dbs.getTeacherToken(Convert.ToInt32(row["teacherID"]));
 
-                Alert alert = new Alert(0, Convert.ToInt32(row["teacherID"]), Convert.ToInt32(row["studentID"]), title, body, alertDate, DateTime.Now.ToString("HH:mm"), false,0);
+                Alert alert = new Alert(0, Convert.ToInt32(row["teacherID"]), Convert.ToInt32(row["studentID"]), title, body, alertDate, DateTime.Now.ToString("HH:mm"), false,5);
                 postAlert(alert);
-                postToFirebase(title, body, toToken);
+                if (toToken != "" && toToken != null)
+                    PushNotificationLogic.PushNotification(title, body, toToken);
             }
         }
-        //----END--התראות אוטומטיות--------
-
-
-        public int postToFirebase(string title, string body, string toToken)
-        {
-            return 1;
-            /*
-             var notification = await {
-                "notification": {
-                    "title": alertTitle,
-                "body": alertText,
-                "click_action": "https://challengeme.netlify.app/",
-                "icon": "http://url-to-an-icon/icon.png"
-                },
-            "to": StudentToken
-        }
-            await fetch("https://fcm.googleapis.com/fcm/send", {
-                method: 'POST',
-            body: JSON.stringify(notification),
-            headers: new Headers({
-                'Content-type': 'application/json; charset=UTF-8',
-                'Authorization': 'key=AAAAB9pd-t0:APA91bFqlbdOGpqVbNifFlo-_2p9uPFoFqqi0iY5O-_bFjMuzYgVlxC7uC9xRQEprfEqdiDjsNEremg7RWBHlyMQhlhC1Hxo_ZPUsjCYTPUS3nu4cMQJ3tXhUImmftNhg3TPjlN1Wq1G'
-            })
-        })
-            .then(res => {
-                 console.log('res=', res);
-                 if (!res.ok)
-                     throw new Error('Network response was not ok.');
-                 return res.json();
-             })
-            .then(
-                (result) => {
-                    console.log("fetch POST= ", result);
-                },
-                (error) => {
-                    console.log("err post=", error);
-                });
-            */
-        }
+        //----END--התראות אוטומטיות--------       
     }
 }
