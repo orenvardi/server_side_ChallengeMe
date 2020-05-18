@@ -39,11 +39,11 @@ namespace serverChallengeMe.Controllers
             return student.getStudentById(studentID);
         }
 
-        // GET api/Student?studentID={studentID}
+        // GET api/Student?studentIDGivesName={studentID}
         public DataTable GetNameByStudentID(int studentIDGivesName)
         {
             Student student = new Student();
-            return student.getStudenNametById(studentIDGivesName);
+            return student.getStudentNametById(studentIDGivesName);
         }
 
         // GET api/Student?studentPhone={Phone}

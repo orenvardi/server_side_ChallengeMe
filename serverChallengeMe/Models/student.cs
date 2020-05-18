@@ -69,7 +69,7 @@ namespace serverChallengeMe.Models
             DBservices dBservices = new DBservices();
             return dBservices.getStudentById(studentID);
         }
-        public DataTable getStudenNametById (int studentID)
+        public DataTable getStudentNametById (int studentID)
         {
             DBservices dBservices = new DBservices();
             return dBservices.getStudentNameById(studentID);

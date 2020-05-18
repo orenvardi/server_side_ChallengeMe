@@ -2632,7 +2632,6 @@ namespace serverChallengeMe.Models.DAL
             }
             catch (Exception ex)
             {
-
                 throw (ex);
             }
             finally
@@ -2651,7 +2650,7 @@ namespace serverChallengeMe.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES({0}, {1}, '{2}', '{3}', '{4}', '{5}', {6}, '{7}');", alert.TeacherID, alert.StudentID, alert.AlertTitle, alert.AlertText, alert.AlertDate, alert.AlertTime, 0, alert.AlertTypeID);
+            sb.AppendFormat("VALUES({0}, {1}, '{2}', '{3}', '{4}', '{5}', {6}, {7});", alert.TeacherID, alert.StudentID, alert.AlertTitle, alert.AlertText, alert.AlertDate, alert.AlertTime, 0, alert.AlertTypeID);
             String prefix = "INSERT INTO Alert(teacherID, studentID, alertTitle, alertText, alertDate, alertTime, alertRead, alertTypeID) ";
             command = prefix + sb.ToString();
             return command;
