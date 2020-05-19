@@ -17,22 +17,7 @@ namespace serverChallengeMe
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
-        //private static DateTime whenTaskLastRan;
-
-        //protected void Application_Start(object sender, EventArgs e)
-        //{
-        //    AreaRegistration.RegisterAllAreas();
-        //    GlobalConfiguration.Configure(WebApiConfig.Register);
-        //    FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-        //    RouteConfig.RegisterRoutes(RouteTable.Routes);
-        //    BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-        //    whenTaskLastRan = DateTime.Now;
-        //    Debug.WriteLine("whenTaskLastRan = ", whenTaskLastRan.ToString());
-
-        //}
-
-        // Code that runs on application startup////////////////
+        // Code that runs on application startup
         void Application_Start(object sender, EventArgs e)
         {
             AreaRegistration.RegisterAllAreas();
@@ -48,7 +33,7 @@ namespace serverChallengeMe
             // Timer interval is set in miliseconds (1000 miliseconds = 1 second),
             // In this case, we'll run a task every minute
             // 1000milisecs * 60sec * 1440min = 24hours
-            timScheduledTask.Interval = 1000 * 60 * 1440;
+            timScheduledTask.Interval = 1000 * 60 * 720;
 
             timScheduledTask.Enabled = true;
 
