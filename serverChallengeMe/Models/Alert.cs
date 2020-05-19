@@ -20,7 +20,6 @@ namespace serverChallengeMe.Models
         public bool AlertRead { get; set; }
         public int AlertTypeID { get; set; }
 
-
         public Alert() { }
 
         public Alert(int alertID, int teacherID, int studentID, string alertTitle, string alertText, string alertDate, string alertTime, bool alertRead, int alertTypeID)

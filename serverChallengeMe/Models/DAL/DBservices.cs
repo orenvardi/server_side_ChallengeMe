@@ -2821,7 +2821,8 @@ namespace serverChallengeMe.Models.DAL
                 con = connect("DBConnectionString");
                 string str = "select A.* from Alert A join AlertSettings AST on A.teacherID = AST.teacherID WHERE "+ 
                     " A.teacherID = "+ teacherID+" AND ((AST.alertPositive = 1 AND A.alertTypeID = 1) OR (AST.alertNegative = 1 AND A.alertTypeID = 2) "+
-                    " OR (AST.alertHelp = 1 AND A.alertTypeID = 3) OR (AST.alertLate = 1 AND A.alertTypeID = 4) OR A.alertTypeID > 4)";
+                    " OR (AST.alertHelp = 1 AND A.alertTypeID = 3) OR (AST.alertLate = 1 AND A.alertTypeID = 4) OR A.alertTypeID > 4)" +
+                    " ORDER BY A.alertID DESC;";
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
