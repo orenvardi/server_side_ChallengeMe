@@ -6,9 +6,12 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Data;
 using serverChallengeMe.Models;
+using System.Web.Http.Cors;
 
 namespace serverChallengeMe.Controllers
 {
+    [EnableCors("*", "*", "GET, POST, PUT, DELETE")]
+
     public class ChallengeTagController : ApiController
     {
 

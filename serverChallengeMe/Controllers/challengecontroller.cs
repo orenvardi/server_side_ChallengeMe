@@ -7,9 +7,12 @@ using System.Web.Http;
 using System.Data;
 using serverChallengeMe.Models;
 using Newtonsoft.Json.Linq;
+using System.Web.Http.Cors;
 
 namespace serverChallengeMe.Controllers
 {
+    [EnableCors("*", "*", "GET, POST, PUT, DELETE")]
+
     public class ChallengeController : ApiController
     {
         // GET api/Challenge
