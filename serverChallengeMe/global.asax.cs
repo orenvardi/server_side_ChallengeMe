@@ -33,7 +33,7 @@ namespace serverChallengeMe
             // Timer interval is set in miliseconds (1000 miliseconds = 1 second),
             // In this case, we'll run a task every minute
             // 1000milisecs * 60sec * 1440min = 24hours
-            timScheduledTask.Interval = 1000 * 60 * 720;
+            timScheduledTask.Interval = 1000 * 60 * 1440;
 
             timScheduledTask.Enabled = true;
 

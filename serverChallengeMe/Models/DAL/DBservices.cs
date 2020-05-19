@@ -2715,7 +2715,7 @@ namespace serverChallengeMe.Models.DAL
                 con = connect("DBConnectionString");
                 string str = "SELECT S.teacherID, S.studentID, S.firstName, S.lastName, SC.deadline, SC.status, C.challengeName, CL.className " +
                     " FROM studentChallenge SC join Student S on SC.studentID = S.studentID join challenge C on SC.challengeID = C.challengeID " +
-                    " join Class CL on CL.classID = S.classID WHERE SC.status <> '1' AND SC.deadline < CONVERT(char(10), GetDate(), 126) ";
+                    " join Class CL on CL.classID = S.classID WHERE SC.status <> '1' AND SC.deadline < CONVERT(char(10), GetDate() - 1, 126) ";
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
@@ -2748,7 +2748,9 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                string str = "SELECT S.*, DATEDIFF(day, S.lastLogDate, GetDate()) AS 'idleTime' FROM Student S join AlertSettings A on S.teacherID = A.teacherID WHERE DATEDIFF(day, S.lastLogDate, GetDate()) % A.alertIdle = 0";
+                string str = "SELECT S.*, DATEDIFF(day, S.lastLogDate, GetDate()) AS 'idleTime' "+
+                    "FROM Student S join AlertSettings A on S.teacherID = A.teacherID "+
+                    "WHERE DATEDIFF(day, S.lastLogDate, GetDate()) % A.alertIdle = 0";
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
