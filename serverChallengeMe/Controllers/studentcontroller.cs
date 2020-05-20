@@ -101,7 +101,7 @@ namespace serverChallengeMe.Controllers
 
         [HttpPut]
         [Route("api/Student/studentToken")]
-        // GET api/Student/studentToken
+        // PUT api/Student/studentToken
         public int PostStudentToken(Student student)
         {
             Student s = new Student();
