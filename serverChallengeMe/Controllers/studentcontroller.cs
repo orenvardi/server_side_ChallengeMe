@@ -10,7 +10,7 @@ using System.Web.Http.Cors;
 
 namespace serverChallengeMe.Controllers
 {
-    [EnableCors("*", "*", "GET, POST, PUT, DELETE")]
+    [EnableCors("*", "*", "GET, POST, PUT, DELETE")] 
 
     public class StudentController : ApiController
     {
