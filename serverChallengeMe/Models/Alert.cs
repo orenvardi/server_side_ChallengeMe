@@ -141,15 +141,90 @@ namespace serverChallengeMe.Models
                     PushNotificationLogic.PushNotification(title, body, toToken);
             }
         }
-        //----END--התראות אוטומטיות--------       
+        //----END--התראות אוטומטיות מורה--------       
 
-        //----START---התראות אוטומטיות למורה-------
+        //----START---התראות אוטומטיות לתלמיד-------
         //1. התראה כל מספר ימים שהתלמיד לא נכנס לאפליקציה 
+        public void idleStudentsAlert()
+        {
+            int idleDays = 3;  // כל 3 ימים תשלח התראה לתלמיד
+            DBservices dbs = new DBservices();
+            DateTime date = DateTime.Now;
+            string alertDate = date.ToString("yyyy-MM-dd");
+
+            DataTable idleStudentsAlert = dbs.idleStudentsAlert(idleDays);
+            foreach (DataRow row in idleStudentsAlert.Rows)
+            {
+                string title = "שכחת ממני";
+                string body = "תמשיך לעשות אתגרים כדי שאוכל לגדול";
+                string toToken = dbs.getStudentToken(Convert.ToInt32(row["studentID"]));
+
+                Alert alert = new Alert(0, Convert.ToInt32(row["studentID"]), Convert.ToInt32(row["studentID"]), title, body, alertDate, DateTime.Now.ToString("HH:mm"), false, 7);
+                postAlert(alert);
+                if (toToken != "" && toToken != null)
+                    PushNotificationLogic.PushNotification(title, body, toToken);
+            }
+        }
 
         //2. התראה עם ספירה לאחור לביצוע האתגר הקרוב אם לא בוצע
+        public void preDeadlineStudentsAlert()
+        {
+            int preDeadlineDays = 5;  // החל מ5 ימים לפני דדליין תשלח התראה לתלמיד בכל יום
+            DBservices dbs = new DBservices();
+            DateTime date = DateTime.Now;
+            string alertDate = date.ToString("yyyy-MM-dd");
+
+            DataTable preDeadlineStudentsAlert = dbs.preDeadlineStudentsAlert(preDeadlineDays);
+            foreach (DataRow row in preDeadlineStudentsAlert.Rows)
+            {
+                string title = "צריך לסיים את האתגר";
+                string body = "";
+                if (preDeadlineDays == 0)
+                {
+                    body = row["firstName"] + " " + row["lastName"] + " יש לך רק את היום להשלים את האתגר: " + row["challengeName"];
+                }
+                if (preDeadlineDays == 1)
+                {
+                    body = row["firstName"] + " " + row["lastName"] + " נשאר לך יום אחד להשלים את האתגר: " + row["challengeName"];
+                }
+                if (preDeadlineDays == 2)
+                {
+                    body = row["firstName"] + " " + row["lastName"] + " נשארו לך יומיים להשלים את האתגר: " + row["challengeName"];
+                }
+                else
+                {
+                    body = row["firstName"] + " " + row["lastName"] + " נשארו לך " + row["daysPreDeadline"] + " ימים להשלים את האתגר: " + row["challengeName"];
+                }
+
+                string toToken = dbs.getStudentToken(Convert.ToInt32(row["studentID"]));
+
+                Alert alert = new Alert(0, Convert.ToInt32(row["studentID"]), Convert.ToInt32(row["studentID"]), title, body, alertDate, DateTime.Now.ToString("HH:mm"), false, 8);
+                postAlert(alert);
+                if (toToken != "" && toToken != null)
+                    PushNotificationLogic.PushNotification(title, body, toToken);
+            }
+        }
 
         //3. התראה כאשר עבר הדדליין והתלמיד לא הצליח את האתגר עם מלל מנחם ומעודד
+        public void passDeadlineStudentsAlert()
+        {
+            DBservices dbs = new DBservices();
+            DateTime date = DateTime.Now;
+            string alertDate = date.ToString("yyyy-MM-dd");
 
-        //----END--התראות אוטומטיות--------       
+            DataTable passDeadlineStudentsAlert = dbs.passDeadlineStudentsAlert();
+            foreach (DataRow row in passDeadlineStudentsAlert.Rows)
+            {
+                string title = "אוי לא הצלחת את האתגר בזמן";
+                string body = row["firstName"] + " " + row["lastName"] + " היית צריך לסיים את האתגר: " + row["challengeName"] + " עד אתמול ";
+                string toToken = dbs.getStudentToken(Convert.ToInt32(row["studentID"]));
+
+                Alert alert = new Alert(0, Convert.ToInt32(row["studentID"]), Convert.ToInt32(row["studentID"]), title, body, alertDate, DateTime.Now.ToString("HH:mm"), false, 9);
+                postAlert(alert);
+                if (toToken != "" && toToken != null)
+                    PushNotificationLogic.PushNotification(title, body, toToken);
+            }
+        }
+        //----END--התראות אוטומטיות תלמיד--------       
     }
 }

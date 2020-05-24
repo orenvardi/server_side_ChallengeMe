@@ -2912,7 +2912,110 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
             }
         }
+        //---------------------------------------------------------------------------------
+        // 84.  GET idle Students For Alert
+        //---------------------------------------------------------------------------------
+        public DataTable idleStudentsAlert(int idleDays)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "SELECT S.*, DATEDIFF(day, S.lastLogDate, GetDate()) as 'idleDays' "+
+                    " FROM Student S WHERE DATEDIFF(day, S.lastLogDate, GetDate()) = "+ idleDays;
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
 
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 85.  GET preDeadline Students For Alert
+        //---------------------------------------------------------------------------------
+        public DataTable preDeadlineStudentsAlert(int preDeadlineDays)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "SELECT S.*, SC.deadline, SC.status, C.challengeName, DATEDIFF(day, GetDate(), SC.deadline) as 'daysPreDeadline' "+
+                    " FROM studentChallenge SC join Student S on SC.studentID = S.studentID join challenge C on SC.challengeID = C.challengeID "+
+                    " WHERE SC.status <> 1 AND GetDate() < SC.deadline AND DATEDIFF(day, GetDate(), SC.deadline) BETWEEN 0 AND " + preDeadlineDays;
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 86.  GET preDeadline Students For Alert
+        //---------------------------------------------------------------------------------
+        public DataTable passDeadlineStudentsAlert()
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "SELECT S.*, SC.deadline, SC.status, C.challengeName FROM studentChallenge SC "+
+                    " join Student S on SC.studentID = S.studentID join challenge C on SC.challengeID = C.challengeID WHERE SC.status <> 1 "+
+                    " AND DATEDIFF(day, SC.deadline, GetDate()) = 1";
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
 
 
 

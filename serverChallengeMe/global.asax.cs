@@ -49,6 +49,9 @@ namespace serverChallengeMe
             alert.passDeadlineAlert();
             alert.idleStudentAlert();
             alert.preDeadlineAlert();
+            alert.idleStudentsAlert();
+            alert.preDeadlineStudentsAlert();
+            alert.passDeadlineStudentsAlert();
         }
     }
 }
