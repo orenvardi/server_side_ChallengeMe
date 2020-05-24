@@ -32,6 +32,15 @@ namespace serverChallengeMe.Controllers
             return alert.getTeacherAlerts(teacherID);
         }
 
+        [HttpGet]
+        [Route("api/Alert/getTeacherAlertsSearch")]
+        // מחזירה את כל ההתראות שיש למורה לפי ההגדרות שלו ולפי החיפוש שלו
+        public DataTable getTeacherAlertsSearch(int teacherID, string studentName)
+        {
+            Alert alert = new Alert();
+            return alert.getTeacherAlertsSearch(teacherID, studentName);
+        }
+
         // GET api/<controller>
         public DataTable Get(int studentID)
         {

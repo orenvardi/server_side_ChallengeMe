@@ -49,6 +49,13 @@ namespace serverChallengeMe.Models
             return dBservices.getTeacherAlerts(teacherID);
         }
 
+        // מחזירה את כל ההתראות שיש למורה לפי ההגדרות שלו ולפי החיפוש שלו
+        public DataTable getTeacherAlertsSearch(int teacherID, string studentName)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getTeacherAlertsSearch(teacherID, studentName);
+        }
+
         // מחזירה את כמות ההתראות שלא נקראו שיש לתלמיד
         public DataTable getNumOfAlertNotReadForStudents(int studentID)
         {

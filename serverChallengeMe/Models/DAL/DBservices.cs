@@ -3016,6 +3016,42 @@ namespace serverChallengeMe.Models.DAL
             }
             return dt;
         }
+        //---------------------------------------------------------------------------------
+        // 87.  GET Teacher Alerts
+        //---------------------------------------------------------------------------------
+        public DataTable getTeacherAlertsSearch(int teacherID, string studentName)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "select A.* from Alert A join AlertSettings AST on A.teacherID = AST.teacherID "+
+                    " join Student S on A.teacherID = S.teacherID AND S.studentID = A.studentID WHERE A.teacherID = " + teacherID + " AND ((AST.alertPositive = 1 AND A.alertTypeID = 1) OR (AST.alertNegative = 1 AND A.alertTypeID = 2) " +
+                    " OR (AST.alertHelp = 1 AND A.alertTypeID = 3) OR (AST.alertLate = 1 AND A.alertTypeID = 4) OR A.alertTypeID > 4)" +
+                    " AND (S.firstName + ' ' + S.lastName) LIKE '%" + studentName + "%' ORDER BY A.alertID DESC;";
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
 
 
 
