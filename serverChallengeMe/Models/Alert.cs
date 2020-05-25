@@ -232,6 +232,7 @@ namespace serverChallengeMe.Models
                     PushNotificationLogic.PushNotification(title, body, toToken);
             }
         }
-        //----END--התראות אוטומטיות תלמיד--------       
+        //----END--התראות אוטומטיות תלמיד--------   
+        //1232
     }
 }
