@@ -233,6 +233,6 @@ namespace serverChallengeMe.Models
             }
         }
         //----END--התראות אוטומטיות תלמיד--------   
-        //1232
+        
     }
 }
