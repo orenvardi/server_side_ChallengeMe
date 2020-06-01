@@ -188,7 +188,7 @@ namespace serverChallengeMe.Models.DAL
                 con = connect("DBConnectionString");
                 da = new SqlDataAdapter("SELECT Challenge.*, StudentChallenge.* FROM Challenge "+
                     " INNER JOIN StudentChallenge ON Challenge.ChallengeID = StudentChallenge.ChallengeID "+
-                    " where StudentChallenge.StudentID = " + studentID + " OEDER BY StudentChallenge.deadline;", con);
+                    " where StudentChallenge.StudentID = " + studentID + " ORDER BY StudentChallenge.deadline;", con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
                 da.Fill(ds);

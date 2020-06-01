@@ -24,7 +24,7 @@ namespace serverChallengeMe.Models.FCM
                     to = toToken,
                     notification = new
                     {
-                        body = body,
+                        body = body + " " + imgPath,
                         title = title,
                         icon = imgPath,
                     }
