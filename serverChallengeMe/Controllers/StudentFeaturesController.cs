@@ -22,7 +22,7 @@ namespace serverChallengeMe.Controllers
         }
 
         // GET api/StudentFeatures answers&questions
-        public DataTable GetQuestionsAndAnswers(int studentID2)
+        public DataSet GetQuestionsAndAnswers(int studentID2)
         {
             StudentFeatures fq = new StudentFeatures();
             return fq.getQuestionsAndAnswers(studentID2);

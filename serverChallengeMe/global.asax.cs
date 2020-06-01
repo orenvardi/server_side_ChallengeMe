@@ -26,7 +26,6 @@ namespace serverChallengeMe
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-
             // Dynamically create new timer
             System.Timers.Timer timScheduledTask = new System.Timers.Timer();
 

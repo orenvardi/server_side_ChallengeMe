@@ -186,7 +186,9 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                da = new SqlDataAdapter("SELECT Challenge.*, StudentChallenge.* FROM Challenge INNER JOIN StudentChallenge ON Challenge.ChallengeID = StudentChallenge.ChallengeID where StudentChallenge.StudentID = " + studentID + ";", con);
+                da = new SqlDataAdapter("SELECT Challenge.*, StudentChallenge.* FROM Challenge "+
+                    " INNER JOIN StudentChallenge ON Challenge.ChallengeID = StudentChallenge.ChallengeID "+
+                    " where StudentChallenge.StudentID = " + studentID + " OEDER BY StudentChallenge.deadline;", con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
                 da.Fill(ds);
@@ -877,8 +879,7 @@ namespace serverChallengeMe.Models.DAL
             catch (Exception ex)
             {
                 throw (ex);
-            } //DELETE FROM Publishers
-            // WHERE City = 'New York'
+            } 
             String cStr = "DELETE FROM Student WHERE studentID  = '" + studentID + "' ";
             cmd = CreateCommand(cStr, con);             // create the command
             try
@@ -1160,19 +1161,29 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 35.  GET Features Question AND Answers By studentID
         //---------------------------------------------------------------------------------
-        public DataTable getQuestionsAndAnswers(int studentID)
+        public DataSet getQuestionsAndAnswers(int studentID)
         {
             SqlConnection con = null;
+            DataSet ds = new DataSet();
+
             try
             {
                 con = connect("DBConnectionString");
-                string cStr = "select FQ.*, SF.studentID, SF.answer, C.categoryName from featuresQuestion FQ left join(select* from studentFeatures " +
-                    "where studentID = " + studentID + ") as sf on sf.questionID = FQ.questionID join category C on FQ.categoryID = C.categoryID ORDER BY FQ.categoryID";
+                string cStr = "select FQ.*, SF.studentID, SF.answer, C.categoryName from featuresQuestion FQ left join "+
+                    " (select* from studentFeatures where studentID = " + studentID + ") as sf on sf.questionID = FQ.questionID "+
+                    " join category C on FQ.categoryID = C.categoryID where C.categoryName = 'רגשי' ORDER BY FQ.categoryID; "+
+                    "select FQ.*, SF.studentID, SF.answer, C.categoryName from featuresQuestion FQ left join " +
+                    " (select* from studentFeatures where studentID = " + studentID + ") as sf on sf.questionID = FQ.questionID " +
+                    " join category C on FQ.categoryID = C.categoryID where C.categoryName = 'חברתי' ORDER BY FQ.categoryID; " +
+                    "select FQ.*, SF.studentID, SF.answer, C.categoryName from featuresQuestion FQ left join " +
+                    " (select* from studentFeatures where studentID = " + studentID + ") as sf on sf.questionID = FQ.questionID " +
+                    " join category C on FQ.categoryID = C.categoryID where C.categoryName = 'לימודי' ORDER BY FQ.categoryID; " ;
                 da = new SqlDataAdapter(cStr, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
-                DataSet ds = new DataSet();
-                da.Fill(ds);
-                dt = ds.Tables[0];
+                da.Fill(ds);         
+                ds.Tables[0].TableName = "emotional";
+                ds.Tables[1].TableName = "social";
+                ds.Tables[2].TableName = "school";
             }
 
             catch (Exception ex)
@@ -1189,7 +1200,7 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
                 }
             }
-            return dt;
+            return ds;
         }
         //---------------------------------------------------------------------------------
         // 37.  GET Challenge Tag
@@ -2669,7 +2680,7 @@ namespace serverChallengeMe.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "select * from Student where phone = " + phone + ";";
+                String selectSTR = "select * from Student where phone = '" + phone + "';";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
                 if (dr2.HasRows)

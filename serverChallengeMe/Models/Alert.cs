@@ -5,6 +5,7 @@ using System.Web;
 using System.Data;
 using serverChallengeMe.Models.DAL;
 using serverChallengeMe.Models.FCM;
+using System.Web.Hosting;
 
 namespace serverChallengeMe.Models
 {
@@ -166,10 +167,12 @@ namespace serverChallengeMe.Models
                 string body = "תמשיך לעשות אתגרים כדי שאוכל לגדול";
                 string toToken = dbs.getStudentToken(Convert.ToInt32(row["studentID"]));
 
+                string imgPath = getAvatarImg(Convert.ToInt32(row["studentID"]));
+
                 Alert alert = new Alert(0, Convert.ToInt32(row["studentID"]), Convert.ToInt32(row["studentID"]), title, body, alertDate, DateTime.Now.ToString("HH:mm"), false, 7);
                 postAlert(alert);
                 if (toToken != "" && toToken != null)
-                    PushNotificationLogic.PushNotification(title, body, toToken);
+                    PushNotificationLogic.PushNotification(title, body, toToken, imgPath);
             }
         }
 
@@ -205,10 +208,12 @@ namespace serverChallengeMe.Models
 
                 string toToken = dbs.getStudentToken(Convert.ToInt32(row["studentID"]));
 
+                string imgPath = getAvatarImg(Convert.ToInt32(row["studentID"]));
+
                 Alert alert = new Alert(0, Convert.ToInt32(row["studentID"]), Convert.ToInt32(row["studentID"]), title, body, alertDate, DateTime.Now.ToString("HH:mm"), false, 8);
                 postAlert(alert);
                 if (toToken != "" && toToken != null)
-                    PushNotificationLogic.PushNotification(title, body, toToken);
+                    PushNotificationLogic.PushNotification(title, body, toToken, imgPath);
             }
         }
 
@@ -226,13 +231,27 @@ namespace serverChallengeMe.Models
                 string body = row["firstName"] + " " + row["lastName"] + " היית צריך לסיים את האתגר: " + row["challengeName"] + " עד אתמול ";
                 string toToken = dbs.getStudentToken(Convert.ToInt32(row["studentID"]));
 
+                string imgPath = getAvatarImg(Convert.ToInt32(row["studentID"]));
+
                 Alert alert = new Alert(0, Convert.ToInt32(row["studentID"]), Convert.ToInt32(row["studentID"]), title, body, alertDate, DateTime.Now.ToString("HH:mm"), false, 9);
                 postAlert(alert);
                 if (toToken != "" && toToken != null)
-                    PushNotificationLogic.PushNotification(title, body, toToken);
+                    PushNotificationLogic.PushNotification(title, body, toToken, imgPath);
             }
         }
         //----END--התראות אוטומטיות תלמיד--------   
         
+        public string getAvatarImg(int studentID)
+        {
+            Student student = new Student();
+            DataTable dt = student.getStudentNametById(studentID);
+            string avatarType = (string)student.getStudentNametById(studentID).Rows[0][2];
+            List<int> counts = student.GetSuccessCount(studentID);
+            int successCount = counts[0];
+            int challengesCount = counts[1];
+            int avatarLevel = (successCount == 0 || challengesCount == 0) ? 1 : Math.Max((int)Math.Ceiling((double)successCount / (double)challengesCount * 100.00 / 20.00), 1); /*מינימום 1*/
+            string imgPath = HostingEnvironment.MapPath("~/avatarImg") + "//" + avatarType + "//" + avatarType + avatarLevel + ".png";
+            return imgPath;
+        }
     }
 }

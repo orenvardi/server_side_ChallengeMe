@@ -9,7 +9,7 @@ namespace serverChallengeMe.Models.FCM
     static class PushNotificationLogic
     {
 
-        public static void PushNotification(string title, string body, string toToken)
+        public static void PushNotification(string title, string body, string toToken, string imgPath)
         {
             try
             {
@@ -26,6 +26,7 @@ namespace serverChallengeMe.Models.FCM
                     {
                         body = body,
                         title = title,
+                        icon = imgPath,
                     }
                 };
                 var serializer = new JavaScriptSerializer();
