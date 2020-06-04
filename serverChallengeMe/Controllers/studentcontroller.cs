@@ -122,8 +122,8 @@ namespace serverChallengeMe.Controllers
         // PUT api/Student/changeTeacherID?teacherID={teacherID}
         public int changeTeacherID(Student s)
         {
-            Student s = new Student();
-            return s.changeTeacherID(s);
+            Student student = new Student();
+            return student.changeTeacherID(s);
         }
 
         // POST api/<controller>
