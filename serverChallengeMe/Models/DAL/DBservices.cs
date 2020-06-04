@@ -3077,7 +3077,7 @@ namespace serverChallengeMe.Models.DAL
             {
                 con = connect("DBConnectionString");
                 string str = "select S.*, C.className from Student S join Class C on S.classID = C.classID " +
-                    " where teacherID = '" + teacherID + "';";
+                    " where S.teacherID = '" + teacherID + "';";
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
@@ -3101,9 +3101,204 @@ namespace serverChallengeMe.Models.DAL
             }
             return dt;
         }
+        //---------------------------------------------------------------------------------
+        // 89.  GET Transfers To 
+        //---------------------------------------------------------------------------------
+        public DataTable getTransfersToTeacher(int teacherID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "select Trans.*, Tfrom.*, Tto.*, S.* from Transfer Trans " +
+                    " join Teacher Tfrom on Trans.teacherFrom = Tfrom.teacherID " +
+                    " join Teacher Tto on Trans.teacherTo = Tto.teacherID " +
+                    " join Student S on Trans.studentID = S.studentID " +
+                    " where Trans.teacherTo = " + teacherID +
+                    " AND Trans.confirm = 'false'";
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
 
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
 
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 90.  GET Transfers To 
+        //---------------------------------------------------------------------------------
+        public DataTable getTransfersFromTeacher(int teacherID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "select Trans.*, Tfrom.*, Tto.*, S.* from Transfer Trans " +
+                    " join Teacher Tfrom on Trans.teacherFrom = Tfrom.teacherID " +
+                    " join Teacher Tto on Trans.teacherTo = Tto.teacherID " +
+                    " join Student S on Trans.studentID = S.studentID " +
+                    " where Trans.teacherFrom = " + teacherID;
+                    //" AND Trans.confirm = 'false'";
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
 
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 91.  POST Transfer
+        //---------------------------------------------------------------------------------
+        public int postTransfer(Transfer transfer)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            String cStr = BuildInsertCommandTransfer(transfer);      // helper method to build the insert string
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                //int newID = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
+        //--------------------------------------------------------------------
+        // 92.  Build INSERT Transfer 
+        //--------------------------------------------------------------------
+        private String BuildInsertCommandTransfer(Transfer transfer)
+        {
+            String command;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("VALUES({0},{1},{2},'{3}');", transfer.TeacherFrom, transfer.TeacherTo, transfer.StudentID, transfer.Comment);
+            String prefix = "INSERT INTO Transfer(teacherFrom, teacherTo, studentID, comment) ";
+            command = prefix + sb.ToString();
+            return command;
+        }
+        //---------------------------------------------------------------------------------
+        // 93.  confirm Transfer
+        //---------------------------------------------------------------------------------
+        public int confirmTransfer(int transferID)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            String cStr = "UPDATE Transfer SET confirm = 'true' WHERE transferID = "+ transferID;      // helper method to build the insert string
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                //int newID = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
+        //---------------------------------------------------------------------------------
+        // 94.  change TeacherID for Student
+        //---------------------------------------------------------------------------------
+        public int changeTeacherID(Student s)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            String cStr = "UPDATE Student SET teacherID= "+ s.TeacherID + " WHERE studentID = "+ s.StudentID;
+            cmd = CreateCommand(cStr, con);             // create the command
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
 
 
 

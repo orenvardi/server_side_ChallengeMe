@@ -199,6 +199,7 @@
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Controllers\AlertController.cs" />
     <Compile Include="Controllers\AlertSettingsController.cs" />
+    <Compile Include="Controllers\TransferController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -220,6 +221,7 @@
     <Compile Include="Models\Teacher.cs" />
     <Compile Include="Models\Alert.cs" />
     <Compile Include="Models\AlertSettings.cs" />
+    <Compile Include="Models\Transfer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

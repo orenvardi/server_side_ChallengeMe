@@ -117,6 +117,15 @@ namespace serverChallengeMe.Controllers
             return s.PostStudentToken(student);
         }
 
+        [HttpPut]
+        [Route("api/Student/changeTeacherID")]
+        // PUT api/Student/changeTeacherID?teacherID={teacherID}
+        public int changeTeacherID(Student s)
+        {
+            Student s = new Student();
+            return s.changeTeacherID(s);
+        }
+
         // POST api/<controller>
         public DataTable Post(Student student)
         {
