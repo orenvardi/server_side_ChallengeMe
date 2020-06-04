@@ -28,6 +28,15 @@ namespace serverChallengeMe.Controllers
             return student.GetStudentsByTeacherID(teacherID);
         }
 
+        [HttpGet]
+        [Route("api/Student/GetStudentsAndClassNameByTeacherID")]
+        //GET api/Student?teacherID={teacherID}
+        public DataTable GetStudentsAndClassNameByTeacherID(int teacherID)
+        {
+            Student student = new Student();
+            return student.GetStudentsAndClassNameByTeacherID(teacherID);
+        }
+
         //GET api/Student?teacherID={teacherID}&name={name}
         public DataTable GetStudentsByName(int teacherID, string name)
         {

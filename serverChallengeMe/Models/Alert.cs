@@ -262,7 +262,10 @@ namespace serverChallengeMe.Models
             int successCount = counts[0];
             int challengesCount = counts[1];
             int avatarLevel = (successCount == 0 || challengesCount == 0) ? 1 : Math.Max((int)Math.Ceiling((double)successCount / (double)challengesCount * 100.00 / 20.00), 1); /*מינימום 1*/
-            string imgPath = HostingEnvironment.MapPath("~/avatarImg") + @"\" + avatarType + @"\" + avatarType + avatarLevel + ".png";
+            //string imgPath = HostingEnvironment.MapPath("~/avatarImg") + @"\" + avatarType + @"\" + avatarType + avatarLevel + ".png";
+            string imgPath = @"..\avatars\" + avatarType + avatarLevel + ".png";
+
+            
             return imgPath;
         }
     }

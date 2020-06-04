@@ -2459,6 +2459,7 @@ namespace serverChallengeMe.Models.DAL
         public int GetIsTeacherExistByPhone(string phone)
         {
             SqlConnection con = null;
+            int teacherID = 0;
             try
             {
                 con = connect("DBConnectionString");
@@ -2467,7 +2468,10 @@ namespace serverChallengeMe.Models.DAL
                 SqlDataReader dr2 = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
                 if (dr2.HasRows)
                 {
-                    return 1;
+                    while (dr2.Read())
+                    {
+                        teacherID = Convert.ToInt32(dr2["teacherID"]);
+                    }
                 }
             }
             catch (Exception ex)
@@ -2481,7 +2485,7 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
                 }
             }
-            return 0;
+            return teacherID;
         }
         //---------------------------------------------------------------------------------
         // 72.  Post Student Token
@@ -3040,6 +3044,40 @@ namespace serverChallengeMe.Models.DAL
                     " join Student S on A.teacherID = S.teacherID AND S.studentID = A.studentID WHERE A.teacherID = " + teacherID + " AND ((AST.alertPositive = 1 AND A.alertTypeID = 1) OR (AST.alertNegative = 1 AND A.alertTypeID = 2) " +
                     " OR (AST.alertHelp = 1 AND A.alertTypeID = 3) OR (AST.alertLate = 1 AND A.alertTypeID = 4) OR A.alertTypeID > 4)" +
                     " AND (S.firstName + ' ' + S.lastName) LIKE '%" + studentName + "%' ORDER BY A.alertID DESC;";
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 88.  GET Students and className by TeacherID
+        //---------------------------------------------------------------------------------
+        public DataTable GetStudentsAndClassNameByTeacherID(int teacherID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                string str = "select S.*, C.className from Student S join Class C on S.classID = C.classID " +
+                    " where teacherID = '" + teacherID + "';";
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
