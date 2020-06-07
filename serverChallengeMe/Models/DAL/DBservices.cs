@@ -3307,7 +3307,6 @@ namespace serverChallengeMe.Models.DAL
             SqlConnection con = null;
             try
             {
-                שם פרטי ומשפחה וID של 2 המורים והתלמידת תאריך, הערה, סטטוס
                 con = connect("DBConnectionString");
                 string str = "select Trans.*, "+
                     " Tfrom.teacherID AS 'teacherIDFrom', Tfrom.firstName AS 'firstNameFrom', Tfrom.lastName AS 'lastNameFrom', " +
