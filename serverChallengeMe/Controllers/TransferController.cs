@@ -15,6 +15,16 @@ namespace serverChallengeMe.Controllers
     public class TransferController : ApiController
     {
         [HttpGet]
+        [Route("api/Transfer/getTransfers")]
+        //  מחזירה את כל ההעברות שהמורה מעורב בהן
+        // GET api/Transfer
+        public DataTable getTransfers(int teacherID)
+        {
+            Transfer transfer = new Transfer();
+            return transfer.getTransfers(teacherID);
+        }
+
+        [HttpGet]
         [Route("api/Transfer/getTransfersToTeacher")]
         // מחזירה את כל ההעברות אל המורה שלא אושרו
         // GET api/Transfer

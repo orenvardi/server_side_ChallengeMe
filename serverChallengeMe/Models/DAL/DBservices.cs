@@ -3299,6 +3299,50 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
             }
         }
+        //---------------------------------------------------------------------------------
+        // 89.  GET Transfers  
+        //---------------------------------------------------------------------------------
+        public DataTable getTransfers(int teacherID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                שם פרטי ומשפחה וID של 2 המורים והתלמידת תאריך, הערה, סטטוס
+                con = connect("DBConnectionString");
+                string str = "select Trans.*, "+
+                    " Tfrom.teacherID AS 'teacherIDFrom', Tfrom.firstName AS 'firstNameFrom', Tfrom.lastName AS 'lastNameFrom', " +
+                    " Tto.teacherID AS 'teacherIDTo', Tto.firstName AS 'firstNameTo', Tto.lastName AS 'lastNameTo', " +
+                    " S.studentID AS 'studentID', S.firstName AS 'firstNameS', S.lastName AS 'lastNameS', " +
+                    " from Transfer Trans " +
+                    " join Teacher Tfrom on Trans.teacherFrom = Tfrom.teacherID " +
+                    " join Teacher Tto on Trans.teacherTo = Tto.teacherID " +
+                    " join Student S on Trans.studentID = S.studentID " +
+                    " where (Trans.teacherTo = " + teacherID + " OR Trans.teacherFrom = " + teacherID + ") "+
+                    " AND Trans.confirm = 'false'" +
+                    " AND DATEDIFF(day, GetDate(), Trans.date) <= 30";
+                da = new SqlDataAdapter(str, con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
 
 
 

@@ -15,33 +15,42 @@ namespace serverChallengeMe.Models
         public int TeacherTo { get; set; }
         public int StudentID { get; set; }
         public string Comment { get; set; }
-        public bool Confirm { get; set; }
+        public string Status { get; set; }
+        public string Date { get; set; }
 
         public Transfer() { }
 
-        public Transfer(int transferID, int teacherFrom, int teacherTo, int studentID, string comment, bool confirm)
+        public Transfer(int transferID, int teacherFrom, int teacherTo, int studentID, string comment, string status, string date)
         {
             TransferID = transferID;
             TeacherFrom = teacherFrom;
             TeacherTo = teacherTo;
             StudentID = studentID;
             Comment = comment;
-            Confirm = confirm;
+            Status = status;
+            Date = date;
         }
 
-        // מחזירה את כל ההעברות אל המורה שלא אושרו
-        public DataTable getTransfersToTeacher(int teacherID)
+        //  מחזירה את כל ההעברות שהמורה מעורב בהן
+        public DataTable getTransfers(int teacherID)
         {
             DBservices dBservices = new DBservices();
-            return dBservices.getTransfersToTeacher(teacherID);
+            return dBservices.getTransfers(teacherID);
         }
+
+        // מחזירה את כל ההעברות אל המורה
+        //public DataTable getTransfersToTeacher(int teacherID)
+        //{
+        //    DBservices dBservices = new DBservices();
+        //    return dBservices.getTransfersToTeacher(teacherID);
+        //}
 
         // מחזירה את כל ההעברות מהמורה
-        public DataTable getTransfersFromTeacher(int teacherID)
-        {
-            DBservices dBservices = new DBservices();
-            return dBservices.getTransfersFromTeacher(teacherID);
-        }
+        //public DataTable getTransfersFromTeacher(int teacherID)
+        //{
+        //    DBservices dBservices = new DBservices();
+        //    return dBservices.getTransfersFromTeacher(teacherID);
+        //}
 
         // מעדכן את העמודה קונפירם לטרו
         public int confirmTransfer(int transferID)
