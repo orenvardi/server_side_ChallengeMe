@@ -28,6 +28,15 @@ namespace serverChallengeMe.Controllers
             return cl.postClass(c);
         }
 
+        [HttpPost]
+        [Route("api/Class/postClassReturnID")]
+        // POST api/<controller>
+        public int postClassReturnID(Class c)
+        {
+            Class cl = new Class();
+            return cl.postClassReturnID(c);
+        }
+
         // PUT api/<controller>/5
         public int Put(Class c)
         {

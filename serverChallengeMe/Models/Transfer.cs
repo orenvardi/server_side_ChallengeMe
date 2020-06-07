@@ -15,12 +15,12 @@ namespace serverChallengeMe.Models
         public int TeacherTo { get; set; }
         public int StudentID { get; set; }
         public string Comment { get; set; }
-        public string Status { get; set; }
+        public int Status { get; set; }
         public string Date { get; set; }
 
         public Transfer() { }
 
-        public Transfer(int transferID, int teacherFrom, int teacherTo, int studentID, string comment, string status, string date)
+        public Transfer(int transferID, int teacherFrom, int teacherTo, int studentID, string comment, int status, string date)
         {
             TransferID = transferID;
             TeacherFrom = teacherFrom;
@@ -53,10 +53,10 @@ namespace serverChallengeMe.Models
         }
 
         // מעדכן את העמודה קונפירם לטרו
-        public int confirmTransfer(int transferID)
+        public int updateTransfer(int transferID, int status)
         {
             DBservices dBservices = new DBservices();
-            return dBservices.confirmTransfer(transferID);
+            return dBservices.updateTransfer(transferID, status);
         }
 
         public int postTransfer(Transfer transfer)

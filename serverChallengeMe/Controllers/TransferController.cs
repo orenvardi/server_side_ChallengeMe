@@ -44,14 +44,14 @@ namespace serverChallengeMe.Controllers
             return transfer.getTransfersFromTeacher(teacherID);
         }
 
-        [HttpGet]
-        [Route("api/Transfer/confirmTransfer")]
+        [HttpPut]
+        [Route("api/Transfer/updateTransfer")]
         // מעדכן את העמודה קונפירם לטרו
         // PUT api/Transfer
-        public int confirmTransfer(int transferID)
+        public int updateTransfer(int transferID, int status)
         {
             Transfer t = new Transfer();
-            return t.confirmTransfer(transferID);
+            return t.updateTransfer(transferID, status);
         }
         
         // POST api/Transfer

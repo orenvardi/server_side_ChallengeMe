@@ -35,6 +35,12 @@ namespace serverChallengeMe.Models
             return dbs.postClass(c);
         }
 
+        public int postClassReturnID(Class c)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.postClassReturnID(c);
+        }
+
         public int putClass(Class c)
         {
             DBservices dbs = new DBservices();

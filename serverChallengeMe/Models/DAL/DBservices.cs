@@ -591,7 +591,6 @@ namespace serverChallengeMe.Models.DAL
                 }
             }
         }
-
         //---------------------------------------------------------------------------------
         // 19.  UPDATE Teacher Password
         //---------------------------------------------------------------------------------
@@ -3114,8 +3113,7 @@ namespace serverChallengeMe.Models.DAL
                     " join Teacher Tfrom on Trans.teacherFrom = Tfrom.teacherID " +
                     " join Teacher Tto on Trans.teacherTo = Tto.teacherID " +
                     " join Student S on Trans.studentID = S.studentID " +
-                    " where Trans.teacherTo = " + teacherID +
-                    " AND Trans.confirm = 'false'";
+                    " where Trans.teacherTo = " + teacherID;
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
@@ -3153,7 +3151,6 @@ namespace serverChallengeMe.Models.DAL
                     " join Teacher Tto on Trans.teacherTo = Tto.teacherID " +
                     " join Student S on Trans.studentID = S.studentID " +
                     " where Trans.teacherFrom = " + teacherID;
-                    //" AND Trans.confirm = 'false'";
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
@@ -3229,9 +3226,9 @@ namespace serverChallengeMe.Models.DAL
             return command;
         }
         //---------------------------------------------------------------------------------
-        // 93.  confirm Transfer
+        // 93.  update Transfer status
         //---------------------------------------------------------------------------------
-        public int confirmTransfer(int transferID)
+        public int updateTransfer(int transferID, int status)
         {
             SqlConnection con;
             SqlCommand cmd;
@@ -3245,7 +3242,7 @@ namespace serverChallengeMe.Models.DAL
                 // write to log
                 throw (ex);
             }
-            String cStr = "UPDATE Transfer SET confirm = 'true' WHERE transferID = "+ transferID;      // helper method to build the insert string
+            String cStr = "UPDATE Transfer SET status = "+status+" WHERE transferID = "+ transferID;      // helper method to build the insert string
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
@@ -3270,7 +3267,7 @@ namespace serverChallengeMe.Models.DAL
         //---------------------------------------------------------------------------------
         // 94.  change TeacherID for Student
         //---------------------------------------------------------------------------------
-        public int changeTeacherID(Student s)
+        public int changeTeacherIDandClass(Student s)
         {
             SqlConnection con;
             SqlCommand cmd;
@@ -3282,7 +3279,7 @@ namespace serverChallengeMe.Models.DAL
             {
                 throw (ex);
             }
-            String cStr = "UPDATE Student SET teacherID= "+ s.TeacherID + " WHERE studentID = "+ s.StudentID;
+            String cStr = "UPDATE Student SET teacherID= "+ s.TeacherID + ", classID = "+s.ClassID +" WHERE studentID = "+ s.StudentID;
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
@@ -3309,9 +3306,9 @@ namespace serverChallengeMe.Models.DAL
             {
                 con = connect("DBConnectionString");
                 string str = "select Trans.*, "+
-                    " Tfrom.teacherID AS 'teacherIDFrom', Tfrom.firstName AS 'firstNameFrom', Tfrom.lastName AS 'lastNameFrom', " +
-                    " Tto.teacherID AS 'teacherIDTo', Tto.firstName AS 'firstNameTo', Tto.lastName AS 'lastNameTo', " +
-                    " S.studentID AS 'studentID', S.firstName AS 'firstNameS', S.lastName AS 'lastNameS' " +
+                    " Tfrom.firstName AS 'firstNameFrom', Tfrom.lastName AS 'lastNameFrom', " +
+                    " Tto.firstName AS 'firstNameTo', Tto.lastName AS 'lastNameTo', " +
+                    " S.firstName AS 'firstNameS', S.lastName AS 'lastNameS' " +
                     " from Transfer Trans " +
                     " join Teacher Tfrom on Trans.teacherFrom = Tfrom.teacherID " +
                     " join Teacher Tto on Trans.teacherTo = Tto.teacherID " +
@@ -3340,6 +3337,52 @@ namespace serverChallengeMe.Models.DAL
                 }
             }
             return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 90. POST Class Return ID
+        //---------------------------------------------------------------------------------
+        public int postClassReturnID(Class c)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            //שימוש בפרמטרים כשיש סיכוי שיהיה מחרוזת עם גרש שיכולה להוות בעיה 
+            String cStr = "INSERT INTO Class(className, teacherID) output INSERTED.classID VALUES(@ClassName, " + c.TeacherID + ");";
+            cmd = CreateCommand(cStr, con);
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "@ClassName";
+            param.Value = c.ClassName;
+            cmd.Parameters.Add(param);
+
+            try
+            {
+                //int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                int newID = Convert.ToInt32(cmd.ExecuteScalar()); //return the output from the query
+                return newID;
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
         }
 
 

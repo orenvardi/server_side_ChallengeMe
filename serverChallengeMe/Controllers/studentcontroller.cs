@@ -118,12 +118,12 @@ namespace serverChallengeMe.Controllers
         }
 
         [HttpPut]
-        [Route("api/Student/changeTeacherID")]
-        // PUT api/Student/changeTeacherID?teacherID={teacherID}
-        public int changeTeacherID(Student s)
+        [Route("api/Student/changeTeacherIDandClass")]
+        // PUT api/Student/changeTeacherIDandClass?student={student}
+        public int changeTeacherIDandClass(Student student)
         {
-            Student student = new Student();
-            return student.changeTeacherID(s);
+            Student s = new Student();
+            return s.changeTeacherIDandClass(student);
         }
 
         // POST api/<controller>

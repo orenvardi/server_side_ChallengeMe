@@ -143,10 +143,10 @@ namespace serverChallengeMe.Models
             return dbs.PostStudentToken(student);
         }
 
-        public int changeTeacherID(Student s)
+        public int changeTeacherIDandClass(Student s)
         {
             DBservices dbs = new DBservices();
-            return dbs.changeTeacherID(s);
+            return dbs.changeTeacherIDandClass(s);
         }
 
         public int putStudent(Student student)
