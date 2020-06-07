@@ -190,6 +190,7 @@
     <Compile Include="Controllers\ChallengeTagController.cs" />
     <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\FeaturesQuestionController.cs" />
+    <Compile Include="Controllers\InstitutionController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\StudentChallengeController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\DAL\DBservices.cs" />
     <Compile Include="Models\FeaturesQuestion.cs" />
+    <Compile Include="Models\Institution.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\PathOfImage.cs" />
     <Compile Include="Models\FCM\PushNotificationLogic.cs" />

@@ -21,6 +21,15 @@ namespace serverChallengeMe.Controllers
             return teacher.getTeacher();
         }
 
+        [HttpGet]
+        [Route("api/Teacher/GetTeachersByInstitution")]
+        //GET api/Teacher
+        public DataTable GetTeachersByInstitution(int teacherID)
+        {
+            Teacher teacher = new Teacher();
+            return teacher.GetTeachersByInstitution(teacherID);
+        }
+
         // GET api/Teacher?username={username}&password={password}
         public Teacher Get(string username, string password)
         {

@@ -387,8 +387,8 @@ namespace serverChallengeMe.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}','{7}');", teacher.UserName, teacher.Password, teacher.FirstName, teacher.LastName, teacher.Mail, teacher.Phone, teacher.School, '0');
-            String prefix = "INSERT INTO Teacher(userName, password, firstName, lastName, mail, phone, school,tempPassword) output INSERTED.teacherID ";
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}','{7}');", teacher.UserName, teacher.Password, teacher.FirstName, teacher.LastName, teacher.Mail, teacher.Phone, teacher.InstitutionID, '0');
+            String prefix = "INSERT INTO Teacher(userName, password, firstName, lastName, mail, phone, institutionID,tempPassword) output INSERTED.teacherID ";
             command = prefix + sb.ToString();
             return command;
         }
@@ -679,7 +679,7 @@ namespace serverChallengeMe.Models.DAL
             {
                 throw (ex);
             }
-            String cStr = "UPDATE Teacher SET userName  = '" + t.UserName + "', password= '" + t.Password + "', firstName = '" + t.FirstName + "', lastName  = '" + t.LastName + "', mail = '" + t.Mail + "', phone = '" + t.Phone + "', school = '" + t.School + "' WHERE teacherID  = " + t.TeacherID + ";";
+            String cStr = "UPDATE Teacher SET userName  = '" + t.UserName + "', password= '" + t.Password + "', firstName = '" + t.FirstName + "', lastName  = '" + t.LastName + "', mail = '" + t.Mail + "', phone = '" + t.Phone + "', institutionID = '" + t.InstitutionID + "' WHERE teacherID  = " + t.TeacherID + ";";
             cmd = CreateCommand(cStr, con);             // create the command
             try
             {
@@ -3314,7 +3314,8 @@ namespace serverChallengeMe.Models.DAL
                     " join Teacher Tto on Trans.teacherTo = Tto.teacherID " +
                     " join Student S on Trans.studentID = S.studentID " +
                     " where (Trans.teacherTo = " + teacherID + " OR Trans.teacherFrom = " + teacherID + ") "+
-                    " AND DATEDIFF(day, GetDate(), Trans.date) <= 30";
+                    " AND DATEDIFF(day, GetDate(), Trans.date) <= 30" +
+                    " ORDER BY Trans.Date";
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
@@ -3383,6 +3384,70 @@ namespace serverChallengeMe.Models.DAL
                     con.Close();
                 }
             }
+        }
+        //---------------------------------------------------------------------------------
+        // 91.  GET Institutions
+        //---------------------------------------------------------------------------------
+        public DataTable getInstitutions()
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                da = new SqlDataAdapter("select * from Institution;", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
+        }
+        //---------------------------------------------------------------------------------
+        // 92.  GET Teachers By Institution
+        //---------------------------------------------------------------------------------
+        public DataTable GetTeachersByInstitution(int teacherID)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+                da = new SqlDataAdapter("select * from Teacher where institutionID in (select institutionID from Teacher where teacherID = "+ teacherID + ")", con);
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dt = ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("No rows found.");
+                // try to handle the error
+                throw ex;
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+            return dt;
         }
 
 

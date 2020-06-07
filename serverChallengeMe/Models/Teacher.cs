@@ -20,13 +20,13 @@ namespace serverChallengeMe.Models
         public string LastName { get; set; }
         public string Phone { get; set; }
         public string Mail { get; set; }
-        public string School { get; set; }
+        public string InstitutionID { get; set; }
         public bool TempPassword { get; set; }
         public string TeacherToken { get; set; }
 
         public Teacher() { }
 
-        public Teacher(int teacherID, string userName, string password, string firstName, string lastName, string phone, string mail, string school, bool tempPassword, string teacherToken)
+        public Teacher(int teacherID, string userName, string password, string firstName, string lastName, string phone, string mail, string institutionID, bool tempPassword, string teacherToken)
         {
             TeacherID = teacherID;
             UserName = userName;
@@ -35,7 +35,7 @@ namespace serverChallengeMe.Models
             LastName = lastName;
             Phone = phone;
             Mail = mail;
-            School = school;
+            InstitutionID = institutionID;
             TempPassword = tempPassword;
             TeacherToken = teacherToken;
         }
@@ -52,6 +52,13 @@ namespace serverChallengeMe.Models
             DBservices dBservices = new DBservices();
             return dBservices.getTeacher();
             //מחזיר רשימה של כל המחנכים
+        }
+
+        public DataTable GetTeachersByInstitution(int teacherID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.GetTeachersByInstitution(teacherID);
+            //מחזיר רשימה של כל המחנכים במוסד לימוד מסויים
         }
 
         public int getTeacherByMail(string TeacherMail, string username)
