@@ -39,18 +39,18 @@ namespace serverChallengeMe.Models
         }
 
         // מחזירה את כל ההעברות אל המורה
-        //public DataTable getTransfersToTeacher(int teacherID)
-        //{
-        //    DBservices dBservices = new DBservices();
-        //    return dBservices.getTransfersToTeacher(teacherID);
-        //}
+        public DataTable getTransfersToTeacher(int teacherID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getTransfersToTeacher(teacherID);
+        }
 
         // מחזירה את כל ההעברות מהמורה
-        //public DataTable getTransfersFromTeacher(int teacherID)
-        //{
-        //    DBservices dBservices = new DBservices();
-        //    return dBservices.getTransfersFromTeacher(teacherID);
-        //}
+        public DataTable getTransfersFromTeacher(int teacherID)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.getTransfersFromTeacher(teacherID);
+        }
 
         // מעדכן את העמודה קונפירם לטרו
         public int confirmTransfer(int transferID)
