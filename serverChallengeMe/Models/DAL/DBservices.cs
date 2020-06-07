@@ -3223,8 +3223,8 @@ namespace serverChallengeMe.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES({0},{1},{2},'{3}');", transfer.TeacherFrom, transfer.TeacherTo, transfer.StudentID, transfer.Comment);
-            String prefix = "INSERT INTO Transfer(teacherFrom, teacherTo, studentID, comment) ";
+            sb.AppendFormat("VALUES({0},{1},{2},'{3}','{4}');", transfer.TeacherFrom, transfer.TeacherTo, transfer.StudentID, transfer.Comment, transfer.Date);
+            String prefix = "INSERT INTO Transfer(teacherFrom, teacherTo, studentID, comment, date) ";
             command = prefix + sb.ToString();
             return command;
         }
@@ -3311,13 +3311,12 @@ namespace serverChallengeMe.Models.DAL
                 string str = "select Trans.*, "+
                     " Tfrom.teacherID AS 'teacherIDFrom', Tfrom.firstName AS 'firstNameFrom', Tfrom.lastName AS 'lastNameFrom', " +
                     " Tto.teacherID AS 'teacherIDTo', Tto.firstName AS 'firstNameTo', Tto.lastName AS 'lastNameTo', " +
-                    " S.studentID AS 'studentID', S.firstName AS 'firstNameS', S.lastName AS 'lastNameS', " +
+                    " S.studentID AS 'studentID', S.firstName AS 'firstNameS', S.lastName AS 'lastNameS' " +
                     " from Transfer Trans " +
                     " join Teacher Tfrom on Trans.teacherFrom = Tfrom.teacherID " +
                     " join Teacher Tto on Trans.teacherTo = Tto.teacherID " +
                     " join Student S on Trans.studentID = S.studentID " +
                     " where (Trans.teacherTo = " + teacherID + " OR Trans.teacherFrom = " + teacherID + ") "+
-                    " AND Trans.confirm = 'false'" +
                     " AND DATEDIFF(day, GetDate(), Trans.date) <= 30";
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
