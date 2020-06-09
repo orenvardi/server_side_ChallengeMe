@@ -1760,8 +1760,16 @@ namespace serverChallengeMe.Models.DAL
                 // write to log
                 throw (ex);
             }
-            String cStr = BuildInsertCommandMessage(message);      // helper method to build the insert string
-            cmd = CreateCommand(cStr, con);             // create the command
+
+            String cStr = "INSERT INTO Message(teacherID, studentID, messageTitle, messageText, messageDate, messageTime, messageByTeacher)";
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', {3}, '{4}','{5}','{6}');", message.TeacherID, message.StudentID, message.MessageTitle, "@messageText", message.MessageDate, message.MessageTime, message.MessageByTeacher);
+            cmd = CreateCommand(cStr + sb, con);
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "@messageText";
+            param.Value = message.MessageText;
+            cmd.Parameters.Add(param);
+
             try
             {
                 int numEffected = cmd.ExecuteNonQuery(); // execute the command
@@ -1784,15 +1792,15 @@ namespace serverChallengeMe.Models.DAL
         //--------------------------------------------------------------------
         // 51.  Build INSERT Message Command
         //--------------------------------------------------------------------
-        private String BuildInsertCommandMessage(Message message)
-        {
-            String command;
-            StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", message.TeacherID, message.StudentID, message.MessageTitle, message.MessageText, message.MessageDate, message.MessageTime, message.MessageByTeacher);
-            String prefix = "INSERT INTO Message(teacherID, studentID, messageTitle, messageText, messageDate, messageTime, messageByTeacher)";
-            command = prefix + sb.ToString();
-            return command;
-        }
+        //private String BuildInsertCommandMessage(Message message)
+        //{
+            //String command;
+            //StringBuilder sb = new StringBuilder();
+            //sb.AppendFormat("VALUES('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}');", message.TeacherID, message.StudentID, message.MessageTitle, message.MessageText, message.MessageDate, message.MessageTime, message.MessageByTeacher);
+            //String prefix = "INSERT INTO Message(teacherID, studentID, messageTitle, messageText, messageDate, messageTime, messageByTeacher)";
+            //command = prefix + sb.ToString();
+            //return command;
+        //}
         //---------------------------------------------------------------------------------
         // 52.  GET Students by TeacherID
         //---------------------------------------------------------------------------------
@@ -1989,7 +1997,16 @@ namespace serverChallengeMe.Models.DAL
                     // write to log
                     throw (ex);
                 }
-                String cStr = "select COUNT(alertID) from Alert where (AlertRead = 'false' or AlertRead is null) AND teacherID = " + teacherID + "; ";
+                String cStr = "select COUNT(A.alertID) " +
+                    " from Alert A join AlertSettings AST on A.teacherID = AST.teacherID" +
+                    " where (A.AlertRead = 'false' or A.AlertRead is null) " +
+                    " AND A.teacherID = " + teacherID +
+                    " AND((AST.alertPositive = 1 AND A.alertTypeID = 1)" +
+                    " OR(AST.alertNegative = 1 AND A.alertTypeID = 2)" +
+                    " OR(AST.alertHelp = 1 AND A.alertTypeID = 3)" +
+                    " OR(AST.alertLate = 1 AND A.alertTypeID = 4)" +
+                    " OR A.alertTypeID > 4)";
+
                 cmd = CreateCommand(cStr, con);             // create the command
                 try
                 {
@@ -2691,17 +2708,11 @@ namespace serverChallengeMe.Models.DAL
                     while (dr2.Read())
                     {
                         student.StudentID = Convert.ToInt32(dr2["StudentID"]);
-                        student.UserName = (string)dr2["UserName"];
-                        //student.Password = Convert.ToBoolean(dr2["Password"]);
                         student.FirstName = (string)dr2["FirstName"];
                         student.LastName = (string)dr2["LastName"];
                         student.Phone = (string)dr2["Phone"];
                         student.ClassID = Convert.ToInt32(dr2["ClassID"]);
                         student.TeacherID = Convert.ToInt32(dr2["TeacherID"]);
-                        student.Avatar = (string)dr2["Avatar"];
-                        student.BirthDate = (string)dr2["BirthDate"];
-                        student.Image = (string)dr2["imageStudent"];
-                        student.StudentToken = (string)dr2["StudentToken"];
                     }
                 }
             }
