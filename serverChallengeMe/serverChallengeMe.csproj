@@ -228,6 +228,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="avatarImg\chicken\chicken1.png" />
+    <Content Include="avatarImg\chicken\chicken2.png" />
+    <Content Include="avatarImg\chicken\chicken3.png" />
+    <Content Include="avatarImg\chicken\chicken4.png" />
+    <Content Include="avatarImg\chicken\chicken5.png" />
+    <Content Include="avatarImg\pinguin\pinguin1.png" />
+    <Content Include="avatarImg\pinguin\pinguin2.png" />
+    <Content Include="avatarImg\pinguin\pinguin3.png" />
+    <Content Include="avatarImg\pinguin\pinguin4.png" />
+    <Content Include="avatarImg\pinguin\pinguin5.png" />
+    <Content Include="avatarImg\turtle\turtle1.png" />
+    <Content Include="avatarImg\turtle\turtle2.png" />
+    <Content Include="avatarImg\turtle\turtle3.png" />
+    <Content Include="avatarImg\turtle\turtle4.png" />
+    <Content Include="avatarImg\turtle\turtle5.png" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />

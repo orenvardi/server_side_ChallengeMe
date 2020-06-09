@@ -176,8 +176,6 @@ namespace serverChallengeMe.Models
                 string body = "תמשיך לעשות אתגרים כדי שאוכל לגדול";
                 string toToken = dbs.getStudentToken(Convert.ToInt32(row["studentID"]));
 
-                Alert alert = new Alert(0, Convert.ToInt32(row["teacherID"]), Convert.ToInt32(row["studentID"]), title, body, alertDate, DateTime.Now.ToString("HH:mm"), false, 7);
-                postAlert(alert);
                 if (toToken != "" && toToken != null)
                 {
                     string imgPath = getAvatarImg(Convert.ToInt32(row["studentID"]));
@@ -218,8 +216,6 @@ namespace serverChallengeMe.Models
 
                 string toToken = dbs.getStudentToken(Convert.ToInt32(row["studentID"]));
 
-                Alert alert = new Alert(0, Convert.ToInt32(row["teacherID"]), Convert.ToInt32(row["studentID"]), title, body, alertDate, DateTime.Now.ToString("HH:mm"), false, 8);
-                postAlert(alert);
                 if (toToken != "" && toToken != null)
                 {
                     string imgPath = getAvatarImg(Convert.ToInt32(row["studentID"]));
@@ -242,8 +238,6 @@ namespace serverChallengeMe.Models
                 string body = row["firstName"] + " " + row["lastName"] + " היית צריך לסיים את האתגר: " + row["challengeName"] + " עד אתמול ";
                 string toToken = dbs.getStudentToken(Convert.ToInt32(row["studentID"]));
 
-                Alert alert = new Alert(0, Convert.ToInt32(row["teacherID"]), Convert.ToInt32(row["studentID"]), title, body, alertDate, DateTime.Now.ToString("HH:mm"), false, 9);
-                postAlert(alert);
                 if (toToken != "" && toToken != null)
                 {
                     string imgPath = getAvatarImg(Convert.ToInt32(row["studentID"]));
@@ -263,9 +257,10 @@ namespace serverChallengeMe.Models
             int challengesCount = counts[1];
             int avatarLevel = (successCount == 0 || challengesCount == 0) ? 1 : Math.Max((int)Math.Ceiling((double)successCount / (double)challengesCount * 100.00 / 20.00), 1); /*מינימום 1*/
             //string imgPath = HostingEnvironment.MapPath("~/avatarImg") + @"\" + avatarType + @"\" + avatarType + avatarLevel + ".png";
-            string imgPath = @"..\avatars\" + avatarType + avatarLevel + ".png";
+            string imgPath = @".\avatarImg\" + avatarType + @"\" + avatarType + avatarLevel + @".png";
+            //string imgPath = "https://i7.pngflow.com/pngimage/774/850/png-crossed-fingers-emoji-facepalm-luck-emoji-hand-arm-mobile-phones-emoticon-clipart.png";
+            //string context = HttpContext.Current.Server.MapPath(@".\avatarImg\" + avatarType + @"\" + avatarType + avatarLevel + ".png");
 
-            
             return imgPath;
         }
     }

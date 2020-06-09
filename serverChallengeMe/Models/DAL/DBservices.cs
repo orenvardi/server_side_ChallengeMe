@@ -3315,7 +3315,7 @@ namespace serverChallengeMe.Models.DAL
                     " join Student S on Trans.studentID = S.studentID " +
                     " where (Trans.teacherTo = " + teacherID + " OR Trans.teacherFrom = " + teacherID + ") "+
                     " AND DATEDIFF(day, GetDate(), Trans.date) <= 30" +
-                    " ORDER BY Trans.Date";
+                    " ORDER BY Trans.Date DESC";
                 da = new SqlDataAdapter(str, con);
                 SqlCommandBuilder builder = new SqlCommandBuilder(da);
                 DataSet ds = new DataSet();
